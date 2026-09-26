@@ -87,6 +87,9 @@ document.querySelectorAll('.nav button').forEach(b => b.onclick = () => {
 });
 const byType = ty => b => ty === 'all' || b.type === ty;
 const byCode = (a, b) => a.code.localeCompare(b.code);
+/* 顯示「全部」時：傳統銀行（按 Bank Code）在上，虛擬銀行（按 Bank Code）緊接在下 */
+const typeOrder = ty => ty === 'traditional' ? 0 : 1;
+const byTypeThenCode = (a, b) => (typeOrder(a.type) - typeOrder(b.type)) || byCode(a, b);
 function copyText(txt, btn) {
   navigator.clipboard?.writeText(txt).then(() => { const o = btn.textContent; btn.textContent = t('copiedBtn'); setTimeout(() => btn.textContent = o, 1200); });
 }
@@ -167,7 +170,7 @@ function renderTD() {
     TENOR_KEYS.map(([k, lk]) => `<th class="sortable" onclick="setTdSort('${k}')">${t(lk)}${tdSort === k ? ' ▼' : ''}</th>`).join('') +
     `<th>${t('colMinDeposit')}</th><th>${t('colCondition')}</th>`;
   let rows = BANKS.filter(byType(tdType)).map(b => ({ b, r: resolve(b) }));
-  if (tdSort === 'code') rows.sort((a, c) => byCode(a.b, c.b)); else rows.sort((a, c) => ((tdRate(c.r.td, tdCur, tdSort) ?? -1) - (tdRate(a.r.td, tdCur, tdSort) ?? -1)) || byCode(a.b, c.b));
+  if (tdSort === 'code') rows.sort((a, c) => (tdType === 'all' ? byTypeThenCode(a.b, c.b) : byCode(a.b, c.b))); else rows.sort((a, c) => ((tdRate(c.r.td, tdCur, tdSort) ?? -1) - (tdRate(a.r.td, tdCur, tdSort) ?? -1)) || byCode(a.b, c.b));
   const best = {}; TENOR_KEYS.forEach(([k]) => best[k] = Math.max(...rows.map(x => tdRate(x.r.td, tdCur, k) ?? -1)));
   document.getElementById('tdBody').innerHTML = rows.map(({ b, r }) => `<tr>${bankCell(b)}${TENOR_KEYS.map(([k]) => { const v = tdRate(r.td, tdCur, k); return `<td>${v == null ? `<span class="rate na">${t('rateNotAvailable')}</span>` : `<span class="rate ${v === best[k] ? 'best' : ''}">${v.toFixed(2)}%<span class="approx">≈</span></span>`}</td>`; }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
   renderTdCalc();
@@ -206,7 +209,7 @@ function renderFX() {
   document.getElementById('fxHead').innerHTML = `<th>${t('colBankTier')}${levelBtns()}</th><th>${t('colBuy')}<div class="sub">${t('colBuySub')}</div></th><th>${t('colSell')}<div class="sub">${t('colSellSub')}</div></th><th>${t('colSpread')}</th><th>${t('colCashSpread')}</th><th>${t('colCurCount')}</th><th>${t('colNotes')}</th>`;
   document.getElementById('fxMidLabel').innerHTML = t('fxMidLabelPrefix') + '<span id="fxCurLabel">' + (unit > 1 ? unit + ' ' : '') + fxCur + '</span>' + t('fxMidLabelSuffix');
   document.getElementById('fxMid').textContent = mid ? fmtRate(mid, unit) : '—';
-  const rows = BANKS.filter(byType(fxType)).sort(byCode).map(b => ({ b, r: resolve(b) }));
+  const rows = BANKS.filter(byType(fxType)).sort(fxType === 'all' ? byTypeThenCode : byCode).map(b => ({ b, r: resolve(b) }));
   const bestSpread = Math.min(...rows.filter(x => fxSupported(x.b)).map(x => x.r.fx.spread));
   document.getElementById('fxBody').innerHTML = rows.map(({ b, r }) => {
     const s = r.fx.spread, bid = mid * (1 - s / 100), ask = mid * (1 + s / 100);
@@ -248,7 +251,7 @@ const cellHTML = f => !f ? `<span class="cell na">—</span>` : `<span class="ce
 function renderFees() {
   const cat = CATEGORIES.find(c => c.id === currentCat);
   document.getElementById('thead').innerHTML = `<th>${t('colBankTier')}${levelBtns()}</th>` + cat.cols.map(([k, l]) => `<th>${tr(l)}</th>`).join('');
-  const rows = BANKS.filter(byType(feeType)).filter(b => !keyword || (b.code + b.swift + b.name + b.nameEn + b.en + b.tiers.map(tierFullName).join()).toLowerCase().includes(keyword)).sort(byCode);
+  const rows = BANKS.filter(byType(feeType)).filter(b => !keyword || (b.code + b.swift + b.name + b.nameEn + b.en + b.tiers.map(tierFullName).join()).toLowerCase().includes(keyword)).sort(feeType === 'all' ? byTypeThenCode : byCode);
   document.getElementById('tbody').innerHTML = rows.length ? rows.map(b => { const r = resolve(b); return `<tr>${bankCell(b)}${cat.cols.map(([k]) => `<td>${cellHTML(r.fees[k])}</td>`).join('')}</tr>`; }).join('') : `<tr><td colspan="${cat.cols.length + 1}" style="text-align:center;color:var(--muted)">${t('noMatch')}</td></tr>`;
 }
 
