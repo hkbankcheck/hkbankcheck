@@ -1,8 +1,8 @@
 # 香港銀行一站式比較 · HK Bank Comparison
 
-一個比較香港 15 間傳統及虛擬銀行的定期存款利率、外幣兌換匯率及服務收費的網頁工具，支援按戶口類別（基本／中階／高階）切換，並可在**繁體中文／English／简体中文**三種語言之間切換。
+一個比較香港 16 間傳統及虛擬銀行的定期存款利率、外幣兌換匯率及服務收費的網頁工具，支援按戶口類別（基本／中階／高階）切換，並可在**繁體中文／English／简体中文**三種語言之間切換。
 
-A single-page web app comparing time deposit rates, foreign exchange rates and service fees across 15 traditional and virtual banks in Hong Kong. Every bank's account tier (Basic / Mid / Premium) can be switched independently, and the whole UI can be viewed in **Traditional Chinese, English, or Simplified Chinese**.
+A single-page web app comparing time deposit rates, foreign exchange rates and service fees across 16 traditional and virtual banks in Hong Kong. Every bank's account tier (Basic / Mid / Premium) can be switched independently, and the whole UI can be viewed in **Traditional Chinese, English, or Simplified Chinese**.
 
 ## 功能 Features
 

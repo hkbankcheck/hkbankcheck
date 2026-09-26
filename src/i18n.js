@@ -181,6 +181,8 @@ export const PHRASE_EN = {
 '顯卓理財': 'SupremeGold Banking',
 '首張免費': 'First card free',
 '香港居民免收。': 'Waived for Hong Kong residents.',
+'與內地工商銀行網絡連繫緊密，人民幣業務具優勢。': 'Closely linked with the ICBC network on the mainland, giving it an edge in RMB services.',
+'建行網絡覆蓋內地，跨境理財產品選擇多。': 'Extensive CCB network on the mainland, offering a wide range of cross-border wealth management products.',
 
 /* ---- 服務收費分類與欄目標題 ---- */
 '戶口與月費': 'Account & Monthly Fees',
@@ -219,7 +221,7 @@ export function tr(zh) {
 /* ============ 固定介面文字 ============ */
 const UI = {
 appTitle: { 'zh-Hant': '🏦 香港銀行一站式比較', en: '🏦 Hong Kong Bank Comparison' },
-appSubtitle: { 'zh-Hant': '15 間傳統及虛擬銀行 · 每間銀行可自選戶口類別 · 定期存款利率 · 外幣兌換匯率 · 服務收費', en: '15 traditional & virtual banks · Choose an account tier per bank · Time deposit rates · FX rates · Service fees' },
+appSubtitle: { 'zh-Hant': '16 間傳統及虛擬銀行 · 每間銀行可自選戶口類別 · 定期存款利率 · 外幣兌換匯率 · 服務收費', en: '16 traditional & virtual banks · Choose an account tier per bank · Time deposit rates · FX rates · Service fees' },
 lastUpdatedLabel: { 'zh-Hant': '🕒 最後更新：', en: '🕒 Last updated: ' },
 lastUpdatedSuffix: { 'zh-Hant': '（香港時間）', en: ' (Hong Kong Time)' },
 navTD: { 'zh-Hant': '📈 定期存款利率', en: '📈 Time Deposit Rates' },
@@ -293,7 +295,7 @@ legendHover: { 'zh-Hant': '滑鼠移至格內可查看備註', en: 'Hover over a
 summaryCard1Title: { 'zh-Hant': '💡 零月費、零最低結餘（基本戶口）', en: '💡 Zero Monthly Fee, Zero Minimum Balance (Basic Account)' },
 summaryCard1Li1: { 'zh-Hant': '所有虛擬銀行均無月費及最低結餘。', en: 'All virtual banks have no monthly fee or minimum balance.' },
 summaryCard1Li2: { 'zh-Hant': '滙豐、恒生、中銀、渣打、東亞、星展、花旗基本戶口已取消低結餘費。', en: 'HSBC, Hang Seng, Bank of China, Standard Chartered, BEA, DBS and Citibank have all removed low-balance fees on basic accounts.' },
-summaryCard1Li3: { 'zh-Hant': '招商永隆一般客戶理財總值低於 HK$10,000 收 HK$100／月（65 歲以上等可豁免）。', en: 'CMB Wing Lung charges HK$100/month for standard customers whose total relationship balance is below HK$10,000 (waived for customers aged 65+, etc.).' },
+summaryCard1Li3: { 'zh-Hant': '中國工商銀行（亞洲）及中國建設銀行（亞洲）基本戶口同樣沒有最低結餘要求。', en: 'ICBC (Asia) and CCB (Asia) also have no minimum balance requirement on their basic accounts.' },
 summaryCard2Title: { 'zh-Hant': '🌏 升級戶口最划算的情況', en: '🌏 When Upgrading Your Account Pays Off' },
 summaryCard2Li1: { 'zh-Hant': '經常海外匯款：高階戶口大多豁免匯入費及海外 ATM 費，網上匯出亦減免。', en: 'Frequent overseas transfers: premium tiers mostly waive incoming transfer fees and overseas ATM fees, with discounted online outward transfers too.' },
 summaryCard2Li2: { 'zh-Hant': '大額定存：中階／高階可享 0.1–0.3 厘加成或議價。', en: 'Large time deposits: mid/premium tiers can enjoy a 0.1–0.3% rate boost or negotiate a better rate.' },

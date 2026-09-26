@@ -90,19 +90,6 @@ export const BANKS = [
  td:{HKD:{m1:2.10,m3:2.70,m6:2.50,m12:2.30},USD:{m1:3.40,m3:3.60,m6:3.50,m12:3.30},CNY:{m1:1.00,m3:1.20,m6:1.20,m12:1.20},min:'HK$10,000',note:'digibank 新資金優惠。'},
  fx:{spread:0.50,notes:1.50,cur:'12',note:'匯往新加坡 DBS/POSB 一般免手續費。'}},
 
-{id:'cmbwl',code:'020',swift:'WUBAHKHH',name:'招商永隆銀行',nameEn:'CMB Wing Lung Bank',en:'CMB Wing Lung Bank Limited',type:'traditional',url:'https://www.cmbwinglungbank.com/',
- tiers:[
-  {level:1,n1:'一般客戶綜合理財',min:'HK$10,000（否則 HK$100／月）'},
-  {level:2,n1:'金葵花理財',n2:'Sunflower',min:'HK$500,000（2026/3 起）',ov:{tdAdd:0.10,fxSpread:0.35,fees:{minFee:{v:'低於 HK$50 萬收 HK$300／月',lvl:'cond'},minBal:{v:'HK$500,000',lvl:'cond'},ttOnline:W.ttFree,ttIn:W.waivedIn,atmOverseas:W.free(),cashierOrder:W.free()}}},
-  {level:3,n1:'私人財富管理',n2:'Private Wealth Management',min:'請查閱',ov:{tdAdd:0.20,fxSpread:0.25,fees:{minFee:{v:'豁免',lvl:'free',approx:true},minBal:{v:'請查閱',lvl:'na'},ttOnline:W.ttFree,ttBranch:W.free(),ttIn:W.waivedIn,atmOverseas:W.free(),cashierOrder:W.free(),refLetter:W.free()}}}],
- fees:{minFee:{v:'HK$100／月',lvl:'paid',note:'綜合理財總值低於 HK$10,000 時於下月收取；長者等可豁免（2024 年收費手冊）。'},minBal:{v:'HK$10,000',lvl:'paid'},
-  dormant:{v:'免費',lvl:'free'},statement:{v:'豁免',lvl:'free',approx:true},closeAcc:{v:'請查閱',lvl:'na'},
-  fps:{v:'免費',lvl:'free'},ttOnline:{v:'HK$65–100',lvl:'paid',approx:true},ttBranch:{v:'手續費 HK$50 + 電報費 HK$120',lvl:'paid'},ttIn:{v:'HK$15（經 CHATS）',lvl:'paid'},ttAmend:{v:'HK$250 + 海外銀行費用',lvl:'paid',approx:true},
-  atmLocal:{v:'銀通網絡免費',lvl:'free',approx:true},atmOverseas:{v:'HK$25–40',lvl:'paid',approx:true},fxFee:{v:'約 1.95%',lvl:'paid',approx:true},cardReplace:{v:'HK$50',lvl:'paid',approx:true},
-  cheque:{v:'HK$200',lvl:'paid',note:'2026 年修訂通知。'},cashierOrder:{v:'HK$60',lvl:'paid',approx:true},refLetter:{v:'HK$200',lvl:'paid'},coinDeposit:{v:'每日 50 枚以上收 2%（最低 HK$100）',lvl:'paid'}},
- td:{HKD:{m1:2.20,m3:2.80,m6:2.60,m12:2.40},USD:{m1:3.50,m3:3.70,m6:3.50,m12:3.30},CNY:{m1:1.30,m3:1.50,m6:1.50,m12:1.60},min:'HK$10,000',note:'中小型銀行利率一般較四大行高。'},
- fx:{spread:0.50,notes:1.40,cur:'15+',note:'與內地招商銀行互通，匯款快線電報費豁免。'}},
-
 {id:'hangseng',code:'024',swift:'HASEHKHH',name:'恒生銀行',nameEn:'Hang Seng Bank',en:'Hang Seng Bank Limited',type:'traditional',url:'https://www.hangseng.com/zh-hk/personal/',
  tiers:[
   {level:1,n1:'綜合戶口',n2:'Integrated Account',min:'無最低結餘'},
@@ -114,6 +101,30 @@ export const BANKS = [
   cheque:{v:'HK$150',lvl:'paid',approx:true},cashierOrder:{v:'HK$60',lvl:'paid',approx:true},refLetter:{v:'HK$200',lvl:'paid',approx:true},coinDeposit:{v:'每日 500 個免費，其後約 2%',lvl:'cond',approx:true}},
  td:{HKD:{m1:1.80,m3:2.30,m6:2.20,m12:2.10},USD:{m1:3.20,m3:3.40,m6:3.30,m12:3.10},CNY:{m1:1.00,m3:1.20,m6:1.20,m12:1.20},min:'HK$10,000 / US$2,000',note:'網上新資金優惠。'},
  fx:{spread:0.55,notes:1.50,cur:'24',note:'外幣提款機免費提取 8 種外幣現鈔。'}},
+
+{id:'icbc',code:'072',swift:'UBHKHKHH',name:'中國工商銀行（亞洲）',nameEn:'ICBC (Asia)',en:'Industrial and Commercial Bank of China (Asia) Limited',type:'traditional',url:'https://www.icbcasia.com/',
+ tiers:[
+  {level:1,n1:'理財通',n2:'e-Fortune Banking',min:'無最低結餘'},
+  {level:2,n1:'卓越理財',n2:'Excellence Banking',min:'HK$500,000',ov:{tdAdd:0.10,fxSpread:0.40,fees:{ttOnline:W.ttFree,atmOverseas:W.free()}}},
+  {level:3,n1:'私人銀行',n2:'Private Banking',min:'HK$1,000,000',ov:{tdAdd:0.20,fxSpread:0.30,fees:{minFee:W.free(),minBal:{v:'HK$1,000,000',lvl:'cond'},ttOnline:W.ttFree,ttIn:W.waivedIn,atmOverseas:W.free(),refLetter:W.free(),cashierOrder:W.free()}}}],
+ fees:{minFee:{v:'豁免',lvl:'free'},minBal:{v:'無',lvl:'free'},dormant:{v:'豁免',lvl:'free',approx:true},statement:{v:'豁免',lvl:'free',approx:true},closeAcc:{v:'豁免',lvl:'free',approx:true},
+  fps:{v:'免費',lvl:'free'},ttOnline:{v:'HK$65',lvl:'paid',approx:true},ttBranch:{v:'HK$200–250',lvl:'paid',approx:true},ttIn:{v:'HK$65',lvl:'paid',approx:true},ttAmend:{v:'HK$250 + 海外銀行費用',lvl:'paid',approx:true},
+  atmLocal:{v:'銀通網絡免費',lvl:'free',approx:true},atmOverseas:{v:'HK$25–40',lvl:'paid',approx:true},fxFee:{v:'約 1.95%',lvl:'paid',approx:true},cardReplace:{v:'HK$50',lvl:'paid',approx:true},
+  cheque:{v:'HK$150',lvl:'paid',approx:true},cashierOrder:{v:'HK$50–60',lvl:'paid',approx:true},refLetter:{v:'HK$200',lvl:'paid',approx:true},coinDeposit:{v:'每日 500 個免費，其後約 2%',lvl:'cond',approx:true}},
+ td:{HKD:{m1:2.00,m3:2.50,m6:2.30,m12:2.20},USD:{m1:3.30,m3:3.50,m6:3.40,m12:3.20},CNY:{m1:1.30,m3:1.50,m6:1.50,m12:1.60},min:'HK$10,000',note:'手機銀行新資金優惠。'},
+ fx:{spread:0.50,notes:1.40,cur:'15+',note:'與內地工商銀行網絡連繫緊密，人民幣業務具優勢。'}},
+
+{id:'ccba',code:'809',swift:'CCBQHKAX',name:'中國建設銀行（亞洲）',nameEn:'CCB (Asia)',en:'China Construction Bank (Asia) Corporation Limited',type:'traditional',url:'https://asia.ccb.com/hongkong/',
+ tiers:[
+  {level:1,n1:'CCB 理財',n2:'CCB Banking',min:'無最低結餘'},
+  {level:2,n1:'卓越理財',n2:'Elite Banking',min:'HK$500,000',ov:{tdAdd:0.10,fxSpread:0.40,fees:{ttOnline:W.ttFree,atmOverseas:W.free()}}},
+  {level:3,n1:'私人銀行',n2:'Private Banking',min:'HK$1,000,000',ov:{tdAdd:0.20,fxSpread:0.30,fees:{minFee:W.free(),minBal:{v:'HK$1,000,000',lvl:'cond'},ttOnline:W.ttFree,ttIn:W.waivedIn,atmOverseas:W.free(),refLetter:W.free(),cashierOrder:W.free()}}}],
+ fees:{minFee:{v:'豁免',lvl:'free'},minBal:{v:'無',lvl:'free'},dormant:{v:'豁免',lvl:'free',approx:true},statement:{v:'豁免',lvl:'free',approx:true},closeAcc:{v:'豁免',lvl:'free',approx:true},
+  fps:{v:'免費',lvl:'free'},ttOnline:{v:'HK$65',lvl:'paid',approx:true},ttBranch:{v:'HK$200–250',lvl:'paid',approx:true},ttIn:{v:'HK$65',lvl:'paid',approx:true},ttAmend:{v:'HK$250 + 海外銀行費用',lvl:'paid',approx:true},
+  atmLocal:{v:'銀通網絡免費',lvl:'free',approx:true},atmOverseas:{v:'HK$25–40',lvl:'paid',approx:true},fxFee:{v:'約 1.95%',lvl:'paid',approx:true},cardReplace:{v:'HK$50',lvl:'paid',approx:true},
+  cheque:{v:'HK$150',lvl:'paid',approx:true},cashierOrder:{v:'HK$50–60',lvl:'paid',approx:true},refLetter:{v:'HK$200',lvl:'paid',approx:true},coinDeposit:{v:'每日 500 個免費，其後約 2%',lvl:'cond',approx:true}},
+ td:{HKD:{m1:2.00,m3:2.40,m6:2.30,m12:2.10},USD:{m1:3.30,m3:3.50,m6:3.30,m12:3.10},CNY:{m1:1.20,m3:1.40,m6:1.40,m12:1.50},min:'HK$10,000',note:'網上新資金優惠。'},
+ fx:{spread:0.50,notes:1.40,cur:'15+',note:'建行網絡覆蓋內地，跨境理財產品選擇多。'}},
 
 /* ---- 虛擬銀行：單一戶口（基本） ---- */
 {id:'za',code:'387',swift:'AABLHKHH',name:'ZA Bank 眾安銀行',nameEn:'ZA Bank',en:'ZA Bank Limited',type:'virtual',url:'https://bank.za.group/hk',
