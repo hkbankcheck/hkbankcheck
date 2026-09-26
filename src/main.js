@@ -294,6 +294,7 @@ function renderAll() {
   renderFees();
 }
 applyStaticI18n();
+buildFxChips();
 buildTabs();
 renderTD();
 loadFX();
