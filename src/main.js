@@ -84,9 +84,11 @@ function applyStaticI18n() {
 document.querySelectorAll('.nav button').forEach(b => b.onclick = () => {
   document.querySelectorAll('.nav button').forEach(x => x.classList.toggle('active', x === b));
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + b.dataset.page));
+  requestHeadSync();
 });
 const byType = ty => b => ty === 'all' || b.type === ty;
 const byCode = (a, b) => a.code.localeCompare(b.code);
+const bandClass = (show, prev, type) => (show && prev === 'traditional' && type === 'virtual') ? ' class="split"' : '';
 /* 顯示「全部」時：傳統銀行（按 Bank Code）在上，虛擬銀行（按 Bank Code）緊接在下 */
 const typeOrder = ty => ty === 'traditional' ? 0 : 1;
 const byTypeThenCode = (a, b) => (typeOrder(a.type) - typeOrder(b.type)) || byCode(a, b);
@@ -172,8 +174,9 @@ function renderTD() {
   let rows = BANKS.filter(byType(tdType)).map(b => ({ b, r: resolve(b) }));
   if (tdSort === 'code') rows.sort((a, c) => (tdType === 'all' ? byTypeThenCode(a.b, c.b) : byCode(a.b, c.b))); else rows.sort((a, c) => ((tdRate(c.r.td, tdCur, tdSort) ?? -1) - (tdRate(a.r.td, tdCur, tdSort) ?? -1)) || byCode(a.b, c.b));
   const best = {}; TENOR_KEYS.forEach(([k]) => best[k] = Math.max(...rows.map(x => tdRate(x.r.td, tdCur, k) ?? -1)));
-  document.getElementById('tdBody').innerHTML = rows.map(({ b, r }) => `<tr>${bankCell(b)}${TENOR_KEYS.map(([k]) => { const v = tdRate(r.td, tdCur, k); return `<td>${v == null ? `<span class="rate na">${t('rateNotAvailable')}</span>` : `<span class="rate ${v === best[k] ? 'best' : ''}">${v.toFixed(2)}%<span class="approx">≈</span></span>`}</td>`; }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
+  document.getElementById('tdBody').innerHTML = rows.map(({ b, r }, i) => `<tr${bandClass(tdSort === 'code' && tdType === 'all', rows[i - 1]?.b.type, b.type)}>${bankCell(b)}${TENOR_KEYS.map(([k]) => { const v = tdRate(r.td, tdCur, k); return `<td>${v == null ? `<span class="rate na">${t('rateNotAvailable')}</span>` : `<span class="rate ${v === best[k] ? 'best' : ''}">${v.toFixed(2)}%<span class="approx">≈</span></span>`}</td>`; }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
   renderTdCalc();
+  requestHeadSync();
 }
 ['tdAmt', 'tdCalcCur', 'tdCalcTenor'].forEach(id => document.getElementById(id).addEventListener('input', renderTdCalc));
 function renderTdCalc() {
@@ -211,11 +214,12 @@ function renderFX() {
   document.getElementById('fxMid').textContent = mid ? fmtRate(mid, unit) : '—';
   const rows = BANKS.filter(byType(fxType)).sort(fxType === 'all' ? byTypeThenCode : byCode).map(b => ({ b, r: resolve(b) }));
   const bestSpread = Math.min(...rows.filter(x => fxSupported(x.b)).map(x => x.r.fx.spread));
-  document.getElementById('fxBody').innerHTML = rows.map(({ b, r }) => {
+  document.getElementById('fxBody').innerHTML = rows.map(({ b, r }, i) => {
     const s = r.fx.spread, bid = mid * (1 - s / 100), ask = mid * (1 + s / 100);
-    return `<tr>${bankCell(b)}${fxSupported(b) ? `<td><span class="rate">${fmtRate(bid, unit)}</span></td><td><span class="rate ${s === bestSpread ? 'best' : ''}">${fmtRate(ask, unit)}</span></td>` : `<td colspan="2"><span class="rate na">${t('notSupportedCur')}</span></td>`}<td>${(s * 2).toFixed(2)}%<span class="approx">≈</span></td><td>${r.fx.notes != null ? (r.fx.notes * 2).toFixed(1) + '%<span class="approx">≈</span>' : `<span class="rate na">${t('noCash')}</span>`}</td><td>${r.fx.cur}${t('curCountSuffix')}</td><td class="sub">${tr(r.fx.note) || ''}</td></tr>`;
+    return `<tr${bandClass(fxType === 'all', rows[i - 1]?.b.type, b.type)}>${bankCell(b)}${fxSupported(b) ? `<td><span class="rate">${fmtRate(bid, unit)}</span></td><td><span class="rate ${s === bestSpread ? 'best' : ''}">${fmtRate(ask, unit)}</span></td>` : `<td colspan="2"><span class="rate na">${t('notSupportedCur')}</span></td>`}<td>${(s * 2).toFixed(2)}%<span class="approx">≈</span></td><td>${r.fx.notes != null ? (r.fx.notes * 2).toFixed(1) + '%<span class="approx">≈</span>' : `<span class="rate na">${t('noCash')}</span>`}</td><td>${r.fx.cur}${t('curCountSuffix')}</td><td class="sub">${tr(r.fx.note) || ''}</td></tr>`;
   }).join('');
   renderFxCalc();
+  requestHeadSync();
 }
 function renderFxCalc() {
   const amt = parseFloat(document.getElementById('fxAmt').value) || 0, mid = fxMid[fxCur]; if (!mid) return;
@@ -252,7 +256,8 @@ function renderFees() {
   const cat = CATEGORIES.find(c => c.id === currentCat);
   document.getElementById('thead').innerHTML = `<th>${t('colBankTier')}${levelBtns()}</th>` + cat.cols.map(([k, l]) => `<th>${tr(l)}</th>`).join('');
   const rows = BANKS.filter(byType(feeType)).filter(b => !keyword || (b.code + b.swift + b.name + b.nameEn + b.en + b.tiers.map(tierFullName).join()).toLowerCase().includes(keyword)).sort(feeType === 'all' ? byTypeThenCode : byCode);
-  document.getElementById('tbody').innerHTML = rows.length ? rows.map(b => { const r = resolve(b); return `<tr>${bankCell(b)}${cat.cols.map(([k]) => `<td>${cellHTML(r.fees[k])}</td>`).join('')}</tr>`; }).join('') : `<tr><td colspan="${cat.cols.length + 1}" style="text-align:center;color:var(--muted)">${t('noMatch')}</td></tr>`;
+  document.getElementById('tbody').innerHTML = rows.length ? rows.map((b, i) => { const r = resolve(b); return `<tr${bandClass(feeType === 'all', rows[i - 1]?.type, b.type)}>${bankCell(b)}${cat.cols.map(([k]) => `<td>${cellHTML(r.fees[k])}</td>`).join('')}</tr>`; }).join('') : `<tr><td colspan="${cat.cols.length + 1}" style="text-align:center;color:var(--muted)">${t('noMatch')}</td></tr>`;
+  requestHeadSync();
 }
 
 /* ============ 詳情視窗（頂部可切換戶口類別） ============ */
@@ -296,9 +301,64 @@ function renderAll() {
   buildTabs();
   renderFees();
 }
+let headFloat, headSrc = '', headTick = false;
 applyStaticI18n();
 buildFxChips();
 buildTabs();
 renderTD();
 loadFX();
 renderFees();
+
+/* 頁面直向捲動時，把目前表格的標頭釘在視窗頂部；橫向捲動仍只發生在表格內。 */
+function requestHeadSync() {
+  if (headTick) return;
+  headTick = true;
+  requestAnimationFrame(() => { headTick = false; syncHead(); });
+}
+function syncHead() {
+  if (!headFloat) {
+    headFloat = document.createElement('div');
+    headFloat.id = 'headFloat';
+    headFloat.className = 'head-float';
+    headFloat.hidden = true;
+    headFloat.innerHTML = '<table><thead><tr></tr></thead></table>';
+    document.body.appendChild(headFloat);
+    const kick = () => requestHeadSync();
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', kick);
+    document.querySelectorAll('.table-wrap').forEach(w => w.addEventListener('scroll', kick, { passive: true }));
+  }
+  const wrap = document.querySelector('.page.active .table-wrap');
+  const thead = wrap?.querySelector('thead');
+  const row = thead?.querySelector('tr');
+  document.querySelectorAll('.table-wrap thead').forEach(h => { if (h !== thead) h.style.visibility = ''; });
+  if (!wrap || !row || modalBg.classList.contains('show')) { headFloat.hidden = true; if (thead) thead.style.visibility = ''; return; }
+  const rect = wrap.getBoundingClientRect();
+  const headRect = thead.getBoundingClientRect();
+  const stuck = headRect.top < -1 && rect.bottom > headRect.height + 4;
+  thead.style.visibility = stuck ? 'hidden' : '';
+  if (!stuck) { headFloat.hidden = true; return; }
+  const headH = headRect.height;
+  const html = row.innerHTML;
+  const cloneRow = headFloat.querySelector('tr');
+  if (headSrc !== html) { cloneRow.innerHTML = html; headSrc = html; }
+  const sl = wrap.scrollLeft;
+  headFloat.hidden = false;
+  headFloat.style.left = (rect.left + wrap.clientLeft) + 'px';
+  headFloat.style.width = wrap.clientWidth + 'px';
+  headFloat.style.height = headH + 'px';
+  const table = headFloat.querySelector('table');
+  table.style.width = wrap.querySelector('table').getBoundingClientRect().width + 'px';
+  table.style.transform = `translate3d(${-sl}px,0,0)`;
+  const srcTh = [...row.children];
+  const dstTh = [...cloneRow.children];
+  srcTh.forEach((th, i) => {
+    const w = th.getBoundingClientRect().width;
+    dstTh[i].style.boxSizing = 'border-box';
+    dstTh[i].style.width = w + 'px';
+    dstTh[i].style.minWidth = w + 'px';
+    dstTh[i].style.maxWidth = w + 'px';
+  });
+  if (dstTh[0]) dstTh[0].style.transform = `translate3d(${sl}px,0,0)`;
+}
+requestHeadSync();
