@@ -76,7 +76,7 @@ th.sortable{cursor:pointer;user-select:none}th.sortable:hover{color:var(--primar
 
 /* ===== 戶口類別 ===== */
 .tiersel{margin-top:6px}
-.tsel{display:flex;align-items:center;gap:4px;border:1px solid #cbd5e1;background:#f8fafc;border-radius:7px;padding:3px 6px;font:inherit;font-size:12px;color:#334155;cursor:pointer;text-align:left;max-width:100%;min-width:0}
+.tsel{display:inline-flex;align-items:center;gap:4px;border:1px solid #cbd5e1;background:#f8fafc;border-radius:7px;padding:3px 6px;font:inherit;font-size:12px;color:#334155;cursor:pointer;text-align:left;width:fit-content;max-width:100%;min-width:0}
 .tsel:hover{filter:brightness(.97)}
 .tsel.static{cursor:default}.tsel.static:hover{filter:none}
 .lv{font-weight:700;font-size:11px;background:rgba(0,0,0,.08);border-radius:4px;padding:1px 6px;flex:none;line-height:1.4;white-space:nowrap}
