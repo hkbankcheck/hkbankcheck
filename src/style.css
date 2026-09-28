@@ -38,7 +38,8 @@ input[type=search]{flex:1;min-width:220px}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin:12px 0}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .dot{width:14px;height:14px;border-radius:4px;display:inline-block}
-.tierbar{display:flex;align-items:center;gap:8px;width:fit-content;max-width:100%;margin:12px 0 0;padding:7px 10px 7px 12px;background:#fff;border:1px solid var(--line);border-radius:12px 12px 0 0;border-bottom:none;box-shadow:0 -1px 0 rgba(15,23,42,.02)}
+.tierbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;width:fit-content;max-width:100%;margin:12px 0 0;padding:7px 12px;background:#fff;border:1px solid var(--line);border-radius:12px 12px 0 0;border-bottom:none;box-shadow:0 -1px 0 rgba(15,23,42,.02)}
+.tiergroup{display:flex;align-items:center;gap:8px;min-width:0}
 .tierbar .hint{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
 .table-wrap{overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:0 16px 16px 16px;box-shadow:var(--shadow);margin-top:0}
 table{border-collapse:separate;border-spacing:0;width:100%;min-width:980px;font-size:14px}

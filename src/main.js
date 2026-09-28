@@ -42,9 +42,6 @@ function applyStaticI18n() {
   document.querySelector('#tdCur [data-cur="HKD"]').textContent = t('chipHKD');
   document.querySelector('#tdCur [data-cur="USD"]').textContent = t('chipUSD');
   document.querySelector('#tdCur [data-cur="CNY"]').textContent = t('chipCNY');
-  document.querySelectorAll('#tdType [data-type="all"], #fxType [data-type="all"], #typeChips [data-type="all"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipAllBanks') : t('chipAll'));
-  document.querySelectorAll('#tdType [data-type="traditional"], #fxType [data-type="traditional"], #typeChips [data-type="traditional"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipTraditional') : t('chipTraditional'));
-  document.querySelectorAll('#tdType [data-type="virtual"], #fxType [data-type="virtual"], #typeChips [data-type="virtual"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipVirtual') : t('chipVirtual'));
   document.getElementById('tdHint').textContent = t('tdHint');
   document.getElementById('calcTdTitle').textContent = t('calcTdTitle');
   document.getElementById('labelAmount').textContent = t('labelAmount');
@@ -105,13 +102,35 @@ function applyAll(lv) { BANKS.forEach(b => sel[b.id] = tierIndexForLevel(b, lv))
 function currentGlobalLevel() { for (const lv of [1, 2, 3]) { if (BANKS.every(b => sel[b.id] === tierIndexForLevel(b, lv))) return lv; } return null; }
 window.applyAll = applyAll;
 
+function bankTypeFor(page) { return page === 'fx' ? fxType : page === 'fees' ? feeType : tdType; }
+function setBankType(page, type) {
+  if (page === 'fx') fxType = type;
+  else if (page === 'fees') feeType = type;
+  else tdType = type;
+  if (page === 'fx') renderFX();
+  else if (page === 'fees') renderFees();
+  else renderTD();
+}
 function renderTierBar() {
   const cur = currentGlobalLevel();
-  const html = `<span class="hint">${t('lvHint')}</span><div class="lvbtns">` +
+  const tiers = `<div class="tiergroup"><span class="hint">${t('lvHint')}</span><div class="lvbtns">` +
     [1, 2, 3].map(lv => `<button type="button" class="lvbtn l${lv}${cur === lv ? ' on' : ''}" onclick="applyAll(${lv})" title="${t('lvBtnTooltip', { level: LV(lv) })}">${LV(lv)}</button>`).join('') +
-    `</div>`;
-  document.querySelectorAll('.tierbar').forEach(el => { el.innerHTML = html; });
+    `</div></div>`;
+  document.querySelectorAll('.tierbar').forEach(el => {
+    const type = bankTypeFor(el.dataset.page);
+    const banks = `<div class="tiergroup"><span class="hint">${t('bankTypeHint')}</span><div class="lvbtns">` +
+      [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => `<button type="button" class="lvbtn${type === id ? ' on' : ''}" data-type="${id}">${t(key)}</button>`).join('') +
+      `</div></div>`;
+    el.innerHTML = tiers + banks;
+  });
 }
+document.querySelectorAll('.tierbar').forEach(bar => {
+  bar.addEventListener('click', e => {
+    const btn = e.target.closest('.lvbtn[data-type]');
+    if (!btn) return;
+    setBankType(bar.dataset.page, btn.dataset.type);
+  });
+});
 
 const tierLabelHTML = tt => {
   const primary = tierPrimary(tt), secondary = tierSecondary(tt);
@@ -163,7 +182,6 @@ window.addEventListener('resize', closeTierMenu);
 let tdCur = 'HKD', tdType = 'all', tdSort = 'code';
 const TENOR_KEYS = [['m1', 'tenorM1'], ['m3', 'tenorM3'], ['m6', 'tenorM6'], ['m12', 'tenorM12']];
 document.querySelectorAll('#tdCur .chip').forEach(ch => ch.onclick = () => { tdCur = ch.dataset.cur; document.querySelectorAll('#tdCur .chip').forEach(x => x.classList.toggle('active', x === ch)); renderTD(); });
-document.querySelectorAll('#tdType .chip').forEach(ch => ch.onclick = () => { tdType = ch.dataset.type; document.querySelectorAll('#tdType .chip').forEach(x => x.classList.toggle('active', x === ch)); renderTD(); });
 const tdRate = (td, cur, tk) => { const d = td && td[cur]; return d && d[tk] != null ? d[tk] : null; };
 function setTdSort(k) { tdSort = k; renderTD(); }
 window.setTdSort = setTdSort;
@@ -201,7 +219,6 @@ function buildFxChips() {
   });
   fxCalcSel.value = fxCur;
 }
-document.querySelectorAll('#fxType .chip').forEach(ch => ch.onclick = () => { fxType = ch.dataset.type; document.querySelectorAll('#fxType .chip').forEach(x => x.classList.toggle('active', x === ch)); renderFX(); });
 fxCalcSel.addEventListener('change', () => { fxCur = fxCalcSel.value; document.querySelectorAll('#fxCur .chip').forEach(y => y.classList.toggle('active', y.dataset.cur === fxCur)); renderFX(); });
 document.getElementById('fxAmt').addEventListener('input', renderFxCalc);
 const fxInfo = () => FX_CURRENCIES.find(x => x.c === fxCur);
@@ -252,7 +269,6 @@ function buildTabs() {
     tabsEl.appendChild(el);
   });
 }
-document.querySelectorAll('#typeChips .chip').forEach(ch => ch.onclick = () => { feeType = ch.dataset.type; document.querySelectorAll('#typeChips .chip').forEach(x => x.classList.toggle('active', x === ch)); renderFees(); });
 document.getElementById('search').addEventListener('input', e => { keyword = e.target.value.trim().toLowerCase(); renderFees(); });
 const cellHTML = f => !f ? `<span class="cell na">—</span>` : `<span class="cell ${f.lvl}">${tr(f.v)}${f.approx ? '<span class="approx">≈</span>' : ''}${f.note ? `<span class="tip">${tr(f.note)}</span>` : ''}</span>`;
 function renderFees() {
