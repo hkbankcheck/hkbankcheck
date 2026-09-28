@@ -105,11 +105,12 @@ function applyAll(lv) { BANKS.forEach(b => sel[b.id] = tierIndexForLevel(b, lv))
 function currentGlobalLevel() { for (const lv of [1, 2, 3]) { if (BANKS.every(b => sel[b.id] === tierIndexForLevel(b, lv))) return lv; } return null; }
 window.applyAll = applyAll;
 
-function levelBtns() {
+function renderTierBar() {
   const cur = currentGlobalLevel();
-  return `<div class="lvbtns"><span class="hint">${t('lvHint')}</span>` +
-    [1, 2, 3].map(lv => `<button type="button" class="lvbtn${cur === lv ? ' on' : ''}" onclick="event.stopPropagation();applyAll(${lv})" title="${t('lvBtnTooltip', { level: LV(lv) })}">${LV(lv)}</button>`).join('') +
+  const html = `<span class="hint">${t('lvHint')}</span><div class="lvbtns">` +
+    [1, 2, 3].map(lv => `<button type="button" class="lvbtn${cur === lv ? ' on' : ''}" onclick="applyAll(${lv})" title="${t('lvBtnTooltip', { level: LV(lv) })}">${LV(lv)}</button>`).join('') +
     `</div>`;
+  document.querySelectorAll('.tierbar').forEach(el => { el.innerHTML = html; });
 }
 
 const tierLabelHTML = tt => {
@@ -168,7 +169,8 @@ function setTdSort(k) { tdSort = k; renderTD(); }
 window.setTdSort = setTdSort;
 
 function renderTD() {
-  document.getElementById('tdHead').innerHTML = `<th class="sortable" onclick="setTdSort('code')">${levelBtns()}<span class="colcap">${t('colBankTier')}${tdSort === 'code' ? '' : t('resetHint')}</span></th>` +
+  renderTierBar();
+  document.getElementById('tdHead').innerHTML = `<th class="sortable" onclick="setTdSort('code')">${t('colBankTier')}${tdSort === 'code' ? '' : t('resetHint')}</th>` +
     TENOR_KEYS.map(([k, lk]) => `<th class="sortable" onclick="setTdSort('${k}')">${t(lk)}${tdSort === k ? ' ▼' : ''}</th>`).join('') +
     `<th>${t('colMinDeposit')}</th><th>${t('colCondition')}</th>`;
   let rows = BANKS.filter(byType(tdType)).map(b => ({ b, r: resolve(b) }));
@@ -209,7 +211,8 @@ let fxMid = {};
 
 function renderFX() {
   const info = fxInfo(), mid = fxMid[fxCur], unit = info.unit || 1;
-  document.getElementById('fxHead').innerHTML = `<th>${levelBtns()}<span class="colcap">${t('colBankTier')}</span></th><th>${t('colBuy')}<div class="sub">${t('colBuySub')}</div></th><th>${t('colSell')}<div class="sub">${t('colSellSub')}</div></th><th>${t('colSpread')}</th><th>${t('colCashSpread')}</th><th>${t('colCurCount')}</th><th>${t('colNotes')}</th>`;
+  renderTierBar();
+  document.getElementById('fxHead').innerHTML = `<th>${t('colBankTier')}</th><th>${t('colBuy')}<div class="sub">${t('colBuySub')}</div></th><th>${t('colSell')}<div class="sub">${t('colSellSub')}</div></th><th>${t('colSpread')}</th><th>${t('colCashSpread')}</th><th>${t('colCurCount')}</th><th>${t('colNotes')}</th>`;
   document.getElementById('fxMidLabel').innerHTML = t('fxMidLabelPrefix') + '<span id="fxCurLabel">' + (unit > 1 ? unit + ' ' : '') + fxCur + '</span>' + t('fxMidLabelSuffix');
   document.getElementById('fxMid').textContent = mid ? fmtRate(mid, unit) : '—';
   const rows = BANKS.filter(byType(fxType)).sort(fxType === 'all' ? byTypeThenCode : byCode).map(b => ({ b, r: resolve(b) }));
@@ -254,7 +257,8 @@ document.getElementById('search').addEventListener('input', e => { keyword = e.t
 const cellHTML = f => !f ? `<span class="cell na">—</span>` : `<span class="cell ${f.lvl}">${tr(f.v)}${f.approx ? '<span class="approx">≈</span>' : ''}${f.note ? `<span class="tip">${tr(f.note)}</span>` : ''}</span>`;
 function renderFees() {
   const cat = CATEGORIES.find(c => c.id === currentCat);
-  document.getElementById('thead').innerHTML = `<th>${levelBtns()}<span class="colcap">${t('colBankTier')}</span></th>` + cat.cols.map(([k, l]) => `<th>${tr(l)}</th>`).join('');
+  renderTierBar();
+  document.getElementById('thead').innerHTML = `<th>${t('colBankTier')}</th>` + cat.cols.map(([k, l]) => `<th>${tr(l)}</th>`).join('');
   const rows = BANKS.filter(byType(feeType)).filter(b => !keyword || (b.code + b.swift + b.name + b.nameEn + b.en + b.tiers.map(tierFullName).join()).toLowerCase().includes(keyword)).sort(feeType === 'all' ? byTypeThenCode : byCode);
   document.getElementById('tbody').innerHTML = rows.length ? rows.map((b, i) => { const r = resolve(b); return `<tr${bandClass(feeType === 'all', rows[i - 1]?.type, b.type)}>${bankCell(b)}${cat.cols.map(([k]) => `<td>${cellHTML(r.fees[k])}</td>`).join('')}</tr>`; }).join('') : `<tr><td colspan="${cat.cols.length + 1}" style="text-align:center;color:var(--muted)">${t('noMatch')}</td></tr>`;
   requestHeadSync();
