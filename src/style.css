@@ -67,8 +67,11 @@ th.sortable{cursor:pointer;user-select:none}th.sortable:hover{color:var(--primar
 .lvbtns{display:flex;gap:5px;margin:0;align-items:center;flex-wrap:wrap}
 .lvbtns .hint{font-size:11px;color:var(--muted);font-weight:400;margin-right:2px}
 .lvbtn{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:6px;padding:3px 10px;font:inherit;font-size:12px;font-weight:600;cursor:pointer;line-height:1.4}
-.lvbtn:hover{border-color:var(--primary-2);color:var(--primary-2)}
-.lvbtn.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.lvbtn:hover{color:var(--primary-2)}
+.lvbtn.on{background:var(--primary);color:#fff}
+.lvbtn.l1,.lvbtn.l1:hover,.lvbtn.l1.on{border-color:#7dd3fc}
+.lvbtn.l2,.lvbtn.l2:hover,.lvbtn.l2.on{border-color:#fcd34d}
+.lvbtn.l3,.lvbtn.l3:hover,.lvbtn.l3.on{border-color:#c4b5fd}
 
 /* ===== 戶口類別 ===== */
 .tiersel{margin-top:6px}

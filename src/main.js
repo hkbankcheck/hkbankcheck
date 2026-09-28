@@ -108,7 +108,7 @@ window.applyAll = applyAll;
 function renderTierBar() {
   const cur = currentGlobalLevel();
   const html = `<span class="hint">${t('lvHint')}</span><div class="lvbtns">` +
-    [1, 2, 3].map(lv => `<button type="button" class="lvbtn${cur === lv ? ' on' : ''}" onclick="applyAll(${lv})" title="${t('lvBtnTooltip', { level: LV(lv) })}">${LV(lv)}</button>`).join('') +
+    [1, 2, 3].map(lv => `<button type="button" class="lvbtn l${lv}${cur === lv ? ' on' : ''}" onclick="applyAll(${lv})" title="${t('lvBtnTooltip', { level: LV(lv) })}">${LV(lv)}</button>`).join('') +
     `</div>`;
   document.querySelectorAll('.tierbar').forEach(el => { el.innerHTML = html; });
 }
