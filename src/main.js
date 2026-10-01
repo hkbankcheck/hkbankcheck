@@ -90,6 +90,7 @@ const byCode = (a, b) => a.code.localeCompare(b.code);
 /* 顯示「全部」時：傳統銀行（按 Bank Code）在上，虛擬銀行（按 Bank Code）緊接在下 */
 const typeOrder = ty => ty === 'traditional' ? 0 : 1;
 const byTypeThenCode = (a, b) => (typeOrder(a.type) - typeOrder(b.type)) || byCode(a, b);
+const rowClass = b => b.type === 'virtual' ? ' class="vbank"' : '';
 function copyText(txt, btn) {
   navigator.clipboard?.writeText(txt).then(() => { const o = btn.textContent; btn.textContent = t('copiedBtn'); setTimeout(() => btn.textContent = o, 1200); });
 }
@@ -103,12 +104,33 @@ function applyAll(lv) { BANKS.forEach(b => sel[b.id] = tierIndexForLevel(b, lv))
 function currentGlobalLevel() { for (const lv of [1, 2, 3]) { if (BANKS.every(b => sel[b.id] === tierIndexForLevel(b, lv))) return lv; } return null; }
 window.applyAll = applyAll;
 
-function levelBtns() {
-  const cur = currentGlobalLevel();
-  return `<div class="lvbtns"><span class="hint">${t('lvHint')}</span>` +
-    [1, 2, 3].map(lv => `<button type="button" class="lvbtn${cur === lv ? ' on' : ''}" onclick="event.stopPropagation();applyAll(${lv})" title="${t('lvBtnTooltip', { level: LV(lv) })}">${LV(lv)}</button>`).join('') +
-    `</div>`;
+function bankTypeFor(page) { return page === 'fx' ? fxType : page === 'fees' ? feeType : tdType; }
+function setBankType(page, type) {
+  if (page === 'fx') fxType = type;
+  else if (page === 'fees') feeType = type;
+  else tdType = type;
+  if (page === 'fx') renderFX();
+  else if (page === 'fees') renderFees();
+  else renderTD();
 }
+function renderTierBars() {
+  const cur = currentGlobalLevel();
+  document.querySelectorAll('.tierbar').forEach(bar => {
+    const type = bankTypeFor(bar.dataset.page);
+    bar.innerHTML =
+      `<div class="tiergroup"><span class="hint">${t('lvHint')}</span><div class="lvbtns">` +
+      [1, 2, 3].map(lv => `<button type="button" class="lvbtn l${lv}${cur === lv ? ' on' : ''}" data-lv="${lv}" title="${t('lvBtnTooltip', { level: LV(lv) })}">${LV(lv)}</button>`).join('') +
+      `</div></div><div class="tiergroup"><span class="hint">${t('bankTypeHint')}</span><div class="lvbtns">` +
+      [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => `<button type="button" class="lvbtn${type === id ? ' on' : ''}" data-type="${id}">${t(key)}</button>`).join('') +
+      `</div></div>`;
+  });
+}
+document.querySelectorAll('.tierbar').forEach(bar => bar.addEventListener('click', e => {
+  const lv = e.target.closest('[data-lv]');
+  const ty = e.target.closest('[data-type]');
+  if (lv) applyAll(+lv.dataset.lv);
+  else if (ty) setBankType(bar.dataset.page, ty.dataset.type);
+}));
 
 const tierLabelHTML = tt => {
   const primary = tierPrimary(tt), secondary = tierSecondary(tt);
@@ -166,13 +188,14 @@ function setTdSort(k) { tdSort = k; renderTD(); }
 window.setTdSort = setTdSort;
 
 function renderTD() {
-  document.getElementById('tdHead').innerHTML = `<th class="sortable" onclick="setTdSort('code')">${t('colBankTier')}${tdSort === 'code' ? '' : t('resetHint')}${levelBtns()}</th>` +
+  renderTierBars();
+  document.getElementById('tdHead').innerHTML = `<th class="sortable" onclick="setTdSort('code')">${t('colBankTier')}${tdSort === 'code' ? '' : t('resetHint')}</th>` +
     TENOR_KEYS.map(([k, lk]) => `<th class="sortable" onclick="setTdSort('${k}')">${t(lk)}${tdSort === k ? ' ▼' : ''}</th>`).join('') +
     `<th>${t('colMinDeposit')}</th><th>${t('colCondition')}</th>`;
   let rows = BANKS.filter(byType(tdType)).map(b => ({ b, r: resolve(b) }));
   if (tdSort === 'code') rows.sort((a, c) => (tdType === 'all' ? byTypeThenCode(a.b, c.b) : byCode(a.b, c.b))); else rows.sort((a, c) => ((tdRate(c.r.td, tdCur, tdSort) ?? -1) - (tdRate(a.r.td, tdCur, tdSort) ?? -1)) || byCode(a.b, c.b));
   const best = {}; TENOR_KEYS.forEach(([k]) => best[k] = Math.max(...rows.map(x => tdRate(x.r.td, tdCur, k) ?? -1)));
-  document.getElementById('tdBody').innerHTML = rows.map(({ b, r }) => `<tr>${bankCell(b)}${TENOR_KEYS.map(([k]) => { const v = tdRate(r.td, tdCur, k); return `<td>${v == null ? `<span class="rate na">${t('rateNotAvailable')}</span>` : `<span class="rate ${v === best[k] ? 'best' : ''}">${v.toFixed(2)}%<span class="approx">≈</span></span>`}</td>`; }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
+  document.getElementById('tdBody').innerHTML = rows.map(({ b, r }) => `<tr${rowClass(b)}>${bankCell(b)}${TENOR_KEYS.map(([k]) => { const v = tdRate(r.td, tdCur, k); return `<td>${v == null ? `<span class="rate na">${t('rateNotAvailable')}</span>` : `<span class="rate ${v === best[k] ? 'best' : ''}">${v.toFixed(2)}%<span class="approx">≈</span></span>`}</td>`; }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
   renderTdCalc();
 }
 ['tdAmt', 'tdCalcCur', 'tdCalcTenor'].forEach(id => document.getElementById(id).addEventListener('input', renderTdCalc));
@@ -206,14 +229,15 @@ let fxMid = {};
 
 function renderFX() {
   const info = fxInfo(), mid = fxMid[fxCur], unit = info.unit || 1;
-  document.getElementById('fxHead').innerHTML = `<th>${t('colBankTier')}${levelBtns()}</th><th>${t('colBuy')}<div class="sub">${t('colBuySub')}</div></th><th>${t('colSell')}<div class="sub">${t('colSellSub')}</div></th><th>${t('colSpread')}</th><th>${t('colCashSpread')}</th><th>${t('colCurCount')}</th><th>${t('colNotes')}</th>`;
+  renderTierBars();
+  document.getElementById('fxHead').innerHTML = `<th>${t('colBankTier')}</th><th>${t('colBuy')}<div class="sub">${t('colBuySub')}</div></th><th>${t('colSell')}<div class="sub">${t('colSellSub')}</div></th><th>${t('colSpread')}</th><th>${t('colCashSpread')}</th><th>${t('colCurCount')}</th><th>${t('colNotes')}</th>`;
   document.getElementById('fxMidLabel').innerHTML = t('fxMidLabelPrefix') + '<span id="fxCurLabel">' + (unit > 1 ? unit + ' ' : '') + fxCur + '</span>' + t('fxMidLabelSuffix');
   document.getElementById('fxMid').textContent = mid ? fmtRate(mid, unit) : '—';
   const rows = BANKS.filter(byType(fxType)).sort(fxType === 'all' ? byTypeThenCode : byCode).map(b => ({ b, r: resolve(b) }));
   const bestSpread = Math.min(...rows.filter(x => fxSupported(x.b)).map(x => x.r.fx.spread));
   document.getElementById('fxBody').innerHTML = rows.map(({ b, r }) => {
     const s = r.fx.spread, bid = mid * (1 - s / 100), ask = mid * (1 + s / 100);
-    return `<tr>${bankCell(b)}${fxSupported(b) ? `<td><span class="rate">${fmtRate(bid, unit)}</span></td><td><span class="rate ${s === bestSpread ? 'best' : ''}">${fmtRate(ask, unit)}</span></td>` : `<td colspan="2"><span class="rate na">${t('notSupportedCur')}</span></td>`}<td>${(s * 2).toFixed(2)}%<span class="approx">≈</span></td><td>${r.fx.notes != null ? (r.fx.notes * 2).toFixed(1) + '%<span class="approx">≈</span>' : `<span class="rate na">${t('noCash')}</span>`}</td><td>${r.fx.cur}${t('curCountSuffix')}</td><td class="sub">${tr(r.fx.note) || ''}</td></tr>`;
+    return `<tr${rowClass(b)}>${bankCell(b)}${fxSupported(b) ? `<td><span class="rate">${fmtRate(bid, unit)}</span></td><td><span class="rate ${s === bestSpread ? 'best' : ''}">${fmtRate(ask, unit)}</span></td>` : `<td colspan="2"><span class="rate na">${t('notSupportedCur')}</span></td>`}<td>${(s * 2).toFixed(2)}%<span class="approx">≈</span></td><td>${r.fx.notes != null ? (r.fx.notes * 2).toFixed(1) + '%<span class="approx">≈</span>' : `<span class="rate na">${t('noCash')}</span>`}</td><td>${r.fx.cur}${t('curCountSuffix')}</td><td class="sub">${tr(r.fx.note) || ''}</td></tr>`;
   }).join('');
   renderFxCalc();
 }
@@ -245,14 +269,14 @@ function buildTabs() {
     tabsEl.appendChild(el);
   });
 }
-document.querySelectorAll('#typeChips .chip').forEach(ch => ch.onclick = () => { feeType = ch.dataset.type; document.querySelectorAll('#typeChips .chip').forEach(x => x.classList.toggle('active', x === ch)); renderFees(); });
 document.getElementById('search').addEventListener('input', e => { keyword = e.target.value.trim().toLowerCase(); renderFees(); });
 const cellHTML = f => !f ? `<span class="cell na">—</span>` : `<span class="cell ${f.lvl}">${tr(f.v)}${f.approx ? '<span class="approx">≈</span>' : ''}${f.note ? `<span class="tip">${tr(f.note)}</span>` : ''}</span>`;
 function renderFees() {
   const cat = CATEGORIES.find(c => c.id === currentCat);
-  document.getElementById('thead').innerHTML = `<th>${t('colBankTier')}${levelBtns()}</th>` + cat.cols.map(([k, l]) => `<th>${tr(l)}</th>`).join('');
+  renderTierBars();
+  document.getElementById('thead').innerHTML = `<th>${t('colBankTier')}</th>` + cat.cols.map(([k, l]) => `<th>${tr(l)}</th>`).join('');
   const rows = BANKS.filter(byType(feeType)).filter(b => !keyword || (b.code + b.swift + b.name + b.nameEn + b.en + b.tiers.map(tierFullName).join()).toLowerCase().includes(keyword)).sort(feeType === 'all' ? byTypeThenCode : byCode);
-  document.getElementById('tbody').innerHTML = rows.length ? rows.map(b => { const r = resolve(b); return `<tr>${bankCell(b)}${cat.cols.map(([k]) => `<td>${cellHTML(r.fees[k])}</td>`).join('')}</tr>`; }).join('') : `<tr><td colspan="${cat.cols.length + 1}" style="text-align:center;color:var(--muted)">${t('noMatch')}</td></tr>`;
+  document.getElementById('tbody').innerHTML = rows.length ? rows.map(b => { const r = resolve(b); return `<tr${rowClass(b)}>${bankCell(b)}${cat.cols.map(([k]) => `<td>${cellHTML(r.fees[k])}</td>`).join('')}</tr>`; }).join('') : `<tr><td colspan="${cat.cols.length + 1}" style="text-align:center;color:var(--muted)">${t('noMatch')}</td></tr>`;
 }
 
 /* ============ 詳情視窗（頂部可切換戶口類別） ============ */
