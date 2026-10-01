@@ -33,7 +33,8 @@
     <div class="chips" id="tdType"><button class="chip active" data-type="all"></button><button class="chip" data-type="traditional"></button><button class="chip" data-type="virtual"></button></div>
     <span class="sub" id="tdHint"></span>
   </div>
-  <div class="table-wrap"><table><thead><tr id="tdHead"></tr></thead><tbody id="tdBody"></tbody></table></div>
+  <div class="lvbar" id="tdLv"></div>
+  <div class="table-frame"><div class="table-wrap"><table><thead><tr id="tdHead"></tr></thead><tbody id="tdBody"></tbody></table></div></div>
   <div class="calc"><h3 id="calcTdTitle"></h3>
     <div class="row"><label id="labelAmount"></label><input type="number" id="tdAmt" value="100000" min="1" step="1000" style="width:160px">
       <label id="labelCurrency1"></label><select id="tdCalcCur"><option>HKD</option><option>USD</option><option>CNY</option></select>
@@ -51,7 +52,8 @@
     <div class="chips" id="fxType"><button class="chip active" data-type="all"></button><button class="chip" data-type="traditional"></button><button class="chip" data-type="virtual"></button></div>
     <span class="sub" id="fxHint"></span>
   </div>
-  <div class="table-wrap"><table><thead><tr id="fxHead"></tr></thead><tbody id="fxBody"></tbody></table></div>
+  <div class="lvbar" id="fxLv"></div>
+  <div class="table-frame"><div class="table-wrap"><table><thead><tr id="fxHead"></tr></thead><tbody id="fxBody"></tbody></table></div></div>
   <div class="calc"><h3 id="calcFxTitle"></h3>
     <div class="row"><label id="labelUseHKD"></label><input type="number" id="fxAmt" value="10000" min="1" step="100" style="width:160px"><label id="labelConvertTo"></label><select id="fxCalcCur"></select></div>
     <ul class="rank" id="fxRank"></ul></div>
@@ -72,7 +74,8 @@
     <span><i class="dot" style="background:var(--na)"></i><span id="legendNA"></span></span>
     <span id="legendHover"></span>
   </div>
-  <div class="table-wrap"><table><thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody></table></div>
+  <div class="lvbar" id="feeLv"></div>
+  <div class="table-frame"><div class="table-wrap"><table><thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody></table></div></div>
   <section class="summary">
     <div class="card"><h3 id="sc1Title"></h3><ul><li id="sc1Li1"></li><li id="sc1Li2"></li><li id="sc1Li3"></li></ul></div>
     <div class="card"><h3 id="sc2Title"></h3><ul><li id="sc2Li1"></li><li id="sc2Li2"></li><li id="sc2Li3"></li></ul></div>

@@ -4,6 +4,33 @@ import {
   bankDisplayName, tierPrimary, tierSecondary, tierFullName, preloadSimplified
 } from './i18n.js';
 
+/* 表格銀行欄：簡稱 + 字母頭像。全名仍用於彈窗與計算機。 */
+const BANK_MARK = {
+  scb: { zh: '渣打', en: 'SC', letter: '渣', bg: '#047857' },
+  hsbc: { zh: '滙豐', en: 'HSBC', letter: '滙', bg: '#db0011' },
+  citi: { zh: '花旗', en: 'Citi', letter: '花', bg: '#003b70' },
+  bochk: { zh: '中銀', en: 'BOC', letter: '中', bg: '#c41230' },
+  bea: { zh: '東亞', en: 'BEA', letter: '東', bg: '#b91c1c' },
+  dbs: { zh: '星展', en: 'DBS', letter: '星', bg: '#e11d48' },
+  hangseng: { zh: '恒生', en: 'HS', letter: '恒', bg: '#15803d' },
+  icbc: { zh: '工銀', en: 'ICBC', letter: '工', bg: '#be123c' },
+  ccba: { zh: '建行', en: 'CCB', letter: '建', bg: '#1d4ed8' },
+  za: { zh: 'ZA', en: 'ZA', letter: 'ZA', bg: '#6d28d9' },
+  livi: { zh: 'livi', en: 'livi', letter: 'li', bg: '#111827' },
+  mox: { zh: 'Mox', en: 'Mox', letter: 'Mx', bg: '#0f172a' },
+  welab: { zh: 'WeLab', en: 'WeLab', letter: 'WL', bg: '#7c3aed' },
+  fusion: { zh: 'Fusion', en: 'Fusion', letter: 'Fu', bg: '#0e7490' },
+  ant: { zh: 'Ant', en: 'Ant', letter: 'An', bg: '#1677ff' },
+  airstar: { zh: '天星', en: 'Airstar', letter: '天', bg: '#0369a1' },
+};
+function bankMark(b) {
+  const m = BANK_MARK[b.id] || { zh: b.name, en: b.nameEn, letter: (b.nameEn || b.name).slice(0, 2), bg: '#334155' };
+  const en = getLang() === 'en';
+  const name = en ? m.en : m.zh;
+  const letter = en ? m.en.replace(/\s/g, '').slice(0, 2) : m.letter;
+  return { name, letter, bg: m.bg };
+}
+
 /* ============ 最後更新 ============ */
 const LAST_UPDATED = '2025-12-09T12:00:00+08:00';
 function renderLastUpdated() {
@@ -125,14 +152,18 @@ function resolve(b) {
   return { tier: tt, fees, td, fx };
 }
 
-/* 第一欄：銀行名稱 + 戶口類別 */
+/* 第一欄：24px 字母頭像 + 簡稱；戶口等級是名稱下的小標籤，下拉只在點擊時出現 */
 function bankCell(b) {
-  const r = resolve(b), tt = r.tier;
-  const inner = `<span class="lv">${LV(tt.level)}</span>${tierLabelHTML(tt)}`;
-  const selector = b.tiers.length > 1
-    ? `<button type="button" class="tsel l${tt.level}" onclick="openTierMenu(event,'${b.id}')" title="${t('tierSelectTitle')}">${inner}<span class="arrow">▾</span></button>`
-    : `<span class="tsel static l${tt.level}">${inner}</span>`;
-  return `<td><div class="bank" onclick="openModal('${b.id}')" title="${t('bankNameTitle')}">${bankDisplayName(b)}</div><div class="tiersel">${selector}</div></td>`;
+  const r = resolve(b), tt = r.tier, mark = bankMark(b);
+  const tierTitle = `${t('tierSelectTitle')}：${tierFullName(tt)}`;
+  const tier = b.tiers.length > 1
+    ? `<button type="button" class="tierchip l${tt.level}" onclick="openTierMenu(event,'${b.id}')" title="${tierTitle}">${LV(tt.level)}</button>`
+    : `<span class="tierchip static l${tt.level}" title="${tierFullName(tt)}">${LV(tt.level)}</span>`;
+  return `<td class="bankcol"><div class="bankline"><span class="avatar${mark.letter.length > 1 ? ' sm' : ''}" style="background:${mark.bg}" aria-hidden="true">${mark.letter}</span><button type="button" class="bank" onclick="openModal('${b.id}')" title="${bankDisplayName(b)} · ${t('bankNameTitle')}">${mark.name}</button></div>${tier}</td>`;
+}
+function approxInfo() {
+  const tip = t('approxTip');
+  return `<span class="infotip" tabindex="0" role="note" aria-label="${tip}" onclick="event.stopPropagation()">ⓘ<span class="pop">${tip}</span></span>`;
 }
 
 /* ============ 戶口類別下拉選單（全局 popover） ============ */
@@ -166,14 +197,16 @@ function setTdSort(k) { tdSort = k; renderTD(); }
 window.setTdSort = setTdSort;
 
 function renderTD() {
-  document.getElementById('tdHead').innerHTML = `<th class="sortable" onclick="setTdSort('code')">${t('colBankTier')}${tdSort === 'code' ? '' : t('resetHint')}${levelBtns()}</th>` +
-    TENOR_KEYS.map(([k, lk]) => `<th class="sortable" onclick="setTdSort('${k}')">${t(lk)}${tdSort === k ? ' ▼' : ''}</th>`).join('') +
+  document.getElementById('tdLv').innerHTML = levelBtns();
+  document.getElementById('tdHead').innerHTML = `<th class="sortable" onclick="setTdSort('code')">${t('colBank')}${tdSort === 'code' ? '' : ' ↺'}</th>` +
+    TENOR_KEYS.map(([k, lk]) => `<th class="num sortable" onclick="setTdSort('${k}')">${t(lk)}${approxInfo()}${tdSort === k ? ' ▼' : ''}</th>`).join('') +
     `<th>${t('colMinDeposit')}</th><th>${t('colCondition')}</th>`;
   let rows = BANKS.filter(byType(tdType)).map(b => ({ b, r: resolve(b) }));
   if (tdSort === 'code') rows.sort((a, c) => (tdType === 'all' ? byTypeThenCode(a.b, c.b) : byCode(a.b, c.b))); else rows.sort((a, c) => ((tdRate(c.r.td, tdCur, tdSort) ?? -1) - (tdRate(a.r.td, tdCur, tdSort) ?? -1)) || byCode(a.b, c.b));
   const best = {}; TENOR_KEYS.forEach(([k]) => best[k] = Math.max(...rows.map(x => tdRate(x.r.td, tdCur, k) ?? -1)));
-  document.getElementById('tdBody').innerHTML = rows.map(({ b, r }) => `<tr>${bankCell(b)}${TENOR_KEYS.map(([k]) => { const v = tdRate(r.td, tdCur, k); return `<td>${v == null ? `<span class="rate na">${t('rateNotAvailable')}</span>` : `<span class="rate ${v === best[k] ? 'best' : ''}">${v.toFixed(2)}%<span class="approx">≈</span></span>`}</td>`; }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
+  document.getElementById('tdBody').innerHTML = rows.map(({ b, r }) => `<tr>${bankCell(b)}${TENOR_KEYS.map(([k]) => { const v = tdRate(r.td, tdCur, k); return `<td class="num">${v == null ? `<span class="rate na">${t('rateNotAvailable')}</span>` : `<span class="rate ${v === best[k] ? 'best' : ''}">${v.toFixed(2)}%</span>`}</td>`; }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
   renderTdCalc();
+  updateScrollHints();
 }
 ['tdAmt', 'tdCalcCur', 'tdCalcTenor'].forEach(id => document.getElementById(id).addEventListener('input', renderTdCalc));
 function renderTdCalc() {
@@ -206,16 +239,18 @@ let fxMid = {};
 
 function renderFX() {
   const info = fxInfo(), mid = fxMid[fxCur], unit = info.unit || 1;
-  document.getElementById('fxHead').innerHTML = `<th>${t('colBankTier')}${levelBtns()}</th><th>${t('colBuy')}<div class="sub">${t('colBuySub')}</div></th><th>${t('colSell')}<div class="sub">${t('colSellSub')}</div></th><th>${t('colSpread')}</th><th>${t('colCashSpread')}</th><th>${t('colCurCount')}</th><th>${t('colNotes')}</th>`;
+  document.getElementById('fxLv').innerHTML = levelBtns();
+  document.getElementById('fxHead').innerHTML = `<th>${t('colBank')}</th><th class="num">${t('colBuy')}<div class="sub">${t('colBuySub')}</div></th><th class="num">${t('colSell')}<div class="sub">${t('colSellSub')}</div></th><th class="num">${t('colSpread')}</th><th class="num">${t('colCashSpread')}</th><th class="num">${t('colCurCount')}</th><th>${t('colNotes')}</th>`;
   document.getElementById('fxMidLabel').innerHTML = t('fxMidLabelPrefix') + '<span id="fxCurLabel">' + (unit > 1 ? unit + ' ' : '') + fxCur + '</span>' + t('fxMidLabelSuffix');
   document.getElementById('fxMid').textContent = mid ? fmtRate(mid, unit) : '—';
   const rows = BANKS.filter(byType(fxType)).sort(fxType === 'all' ? byTypeThenCode : byCode).map(b => ({ b, r: resolve(b) }));
   const bestSpread = Math.min(...rows.filter(x => fxSupported(x.b)).map(x => x.r.fx.spread));
   document.getElementById('fxBody').innerHTML = rows.map(({ b, r }) => {
     const s = r.fx.spread, bid = mid * (1 - s / 100), ask = mid * (1 + s / 100);
-    return `<tr>${bankCell(b)}${fxSupported(b) ? `<td><span class="rate">${fmtRate(bid, unit)}</span></td><td><span class="rate ${s === bestSpread ? 'best' : ''}">${fmtRate(ask, unit)}</span></td>` : `<td colspan="2"><span class="rate na">${t('notSupportedCur')}</span></td>`}<td>${(s * 2).toFixed(2)}%<span class="approx">≈</span></td><td>${r.fx.notes != null ? (r.fx.notes * 2).toFixed(1) + '%<span class="approx">≈</span>' : `<span class="rate na">${t('noCash')}</span>`}</td><td>${r.fx.cur}${t('curCountSuffix')}</td><td class="sub">${tr(r.fx.note) || ''}</td></tr>`;
+    return `<tr>${bankCell(b)}${fxSupported(b) ? `<td class="num"><span class="rate">${fmtRate(bid, unit)}</span></td><td class="num"><span class="rate ${s === bestSpread ? 'best' : ''}">${fmtRate(ask, unit)}</span></td>` : `<td class="num" colspan="2"><span class="rate na">${t('notSupportedCur')}</span></td>`}<td class="num">${(s * 2).toFixed(2)}%</td><td class="num">${r.fx.notes != null ? (r.fx.notes * 2).toFixed(1) + '%' : `<span class="rate na">${t('noCash')}</span>`}</td><td class="num">${r.fx.cur}${t('curCountSuffix')}</td><td class="sub">${tr(r.fx.note) || ''}</td></tr>`;
   }).join('');
   renderFxCalc();
+  updateScrollHints();
 }
 function renderFxCalc() {
   const amt = parseFloat(document.getElementById('fxAmt').value) || 0, mid = fxMid[fxCur]; if (!mid) return;
@@ -247,12 +282,14 @@ function buildTabs() {
 }
 document.querySelectorAll('#typeChips .chip').forEach(ch => ch.onclick = () => { feeType = ch.dataset.type; document.querySelectorAll('#typeChips .chip').forEach(x => x.classList.toggle('active', x === ch)); renderFees(); });
 document.getElementById('search').addEventListener('input', e => { keyword = e.target.value.trim().toLowerCase(); renderFees(); });
-const cellHTML = f => !f ? `<span class="cell na">—</span>` : `<span class="cell ${f.lvl}">${tr(f.v)}${f.approx ? '<span class="approx">≈</span>' : ''}${f.note ? `<span class="tip">${tr(f.note)}</span>` : ''}</span>`;
+const cellHTML = f => !f ? `<span class="cell na">—</span>` : `<span class="cell ${f.lvl}">${tr(f.v)}${f.note ? `<span class="tip">${tr(f.note)}</span>` : ''}</span>`;
 function renderFees() {
   const cat = CATEGORIES.find(c => c.id === currentCat);
-  document.getElementById('thead').innerHTML = `<th>${t('colBankTier')}${levelBtns()}</th>` + cat.cols.map(([k, l]) => `<th>${tr(l)}</th>`).join('');
+  document.getElementById('feeLv').innerHTML = levelBtns();
+  document.getElementById('thead').innerHTML = `<th>${t('colBank')}</th>` + cat.cols.map(([k, l]) => `<th>${tr(l)}</th>`).join('');
   const rows = BANKS.filter(byType(feeType)).filter(b => !keyword || (b.code + b.swift + b.name + b.nameEn + b.en + b.tiers.map(tierFullName).join()).toLowerCase().includes(keyword)).sort(feeType === 'all' ? byTypeThenCode : byCode);
   document.getElementById('tbody').innerHTML = rows.length ? rows.map(b => { const r = resolve(b); return `<tr>${bankCell(b)}${cat.cols.map(([k]) => `<td>${cellHTML(r.fees[k])}</td>`).join('')}</tr>`; }).join('') : `<tr><td colspan="${cat.cols.length + 1}" style="text-align:center;color:var(--muted)">${t('noMatch')}</td></tr>`;
+  updateScrollHints();
 }
 
 /* ============ 詳情視窗（頂部可切換戶口類別） ============ */
@@ -296,6 +333,17 @@ function renderAll() {
   buildTabs();
   renderFees();
 }
+function updateScrollHints() {
+  document.querySelectorAll('.table-frame').forEach(frame => {
+    const wrap = frame.querySelector('.table-wrap');
+    if (!wrap) return;
+    const more = wrap.scrollWidth - wrap.clientWidth - wrap.scrollLeft > 2;
+    frame.classList.toggle('has-more', more);
+  });
+}
+document.querySelectorAll('.table-wrap').forEach(wrap => wrap.addEventListener('scroll', updateScrollHints, { passive: true }));
+window.addEventListener('resize', updateScrollHints);
+
 applyStaticI18n();
 buildFxChips();
 buildTabs();
