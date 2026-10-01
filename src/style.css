@@ -35,34 +35,15 @@ input[type=search]{flex:1;min-width:220px}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin:12px 0}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .dot{width:14px;height:14px;border-radius:4px;display:inline-block}
-.lvbar{margin-top:10px}
-.lvbar:empty{display:none}
-.table-frame{position:relative}
-.table-frame.has-more::after{content:"";position:absolute;top:0;right:0;bottom:0;width:36px;pointer-events:none;z-index:5;border-radius:0 12px 12px 0;background:linear-gradient(90deg,rgba(255,255,255,0),#fff 72%)}
-.table-wrap{overflow:auto;background:var(--card);border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.table-wrap{overflow:auto;background:var(--card);border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-top:10px}
 table{border-collapse:separate;border-spacing:0;width:100%;min-width:980px;font-size:14px}
 th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 thead th{background:#f8fafc;position:sticky;top:0;z-index:2;font-weight:700;color:#334155}
-.table-wrap th:first-child,.table-wrap td.bankcol{position:sticky;left:0;background:#fff;z-index:3;width:108px;min-width:108px;max-width:108px;padding:8px 6px;box-shadow:1px 0 0 var(--line),12px 0 16px -14px rgba(15,23,42,.55)}
-.table-wrap thead th:first-child{background:#f8fafc;z-index:4;white-space:normal}
+th:first-child,td:first-child{position:sticky;left:0;background:#fff;z-index:3;min-width:240px;box-shadow:2px 0 0 var(--line)}
+thead th:first-child{background:#f8fafc;z-index:4}
 tbody tr:hover td{background:#fbfdff}
-tbody tr:hover td.bankcol{background:#fbfdff}
 th.sortable{cursor:pointer;user-select:none}th.sortable:hover{color:var(--primary)}
-.bankline{display:flex;align-items:center;gap:6px;min-width:0}
-.avatar{width:24px;height:24px;border-radius:50%;flex:none;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;line-height:1;letter-spacing:-.03em}
-.avatar.sm{font-size:9px}
-.bank{font-weight:700;color:var(--primary);cursor:pointer;font-size:13px;line-height:1.2;background:none;border:0;padding:0;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.bank:hover{text-decoration:underline}
-.tierchip{display:inline-flex;align-items:center;margin:4px 0 0 30px;border:1px solid transparent;border-radius:999px;padding:0 6px;font:inherit;font-size:10px;font-weight:700;line-height:1.6;white-space:nowrap}
-button.tierchip{cursor:pointer}
-.tierchip.static{cursor:default}
-.tierchip.l1{background:#e0f2fe;color:#075985;border-color:#7dd3fc}
-.tierchip.l2{background:#fef3c7;color:#92400e;border-color:#fcd34d}
-.tierchip.l3{background:#ede9fe;color:#5b21b6;border-color:#c4b5fd}
-td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
-.infotip{position:relative;display:inline-flex;align-items:center;margin-left:3px;color:#b45309;font-size:12px;font-weight:700;cursor:help;vertical-align:middle}
-.infotip .pop{display:none;position:absolute;right:0;top:calc(100% + 6px);width:max-content;max-width:180px;background:#111827;color:#fff;font-size:12px;font-weight:500;line-height:1.4;padding:6px 8px;border-radius:6px;z-index:8;white-space:normal;text-align:left}
-.infotip:hover .pop,.infotip:focus .pop{display:block}
+.bank{font-weight:700;color:var(--primary);cursor:pointer;font-size:15px}.bank:hover{text-decoration:underline}
 
 /* ===== 表頭：全部銀行級別切換 ===== */
 .lvbtns{display:flex;gap:5px;margin-top:7px;align-items:center;flex-wrap:wrap}
@@ -100,7 +81,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-feature-se
 .cell .tip{display:none;position:absolute;left:0;top:calc(100% + 6px);background:#111827;color:#fff;padding:8px 10px;border-radius:6px;font-size:12px;width:260px;z-index:10;line-height:1.45;white-space:normal}
 .cell:hover .tip{display:block}
 .approx{color:#b45309;font-size:11px;margin-left:3px}
-.rate{font-weight:700;font-variant-numeric:tabular-nums}.rate.best{background:var(--best);border-radius:4px;box-shadow:0 0 0 3px var(--best)}.rate.na{color:var(--muted);font-weight:400;box-shadow:none;background:transparent}
+.rate{font-weight:700;font-variant-numeric:tabular-nums}.rate.best{background:var(--best);padding:2px 8px;border-radius:6px}.rate.na{color:var(--muted);font-weight:400}
 .sub{font-size:12px;color:var(--muted)}
 .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:26px 0}
 .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
@@ -129,4 +110,4 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-feature-se
 .mtier .n2{color:var(--muted);opacity:1}
 .info{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:12px 0}.info table td{padding:7px 8px;border-bottom:0}
 footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:center}
-@media(max-width:640px){h1{font-size:22px} .table-wrap th,.table-wrap td{padding:10px 8px} .table-wrap th:first-child,.table-wrap td.bankcol{width:104px;min-width:104px;max-width:104px;padding:8px 6px} .langsw{margin-left:0}}
+@media(max-width:640px){h1{font-size:22px} th,td{padding:10px 8px} th:first-child,td:first-child{min-width:210px} .langsw{margin-left:0}}
