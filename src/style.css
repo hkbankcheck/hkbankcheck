@@ -62,6 +62,9 @@ input[type=search]{flex:1;min-width:220px}
 table{border-collapse:separate;border-spacing:0;width:100%;min-width:980px;font-size:14px}
 th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 .table-wrap thead th{background:#f8fafc;position:sticky;top:0;z-index:2;font-weight:700;color:#334155}
+.table-wrap thead.is-pin{position:relative;z-index:5}
+.table-wrap thead.is-pin th{box-shadow:0 8px 12px -10px rgba(15,23,42,.55)}
+.table-wrap thead.is-pin th:first-child{box-shadow:1px 0 0 var(--line),0 8px 12px -10px rgba(15,23,42,.55)}
 .table-wrap th:first-child,.table-wrap td:first-child{position:sticky;left:0;background:var(--row);z-index:3;width:196px;min-width:196px;max-width:196px;box-shadow:1px 0 0 var(--line)}
 .table-wrap thead th:first-child{background:#f8fafc;z-index:4;white-space:normal}
 .table-wrap tbody tr:nth-child(even) td{background:var(--row-alt)}

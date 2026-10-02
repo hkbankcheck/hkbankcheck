@@ -166,6 +166,35 @@ function updateStuckBars() {
     const stuck = !!(active && sentinel && sentinel.getBoundingClientRect().top < 0);
     bar.classList.toggle('is-stuck', stuck);
   });
+  syncPinnedHeader();
+}
+/* 表頭跟工具列一起貼在頂部。表格外層負責橫向捲動，所以用位移把 thead 留在工具列下方。 */
+function syncPinnedHeader() {
+  document.querySelectorAll('.table-wrap').forEach(wrap => {
+    const page = wrap.closest('.page');
+    const thead = wrap.querySelector('thead');
+    const bar = page && page.querySelector('.filterbar');
+    if (!thead || !bar) return;
+    const release = () => {
+      thead.style.transform = '';
+      thead.classList.remove('is-pin');
+      thead.dataset.pin = '0';
+    };
+    if (!page.classList.contains('active')) { release(); return; }
+    const applied = parseFloat(thead.dataset.pin || '0') || 0;
+    const rect = thead.getBoundingClientRect();
+    const naturalTop = rect.top - applied;
+    const barBottom = bar.getBoundingClientRect().bottom;
+    const wrapBottom = wrap.getBoundingClientRect().bottom;
+    let delta = barBottom - naturalTop;
+    const maxDelta = wrapBottom - rect.height - naturalTop;
+    if (delta < 0) delta = 0;
+    if (delta > maxDelta) delta = Math.max(0, maxDelta);
+    if (delta <= 0.5) { release(); return; }
+    thead.dataset.pin = String(delta);
+    thead.style.transform = `translateY(${delta}px)`;
+    thead.classList.add('is-pin');
+  });
 }
 document.querySelectorAll('.nav button').forEach(b => b.addEventListener('click', () => requestAnimationFrame(updateStuckBars)));
 window.addEventListener('scroll', updateStuckBars, { passive: true });
@@ -236,6 +265,7 @@ function renderTD() {
   const best = {}; TENOR_KEYS.forEach(([k]) => best[k] = Math.max(...rows.map(x => tdRate(x.r.td, tdCur, k) ?? -1)));
   document.getElementById('tdBody').innerHTML = rows.map(({ b, r }) => `<tr${rowClass(b)}>${bankCell(b)}${TENOR_KEYS.map(([k]) => { const v = tdRate(r.td, tdCur, k); return `<td>${v == null ? `<span class="rate na">${t('rateNotAvailable')}</span>` : `<span class="rate ${v === best[k] ? 'best' : ''}">${v.toFixed(2)}%<span class="approx">≈</span></span>`}</td>`; }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
   renderTdCalc();
+  syncPinnedHeader();
 }
 ['tdAmt', 'tdCalcCur', 'tdCalcTenor'].forEach(id => document.getElementById(id).addEventListener('input', renderTdCalc));
 function renderTdCalc() {
@@ -275,6 +305,7 @@ function renderFX() {
     return `<tr${rowClass(b)}>${bankCell(b)}${fxSupported(b) ? `<td><span class="rate">${fmtRate(bid, unit)}</span></td><td><span class="rate ${s === bestSpread ? 'best' : ''}">${fmtRate(ask, unit)}</span></td>` : `<td colspan="2"><span class="rate na">${t('notSupportedCur')}</span></td>`}<td>${(s * 2).toFixed(2)}%<span class="approx">≈</span></td><td>${r.fx.notes != null ? (r.fx.notes * 2).toFixed(1) + '%<span class="approx">≈</span>' : `<span class="rate na">${t('noCash')}</span>`}</td><td>${r.fx.cur}${t('curCountSuffix')}</td><td class="sub">${tr(r.fx.note) || ''}</td></tr>`;
   }).join('');
   renderFxCalc();
+  syncPinnedHeader();
 }
 function renderFxCalc() {
   const amt = parseFloat(document.getElementById('fxAmt').value) || 0, mid = fxMid[fxCur]; if (!mid) return;
@@ -312,6 +343,7 @@ function renderFees() {
   document.getElementById('thead').innerHTML = `<th>${t('colBankTier')}</th>` + cat.cols.map(([k, l]) => `<th>${tr(l)}</th>`).join('');
   const rows = BANKS.filter(byType(feeType)).filter(b => !keyword || (b.code + b.swift + b.name + b.nameEn + b.en + b.tiers.map(tierFullName).join()).toLowerCase().includes(keyword)).sort(feeType === 'all' ? byTypeThenCode : byCode);
   document.getElementById('tbody').innerHTML = rows.length ? rows.map(b => { const r = resolve(b); return `<tr${rowClass(b)}>${bankCell(b)}${cat.cols.map(([k]) => `<td>${cellHTML(r.fees[k])}</td>`).join('')}</tr>`; }).join('') : `<tr><td colspan="${cat.cols.length + 1}" style="text-align:center;color:var(--muted)">${t('noMatch')}</td></tr>`;
+  syncPinnedHeader();
 }
 
 /* ============ 詳情視窗（頂部可切換戶口類別） ============ */
