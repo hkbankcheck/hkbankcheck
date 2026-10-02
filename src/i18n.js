@@ -221,8 +221,10 @@ export function tr(zh) {
 /* ============ 固定介面文字 ============ */
 const UI = {
 appTitle: { 'zh-Hant': '🏦 香港銀行一站式比較', en: '🏦 Hong Kong Bank Comparison' },
+appTitleName: { 'zh-Hant': '香港銀行一站式比較', en: 'Hong Kong Bank Comparison' },
+appTitleShort: { 'zh-Hant': '銀行比較', en: 'HK Banks' },
 appSubtitle: { 'zh-Hant': '16 間傳統及虛擬銀行 · 每間銀行可自選戶口類別 · 定期存款利率 · 外幣兌換匯率 · 服務收費', en: '16 traditional & virtual banks · Choose an account tier per bank · Time deposit rates · FX rates · Service fees' },
-lastUpdatedLabel: { 'zh-Hant': '🕒 最後更新：', en: '🕒 Last updated: ' },
+lastUpdatedLabel: { 'zh-Hant': '最後更新：', en: 'Updated: ' },
 lastUpdatedSuffix: { 'zh-Hant': '（香港時間）', en: ' (Hong Kong Time)' },
 navTD: { 'zh-Hant': '📈 定期存款利率', en: '📈 Time Deposit Rates' },
 navFX: { 'zh-Hant': '💱 外幣兌換', en: '💱 Foreign Exchange' },

@@ -8,19 +8,23 @@
 </head>
 <body>
 
-<header><div class="wrap">
-  <h1 id="h1Title">🏦 香港銀行一站式比較</h1>
-  <p id="pSubtitle">16 間傳統及虛擬銀行 · 每間銀行可自選戶口類別 · 定期存款利率 · 外幣兌換匯率 · 服務收費</p>
-  <div class="topbar">
-    <div class="updated"><span id="updatedLabel">🕒 最後更新：</span><strong id="lastUpdated">—</strong></div>
-    <div class="langsw" id="langsw"></div>
+<header>
+  <div class="wrap bar">
+    <div class="logo" id="h1Title"><span class="logo-mark" aria-hidden="true">🏦</span><span class="logo-full">香港銀行一站式比較</span><span class="logo-short">銀行比較</span></div>
+    <div class="bar-side">
+      <div class="updated" id="updatedWrap"><span id="updatedLabel">最後更新：</span><strong id="lastUpdated">—</strong></div>
+      <div class="langsw" id="langsw"></div>
+    </div>
   </div>
-  <div class="nav">
+</header>
+<div class="wrap subhead">
+  <nav class="nav">
     <button class="active" data-page="td" id="navTdBtn">📈 定期存款利率</button>
     <button data-page="fx" id="navFxBtn">💱 外幣兌換</button>
     <button data-page="fees" id="navFeesBtn">💳 服務收費</button>
-  </div>
-</div></header>
+  </nav>
+  <p id="pSubtitle" class="lede">16 間傳統及虛擬銀行 · 每間銀行可自選戶口類別 · 定期存款利率 · 外幣兌換匯率 · 服務收費</p>
+</div>
 
 <main class="wrap">
 <div class="notice green" id="tierNotice"></div>

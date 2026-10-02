@@ -9,8 +9,12 @@ const LAST_UPDATED = '2025-12-09T12:00:00+08:00';
 function renderLastUpdated() {
   const lang = getLang();
   const locale = lang === 'en' ? 'en-HK' : 'zh-HK';
-  const dateStr = new Date(LAST_UPDATED).toLocaleString(locale, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Hong_Kong' });
-  document.getElementById('lastUpdated').textContent = dateStr + t('lastUpdatedSuffix');
+  const when = new Date(LAST_UPDATED);
+  const dateStr = new Intl.DateTimeFormat(locale, { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Hong_Kong' }).format(when);
+  const full = when.toLocaleString(locale, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Hong_Kong' }) + t('lastUpdatedSuffix');
+  const el = document.getElementById('lastUpdated');
+  el.textContent = dateStr;
+  el.title = full;
 }
 
 /* ============ 語言切換 UI ============ */
@@ -30,7 +34,8 @@ function renderLangSwitcher() {
 function applyStaticI18n() {
   document.documentElement.lang = getLang() === 'en' ? 'en' : (getLang() === 'zh-Hans' ? 'zh-Hans' : 'zh-Hant');
   renderLangSwitcher();
-  document.getElementById('h1Title').textContent = t('appTitle');
+  document.querySelector('.logo-full').textContent = t('appTitleName');
+  document.querySelector('.logo-short').textContent = t('appTitleShort');
   document.getElementById('pSubtitle').textContent = t('appSubtitle');
   document.getElementById('updatedLabel').textContent = t('lastUpdatedLabel');
   renderLastUpdated();
