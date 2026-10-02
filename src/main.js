@@ -168,32 +168,35 @@ function updateStuckBars() {
   });
   syncPinnedHeader();
 }
-/* 表頭跟工具列一起貼在頂部。表格外層負責橫向捲動，所以用位移把 thead 留在工具列下方。 */
+/* 向下捲動時把表頭貼在畫面頂部。表格外層只負責橫向捲動，所以用位移固定 thead。 */
 function syncPinnedHeader() {
   document.querySelectorAll('.table-wrap').forEach(wrap => {
     const page = wrap.closest('.page');
     const thead = wrap.querySelector('thead');
     const bar = page && page.querySelector('.filterbar');
-    if (!thead || !bar) return;
+    if (!thead || !page || !bar) return;
     const release = () => {
       thead.style.transform = '';
       thead.classList.remove('is-pin');
       thead.dataset.pin = '0';
+      page.classList.remove('head-locked');
     };
     if (!page.classList.contains('active')) { release(); return; }
     const applied = parseFloat(thead.dataset.pin || '0') || 0;
     const rect = thead.getBoundingClientRect();
     const naturalTop = rect.top - applied;
-    const barBottom = bar.getBoundingClientRect().bottom;
     const wrapBottom = wrap.getBoundingClientRect().bottom;
-    let delta = barBottom - naturalTop;
+    const barH = bar.offsetHeight;
+    const locked = page.classList.contains('head-locked');
+    const barBottom = bar.getBoundingClientRect().bottom;
+    const threshold = locked ? barH : (bar.classList.contains('is-stuck') ? Math.max(0, barBottom) : 0);
     const maxDelta = wrapBottom - rect.height - naturalTop;
-    if (delta < 0) delta = 0;
-    if (delta > maxDelta) delta = Math.max(0, maxDelta);
-    if (delta <= 0.5) { release(); return; }
+    if (naturalTop >= threshold - 0.5 || maxDelta <= 0.5) { release(); return; }
+    const delta = Math.min(-naturalTop, maxDelta);
     thead.dataset.pin = String(delta);
     thead.style.transform = `translateY(${delta}px)`;
     thead.classList.add('is-pin');
+    page.classList.add('head-locked');
   });
 }
 document.querySelectorAll('.nav button').forEach(b => b.addEventListener('click', () => requestAnimationFrame(updateStuckBars)));

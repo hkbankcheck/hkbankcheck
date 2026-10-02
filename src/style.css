@@ -46,6 +46,7 @@ input[type=search]{flex:1;min-width:220px}
 .filter-sentinel{height:12px}
 .filterbar{position:sticky;top:0;z-index:8;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:0;padding:8px 10px;background:#f4f6fa;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
 .filterbar.is-stuck{border-radius:0 0 12px 12px;box-shadow:0 8px 18px rgba(15,23,42,.1)}
+.page.head-locked .filterbar{position:relative;top:auto;z-index:1}
 .seg{display:flex;align-items:center;gap:8px;min-width:0}
 .seg.cur{flex:1 1 240px}
 .seg.tier,.seg.type{flex:none}
@@ -62,8 +63,8 @@ input[type=search]{flex:1;min-width:220px}
 table{border-collapse:separate;border-spacing:0;width:100%;min-width:980px;font-size:14px}
 th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 .table-wrap thead th{background:#f8fafc;position:sticky;top:0;z-index:2;font-weight:700;color:#334155}
-.table-wrap thead.is-pin{position:relative;z-index:5}
-.table-wrap thead.is-pin th{box-shadow:0 8px 12px -10px rgba(15,23,42,.55)}
+.table-wrap thead.is-pin{position:relative;z-index:6}
+.table-wrap thead.is-pin th{background:#f8fafc;box-shadow:0 8px 12px -10px rgba(15,23,42,.55)}
 .table-wrap thead.is-pin th:first-child{box-shadow:1px 0 0 var(--line),0 8px 12px -10px rgba(15,23,42,.55)}
 .table-wrap th:first-child,.table-wrap td:first-child{position:sticky;left:0;background:var(--row);z-index:3;width:196px;min-width:196px;max-width:196px;box-shadow:1px 0 0 var(--line)}
 .table-wrap thead th:first-child{background:#f8fafc;z-index:4;white-space:normal}
