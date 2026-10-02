@@ -44,9 +44,6 @@ function applyStaticI18n() {
   document.getElementById('navFeesBtn').textContent = t('navFees');
   document.getElementById('tierNotice').innerHTML = t('tierNotice');
   document.getElementById('tdNotice').innerHTML = t('tdNotice');
-  document.querySelector('#tdCur [data-cur="HKD"]').textContent = t('chipHKD');
-  document.querySelector('#tdCur [data-cur="USD"]').textContent = t('chipUSD');
-  document.querySelector('#tdCur [data-cur="CNY"]').textContent = t('chipCNY');
   document.querySelectorAll('#tdType [data-type="all"], #fxType [data-type="all"], #typeChips [data-type="all"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipAllBanks') : t('chipAll'));
   document.querySelectorAll('#tdType [data-type="traditional"], #fxType [data-type="traditional"], #typeChips [data-type="traditional"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipTraditional') : t('chipTraditional'));
   document.querySelectorAll('#tdType [data-type="virtual"], #fxType [data-type="virtual"], #typeChips [data-type="virtual"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipVirtual') : t('chipVirtual'));
@@ -118,24 +115,60 @@ function setBankType(page, type) {
   else if (page === 'fees') renderFees();
   else renderTD();
 }
-function renderTierBars() {
-  const cur = currentGlobalLevel();
-  document.querySelectorAll('.tierbar').forEach(bar => {
-    const type = bankTypeFor(bar.dataset.page);
-    bar.innerHTML =
-      `<div class="tiergroup"><span class="hint">${t('lvHint')}</span><div class="lvbtns">` +
-      [1, 2, 3].map(lv => `<button type="button" class="lvbtn l${lv}${cur === lv ? ' on' : ''}" data-lv="${lv}" title="${t('lvBtnTooltip', { level: LV(lv) })}">${LV(lv)}</button>`).join('') +
-      `</div></div><div class="tiergroup"><span class="hint">${t('bankTypeHint')}</span><div class="lvbtns">` +
-      [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => `<button type="button" class="lvbtn${type === id ? ' on' : ''}" data-type="${id}">${t(key)}</button>`).join('') +
-      `</div></div>`;
+const TD_CURS = [['HKD', 'chipHKD'], ['USD', 'chipUSD'], ['CNY', 'chipCNY']];
+function segBtn(cls, attrs, label) {
+  return `<button type="button" class="segbtn${cls}" ${attrs}>${label}</button>`;
+}
+function seg(kind, label, inner, scroll) {
+  return `<div class="seg ${kind}"><span class="seg-label">${label}</span><div class="segctl${scroll ? ' scroll' : ''}" role="group" aria-label="${label}">${inner}</div></div>`;
+}
+function revealSeg(btn) {
+  const scroller = btn && btn.parentElement;
+  if (!scroller || !scroller.classList.contains('scroll')) return;
+  const pad = 8;
+  const left = btn.getBoundingClientRect().left - scroller.getBoundingClientRect().left + scroller.scrollLeft - pad;
+  const right = left + btn.offsetWidth + pad * 2;
+  if (left < scroller.scrollLeft) scroller.scrollLeft = Math.max(0, left);
+  else if (right > scroller.scrollLeft + scroller.clientWidth) scroller.scrollLeft = right - scroller.clientWidth;
+}
+function renderFilterBars() {
+  const curLv = currentGlobalLevel();
+  document.querySelectorAll('.filterbar').forEach(bar => {
+    const page = bar.dataset.page;
+    const type = bankTypeFor(page);
+    const groups = [];
+    if (page === 'td') {
+      groups.push(seg('cur', t('labelCurrency'), TD_CURS.map(([id, key]) => segBtn(tdCur === id ? ' on' : '', `data-cur="${id}" aria-pressed="${tdCur === id}"`, t(key))).join(''), false));
+    } else if (page === 'fx') {
+      groups.push(seg('cur', t('labelCurrency'), FX_CURRENCIES.map(x => segBtn(fxCur === x.c ? ' on' : '', `data-cur="${x.c}" aria-pressed="${fxCur === x.c}"`, `${fxCurName(x.n)} ${x.c}`)).join(''), true));
+    }
+    groups.push(seg('tier', t('lvHint'), [1, 2, 3].map(lv => segBtn(` l${lv}${curLv === lv ? ' on' : ''}`, `data-lv="${lv}" aria-pressed="${curLv === lv}" title="${t('lvBtnTooltip', { level: LV(lv) })}"`, LV(lv))).join(''), false));
+    groups.push(seg('type', t('bankTypeHint'), [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => segBtn(type === id ? ' on' : '', `data-type="${id}" aria-pressed="${type === id}"`, t(key))).join(''), false));
+    bar.innerHTML = groups.join('');
+    revealSeg(bar.querySelector('.seg.cur .segbtn.on'));
   });
 }
-document.querySelectorAll('.tierbar').forEach(bar => bar.addEventListener('click', e => {
+document.querySelectorAll('.filterbar').forEach(bar => bar.addEventListener('click', e => {
+  const cur = e.target.closest('[data-cur]');
   const lv = e.target.closest('[data-lv]');
   const ty = e.target.closest('[data-type]');
-  if (lv) applyAll(+lv.dataset.lv);
-  else if (ty) setBankType(bar.dataset.page, ty.dataset.type);
+  const page = bar.dataset.page;
+  if (cur) {
+    if (page === 'fx') { fxCur = cur.dataset.cur; document.getElementById('fxCalcCur').value = fxCur; renderFX(); }
+    else { tdCur = cur.dataset.cur; renderTD(); }
+  } else if (lv) applyAll(+lv.dataset.lv);
+  else if (ty) setBankType(page, ty.dataset.type);
 }));
+function updateStuckBars() {
+  document.querySelectorAll('.filterbar').forEach(bar => {
+    const page = bar.closest('.page');
+    const sentinel = bar.previousElementSibling;
+    const active = page && page.classList.contains('active');
+    bar.classList.toggle('is-stuck', !!(active && sentinel && sentinel.getBoundingClientRect().top < 0));
+  });
+}
+document.querySelectorAll('.nav button').forEach(b => b.addEventListener('click', () => requestAnimationFrame(updateStuckBars)));
+window.addEventListener('scroll', updateStuckBars, { passive: true });
 
 const tierLabelHTML = tt => {
   const primary = tierPrimary(tt), secondary = tierSecondary(tt);
@@ -186,14 +219,13 @@ window.addEventListener('resize', closeTierMenu);
 /* ============ 定期存款 ============ */
 let tdCur = 'HKD', tdType = 'all', tdSort = 'code';
 const TENOR_KEYS = [['m1', 'tenorM1'], ['m3', 'tenorM3'], ['m6', 'tenorM6'], ['m12', 'tenorM12']];
-document.querySelectorAll('#tdCur .chip').forEach(ch => ch.onclick = () => { tdCur = ch.dataset.cur; document.querySelectorAll('#tdCur .chip').forEach(x => x.classList.toggle('active', x === ch)); renderTD(); });
 document.querySelectorAll('#tdType .chip').forEach(ch => ch.onclick = () => { tdType = ch.dataset.type; document.querySelectorAll('#tdType .chip').forEach(x => x.classList.toggle('active', x === ch)); renderTD(); });
 const tdRate = (td, cur, tk) => { const d = td && td[cur]; return d && d[tk] != null ? d[tk] : null; };
 function setTdSort(k) { tdSort = k; renderTD(); }
 window.setTdSort = setTdSort;
 
 function renderTD() {
-  renderTierBars();
+  renderFilterBars();
   document.getElementById('tdHead').innerHTML = `<th class="sortable" onclick="setTdSort('code')">${t('colBankTier')}${tdSort === 'code' ? '' : t('resetHint')}</th>` +
     TENOR_KEYS.map(([k, lk]) => `<th class="sortable" onclick="setTdSort('${k}')">${t(lk)}${tdSort === k ? ' ▼' : ''}</th>`).join('') +
     `<th>${t('colMinDeposit')}</th><th>${t('colCondition')}</th>`;
@@ -212,20 +244,16 @@ function renderTdCalc() {
 
 /* ============ 外幣兌換 ============ */
 let fxCur = 'USD', fxType = 'all';
-const fxCurEl = document.getElementById('fxCur'), fxCalcSel = document.getElementById('fxCalcCur');
-function buildFxChips() {
-  fxCurEl.innerHTML = '';
+const fxCalcSel = document.getElementById('fxCalcCur');
+function buildFxCalcOptions() {
   fxCalcSel.innerHTML = '';
   FX_CURRENCIES.forEach(x => {
-    const b = document.createElement('button'); b.className = 'chip' + (x.c === fxCur ? ' active' : ''); b.textContent = `${fxCurName(x.n)} ${x.c}`; b.dataset.cur = x.c;
-    b.onclick = () => { fxCur = x.c; document.querySelectorAll('#fxCur .chip').forEach(y => y.classList.toggle('active', y === b)); fxCalcSel.value = x.c; renderFX(); };
-    fxCurEl.appendChild(b);
     const o = document.createElement('option'); o.value = x.c; o.textContent = `${fxCurName(x.n)} ${x.c}`; fxCalcSel.appendChild(o);
   });
   fxCalcSel.value = fxCur;
 }
 document.querySelectorAll('#fxType .chip').forEach(ch => ch.onclick = () => { fxType = ch.dataset.type; document.querySelectorAll('#fxType .chip').forEach(x => x.classList.toggle('active', x === ch)); renderFX(); });
-fxCalcSel.addEventListener('change', () => { fxCur = fxCalcSel.value; document.querySelectorAll('#fxCur .chip').forEach(y => y.classList.toggle('active', y.dataset.cur === fxCur)); renderFX(); });
+fxCalcSel.addEventListener('change', () => { fxCur = fxCalcSel.value; renderFX(); });
 document.getElementById('fxAmt').addEventListener('input', renderFxCalc);
 const fxInfo = () => FX_CURRENCIES.find(x => x.c === fxCur);
 const fmtRate = (v, unit) => (v * (unit || 1)).toFixed(v < 0.1 ? 5 : 4);
@@ -234,7 +262,7 @@ let fxMid = {};
 
 function renderFX() {
   const info = fxInfo(), mid = fxMid[fxCur], unit = info.unit || 1;
-  renderTierBars();
+  renderFilterBars();
   document.getElementById('fxHead').innerHTML = `<th>${t('colBankTier')}</th><th>${t('colBuy')}<div class="sub">${t('colBuySub')}</div></th><th>${t('colSell')}<div class="sub">${t('colSellSub')}</div></th><th>${t('colSpread')}</th><th>${t('colCashSpread')}</th><th>${t('colCurCount')}</th><th>${t('colNotes')}</th>`;
   document.getElementById('fxMidLabel').innerHTML = t('fxMidLabelPrefix') + '<span id="fxCurLabel">' + (unit > 1 ? unit + ' ' : '') + fxCur + '</span>' + t('fxMidLabelSuffix');
   document.getElementById('fxMid').textContent = mid ? fmtRate(mid, unit) : '—';
@@ -278,7 +306,7 @@ document.getElementById('search').addEventListener('input', e => { keyword = e.t
 const cellHTML = f => !f ? `<span class="cell na">—</span>` : `<span class="cell ${f.lvl}">${tr(f.v)}${f.approx ? '<span class="approx">≈</span>' : ''}${f.note ? `<span class="tip">${tr(f.note)}</span>` : ''}</span>`;
 function renderFees() {
   const cat = CATEGORIES.find(c => c.id === currentCat);
-  renderTierBars();
+  renderFilterBars();
   document.getElementById('thead').innerHTML = `<th>${t('colBankTier')}</th>` + cat.cols.map(([k, l]) => `<th>${tr(l)}</th>`).join('');
   const rows = BANKS.filter(byType(feeType)).filter(b => !keyword || (b.code + b.swift + b.name + b.nameEn + b.en + b.tiers.map(tierFullName).join()).toLowerCase().includes(keyword)).sort(feeType === 'all' ? byTypeThenCode : byCode);
   document.getElementById('tbody').innerHTML = rows.length ? rows.map(b => { const r = resolve(b); return `<tr${rowClass(b)}>${bankCell(b)}${cat.cols.map(([k]) => `<td>${cellHTML(r.fees[k])}</td>`).join('')}</tr>`; }).join('') : `<tr><td colspan="${cat.cols.length + 1}" style="text-align:center;color:var(--muted)">${t('noMatch')}</td></tr>`;
@@ -319,14 +347,14 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal
 /* ============ 初始化 ============ */
 function renderAll() {
   renderLastUpdated();
-  buildFxChips();
+  buildFxCalcOptions();
   renderTD();
   renderFX();
   buildTabs();
   renderFees();
 }
 applyStaticI18n();
-buildFxChips();
+buildFxCalcOptions();
 buildTabs();
 renderTD();
 loadFX();
