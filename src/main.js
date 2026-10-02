@@ -164,11 +164,14 @@ function updateStuckBars() {
     const page = bar.closest('.page');
     const sentinel = bar.previousElementSibling;
     const active = page && page.classList.contains('active');
-    bar.classList.toggle('is-stuck', !!(active && sentinel && sentinel.getBoundingClientRect().top < 0));
+    const stuck = !!(active && sentinel && sentinel.getBoundingClientRect().top < 0);
+    bar.classList.toggle('is-stuck', stuck);
   });
 }
 document.querySelectorAll('.nav button').forEach(b => b.addEventListener('click', () => requestAnimationFrame(updateStuckBars)));
 window.addEventListener('scroll', updateStuckBars, { passive: true });
+window.addEventListener('resize', updateStuckBars);
+updateStuckBars();
 
 const tierLabelHTML = tt => {
   const primary = tierPrimary(tt), secondary = tierSecondary(tt);
