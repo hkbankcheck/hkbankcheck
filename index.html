@@ -27,15 +27,17 @@
 </div>
 
 <main class="wrap">
-<div class="notice green" id="tierNotice"></div>
 
 <!-- ============ 定期存款 ============ -->
 <section class="page active" id="page-td">
-  <div class="notice" id="tdNotice"></div>
   <div class="filter-sentinel" aria-hidden="true"></div>
   <div class="filterbar" data-page="td"></div>
   <p class="sub filter-note" id="tdHint"></p>
   <div class="table-wrap"><table><thead><tr id="tdHead"></tr></thead><tbody id="tdBody"></tbody></table></div>
+  <div class="notices">
+    <div class="notice green tier-notice"></div>
+    <div class="notice" id="tdNotice"></div>
+  </div>
   <div class="calc"><h3 id="calcTdTitle"></h3>
     <div class="row"><label id="labelAmount"></label><input type="number" id="tdAmt" value="100000" min="1" step="1000" style="width:160px">
       <label id="labelCurrency1"></label><select id="tdCalcCur"><option>HKD</option><option>USD</option><option>CNY</option></select>
@@ -46,7 +48,6 @@
 
 <!-- ============ 外幣兌換 ============ -->
 <section class="page" id="page-fx">
-  <div class="notice blue" id="fxNotice"></div>
   <div class="fxhead">
     <div class="mid"><span id="fxMidLabel"></span><br><b id="fxMid">—</b><div class="status" id="fxStatus">載入中…</div></div>
     <span class="sub" id="fxHint"></span>
@@ -54,6 +55,10 @@
   <div class="filter-sentinel" aria-hidden="true"></div>
   <div class="filterbar" data-page="fx"></div>
   <div class="table-wrap"><table><thead><tr id="fxHead"></tr></thead><tbody id="fxBody"></tbody></table></div>
+  <div class="notices">
+    <div class="notice green tier-notice"></div>
+    <div class="notice blue" id="fxNotice"></div>
+  </div>
   <div class="calc"><h3 id="calcFxTitle"></h3>
     <div class="row"><label id="labelUseHKD"></label><input type="number" id="fxAmt" value="10000" min="1" step="100" style="width:160px"><label id="labelConvertTo"></label><select id="fxCalcCur"></select></div>
     <ul class="rank" id="fxRank"></ul></div>
@@ -61,7 +66,6 @@
 
 <!-- ============ 服務收費 ============ -->
 <section class="page" id="page-fees">
-  <div class="notice" id="feesNotice"></div>
   <div class="controls">
     <input type="search" id="search">
   </div>
@@ -76,6 +80,10 @@
   <div class="filter-sentinel" aria-hidden="true"></div>
   <div class="filterbar" data-page="fees"></div>
   <div class="table-wrap"><table><thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody></table></div>
+  <div class="notices">
+    <div class="notice green tier-notice"></div>
+    <div class="notice" id="feesNotice"></div>
+  </div>
   <section class="summary">
     <div class="card"><h3 id="sc1Title"></h3><ul><li id="sc1Li1"></li><li id="sc1Li2"></li><li id="sc1Li3"></li></ul></div>
     <div class="card"><h3 id="sc2Title"></h3><ul><li id="sc2Li1"></li><li id="sc2Li2"></li><li id="sc2Li3"></li></ul></div>

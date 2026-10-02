@@ -42,7 +42,7 @@ function applyStaticI18n() {
   document.getElementById('navTdBtn').textContent = t('navTD');
   document.getElementById('navFxBtn').textContent = t('navFX');
   document.getElementById('navFeesBtn').textContent = t('navFees');
-  document.getElementById('tierNotice').innerHTML = t('tierNotice');
+  document.querySelectorAll('.tier-notice').forEach(el => { el.innerHTML = t('tierNotice'); });
   document.getElementById('tdNotice').innerHTML = t('tdNotice');
   document.querySelectorAll('#tdType [data-type="all"], #fxType [data-type="all"], #typeChips [data-type="all"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipAllBanks') : t('chipAll'));
   document.querySelectorAll('#tdType [data-type="traditional"], #fxType [data-type="traditional"], #typeChips [data-type="traditional"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipTraditional') : t('chipTraditional'));
