@@ -47,7 +47,6 @@ function applyStaticI18n() {
   document.querySelectorAll('#tdType [data-type="all"], #fxType [data-type="all"], #typeChips [data-type="all"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipAllBanks') : t('chipAll'));
   document.querySelectorAll('#tdType [data-type="traditional"], #fxType [data-type="traditional"], #typeChips [data-type="traditional"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipTraditional') : t('chipTraditional'));
   document.querySelectorAll('#tdType [data-type="virtual"], #fxType [data-type="virtual"], #typeChips [data-type="virtual"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipVirtual') : t('chipVirtual'));
-  document.getElementById('tdHint').textContent = t('tdHint');
   document.getElementById('calcTdTitle').textContent = t('calcTdTitle');
   document.getElementById('labelAmount').textContent = t('labelAmount');
   document.getElementById('labelCurrency1').textContent = t('labelCurrency');
