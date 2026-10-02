@@ -6,7 +6,7 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,"PingFang HK","Microsoft JhengHei","Noto Sans TC","Noto Sans SC",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
 .wrap{max-width:1320px;margin:0 auto}
-header{height:56px;background:#0b1f3a;color:#fff}
+header{height:56px;background:#0f766e;color:#fff}
 .bar{height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 20px}
 .logo{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;line-height:1;white-space:nowrap;letter-spacing:-.01em;min-width:0}
 .logo-short{display:none}
@@ -18,7 +18,7 @@ header{height:56px;background:#0b1f3a;color:#fff}
 .langsw{display:inline-flex;gap:2px;background:rgba(255,255,255,.1);border-radius:999px;padding:2px;flex:none}
 .langbtn{border:0;background:transparent;color:#fff;opacity:.75;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;line-height:1.4;transition:.15s}
 .langbtn:hover{opacity:1}
-.langbtn.on{background:#fff;color:#0b1f3a;opacity:1}
+.langbtn.on{background:#fff;color:#0f766e;opacity:1}
 
 .subhead{padding:14px 20px 0}
 .lede{margin:8px 0 0;font-size:13px;color:var(--muted)}
