@@ -30,7 +30,8 @@ function renderLangSwitcher() {
 function applyStaticI18n() {
   document.documentElement.lang = getLang() === 'en' ? 'en' : (getLang() === 'zh-Hans' ? 'zh-Hans' : 'zh-Hant');
   renderLangSwitcher();
-  document.getElementById('h1Title').textContent = t('appTitle');
+  const h1Title = document.getElementById('h1Title');
+  if (h1Title) h1Title.textContent = t('appTitle');
   document.getElementById('pSubtitle').textContent = t('appSubtitle');
   document.getElementById('updatedLabel').textContent = t('lastUpdatedLabel');
   renderLastUpdated();
