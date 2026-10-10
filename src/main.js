@@ -9,8 +9,12 @@ const LAST_UPDATED = '2025-12-09T12:00:00+08:00';
 function renderLastUpdated() {
   const lang = getLang();
   const locale = lang === 'en' ? 'en-HK' : 'zh-HK';
-  const dateStr = new Date(LAST_UPDATED).toLocaleString(locale, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Hong_Kong' });
-  document.getElementById('lastUpdated').textContent = dateStr + t('lastUpdatedSuffix');
+  const when = new Date(LAST_UPDATED);
+  const dateStr = new Intl.DateTimeFormat(locale, { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Hong_Kong' }).format(when);
+  const full = when.toLocaleString(locale, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Hong_Kong' }) + t('lastUpdatedSuffix');
+  const el = document.getElementById('lastUpdated');
+  el.textContent = dateStr;
+  el.title = full;
 }
 
 /* ============ 語言切換 UI ============ */
@@ -30,8 +34,8 @@ function renderLangSwitcher() {
 function applyStaticI18n() {
   document.documentElement.lang = getLang() === 'en' ? 'en' : (getLang() === 'zh-Hans' ? 'zh-Hans' : 'zh-Hant');
   renderLangSwitcher();
-  const h1Title = document.getElementById('h1Title');
-  if (h1Title) h1Title.textContent = t('appTitle');
+  document.querySelector('.logo-full').textContent = t('appTitleName');
+  document.querySelector('.logo-short').textContent = t('appTitleShort');
   document.getElementById('pSubtitle').textContent = t('appSubtitle');
   document.getElementById('updatedLabel').textContent = t('lastUpdatedLabel');
   renderLastUpdated();
@@ -40,6 +44,10 @@ function applyStaticI18n() {
   document.getElementById('navFeesBtn').textContent = t('navFees');
   document.querySelectorAll('.tier-notice').forEach(el => { el.innerHTML = t('tierNotice'); });
   document.getElementById('tdNotice').innerHTML = t('tdNotice');
+  document.querySelectorAll('#tdType [data-type="all"], #fxType [data-type="all"], #typeChips [data-type="all"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipAllBanks') : t('chipAll'));
+  document.querySelectorAll('#tdType [data-type="traditional"], #fxType [data-type="traditional"], #typeChips [data-type="traditional"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipTraditional') : t('chipTraditional'));
+  document.querySelectorAll('#tdType [data-type="virtual"], #fxType [data-type="virtual"], #typeChips [data-type="virtual"]').forEach(elx => elx.textContent = elx.parentElement.id === 'typeChips' ? t('typeChipVirtual') : t('chipVirtual'));
+  document.getElementById('tdHint').textContent = t('tdHint');
   document.getElementById('calcTdTitle').textContent = t('calcTdTitle');
   document.getElementById('labelAmount').textContent = t('labelAmount');
   document.getElementById('labelCurrency1').textContent = t('labelCurrency');
@@ -107,44 +115,63 @@ function setBankType(page, type) {
   else if (page === 'fees') renderFees();
   else renderTD();
 }
-const segLabel = key => t(key).replace(/[:：]\s*$/, '');
-function segGroup(label, buttons, scroll) {
-  return `<div class="seg${scroll ? ' grow' : ''}"><span class="seg-label">${label}</span><div class="segctl${scroll ? ' scroll' : ''}">${buttons}</div></div>`;
+const TD_CURS = [['HKD', 'chipHKD'], ['USD', 'chipUSD'], ['CNY', 'chipCNY']];
+function segBtn(cls, attrs, label) {
+  return `<button type="button" class="segbtn${cls}" ${attrs}>${label}</button>`;
 }
-function renderFilterBar(page) {
-  const bar = document.querySelector(`.filterbar[data-page="${page}"]`);
-  if (!bar) return;
-  const level = currentGlobalLevel();
-  const type = bankTypeFor(page);
-  let html = '';
-  if (page === 'td') {
-    html += segGroup(t('labelCurrency'), ['HKD', 'USD', 'CNY'].map(c => `<button type="button" class="segbtn${tdCur === c ? ' on' : ''}" data-cur="${c}">${t('chip' + c)}</button>`).join(''));
-  } else if (page === 'fx') {
-    html += segGroup(t('labelCurrency'), FX_CURRENCIES.map(x => `<button type="button" class="segbtn${fxCur === x.c ? ' on' : ''}" data-cur="${x.c}">${fxCurName(x.n)} ${x.c}</button>`).join(''), true);
-  }
-  html += segGroup(segLabel('lvHint'), [1, 2, 3].map(lv => `<button type="button" class="segbtn${level === lv ? ' on' : ''}" data-lv="${lv}" title="${t('lvBtnTooltip', { level: LV(lv) })}">${LV(lv)}</button>`).join(''));
-  html += segGroup(segLabel('bankTypeHint'), [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => `<button type="button" class="segbtn${type === id ? ' on' : ''}" data-type="${id}">${t(key)}</button>`).join(''));
-  bar.innerHTML = html;
-  if (page === 'fx') revealActiveSeg(bar);
+function seg(kind, label, inner, scroll) {
+  return `<div class="seg ${kind}"><span class="seg-label">${label}</span><div class="segctl${scroll ? ' scroll' : ''}" role="group" aria-label="${label}">${inner}</div></div>`;
 }
-function revealActiveSeg(bar) {
-  const btn = bar.querySelector('.segctl.scroll .segbtn.on');
-  const scroller = btn?.parentElement;
-  if (!btn || !scroller) return;
-  const b = btn.getBoundingClientRect();
-  const s = scroller.getBoundingClientRect();
-  if (b.left < s.left || b.right > s.right) scroller.scrollLeft += (b.left - s.left) - 8;
+function revealSeg(btn) {
+  const scroller = btn && btn.parentElement;
+  if (!scroller || !scroller.classList.contains('scroll')) return;
+  const pad = 8;
+  const left = btn.getBoundingClientRect().left - scroller.getBoundingClientRect().left + scroller.scrollLeft - pad;
+  const right = left + btn.offsetWidth + pad * 2;
+  if (left < scroller.scrollLeft) scroller.scrollLeft = Math.max(0, left);
+  else if (right > scroller.scrollLeft + scroller.clientWidth) scroller.scrollLeft = right - scroller.clientWidth;
+}
+function renderFilterBars() {
+  const curLv = currentGlobalLevel();
+  document.querySelectorAll('.filterbar').forEach(bar => {
+    const page = bar.dataset.page;
+    const type = bankTypeFor(page);
+    const groups = [];
+    if (page === 'td') {
+      groups.push(seg('cur', t('labelCurrency'), TD_CURS.map(([id, key]) => segBtn(tdCur === id ? ' on' : '', `data-cur="${id}" aria-pressed="${tdCur === id}"`, t(key))).join(''), false));
+    } else if (page === 'fx') {
+      groups.push(seg('cur', t('labelCurrency'), FX_CURRENCIES.map(x => segBtn(fxCur === x.c ? ' on' : '', `data-cur="${x.c}" aria-pressed="${fxCur === x.c}"`, `${fxCurName(x.n)} ${x.c}`)).join(''), true));
+    }
+    groups.push(seg('tier', t('lvHint'), [1, 2, 3].map(lv => segBtn(` l${lv}${curLv === lv ? ' on' : ''}`, `data-lv="${lv}" aria-pressed="${curLv === lv}" title="${t('lvBtnTooltip', { level: LV(lv) })}"`, LV(lv))).join(''), false));
+    groups.push(seg('type', t('bankTypeHint'), [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => segBtn(type === id ? ' on' : '', `data-type="${id}" aria-pressed="${type === id}"`, t(key))).join(''), false));
+    bar.innerHTML = groups.join('');
+    revealSeg(bar.querySelector('.seg.cur .segbtn.on'));
+  });
 }
 document.querySelectorAll('.filterbar').forEach(bar => bar.addEventListener('click', e => {
-  const curBtn = e.target.closest('[data-cur]');
+  const cur = e.target.closest('[data-cur]');
   const lv = e.target.closest('[data-lv]');
   const ty = e.target.closest('[data-type]');
   const page = bar.dataset.page;
-  if (curBtn && page === 'td') { tdCur = curBtn.dataset.cur; renderTD(); }
-  else if (curBtn && page === 'fx') { fxCur = curBtn.dataset.cur; const sel = document.getElementById('fxCalcCur'); if (sel) sel.value = fxCur; renderFX(); }
-  else if (lv) applyAll(+lv.dataset.lv);
+  if (cur) {
+    if (page === 'fx') { fxCur = cur.dataset.cur; document.getElementById('fxCalcCur').value = fxCur; renderFX(); }
+    else { tdCur = cur.dataset.cur; renderTD(); }
+  } else if (lv) applyAll(+lv.dataset.lv);
   else if (ty) setBankType(page, ty.dataset.type);
 }));
+function updateStuckBars() {
+  document.querySelectorAll('.filterbar').forEach(bar => {
+    const page = bar.closest('.page');
+    const sentinel = bar.previousElementSibling;
+    const active = page && page.classList.contains('active');
+    const stuck = !!(active && sentinel && sentinel.getBoundingClientRect().top < 0);
+    bar.classList.toggle('is-stuck', stuck);
+  });
+}
+document.querySelectorAll('.nav button').forEach(b => b.addEventListener('click', () => requestAnimationFrame(updateStuckBars)));
+window.addEventListener('scroll', updateStuckBars, { passive: true });
+window.addEventListener('resize', updateStuckBars);
+updateStuckBars();
 
 const tierLabelHTML = tt => {
   const primary = tierPrimary(tt), secondary = tierSecondary(tt);
@@ -195,12 +222,13 @@ window.addEventListener('resize', closeTierMenu);
 /* ============ 定期存款 ============ */
 let tdCur = 'HKD', tdType = 'all', tdSort = 'code';
 const TENOR_KEYS = [['m1', 'tenorM1'], ['m3', 'tenorM3'], ['m6', 'tenorM6'], ['m12', 'tenorM12']];
+document.querySelectorAll('#tdType .chip').forEach(ch => ch.onclick = () => { tdType = ch.dataset.type; document.querySelectorAll('#tdType .chip').forEach(x => x.classList.toggle('active', x === ch)); renderTD(); });
 const tdRate = (td, cur, tk) => { const d = td && td[cur]; return d && d[tk] != null ? d[tk] : null; };
 function setTdSort(k) { tdSort = k; renderTD(); }
 window.setTdSort = setTdSort;
 
 function renderTD() {
-  renderFilterBar('td');
+  renderFilterBars();
   document.getElementById('tdHead').innerHTML = `<th class="sortable" onclick="setTdSort('code')">${t('colBankTier')}${tdSort === 'code' ? '' : t('resetHint')}</th>` +
     TENOR_KEYS.map(([k, lk]) => `<th class="sortable" onclick="setTdSort('${k}')">${t(lk)}${tdSort === k ? ' ▼' : ''}</th>`).join('') +
     `<th>${t('colMinDeposit')}</th><th>${t('colCondition')}</th>`;
@@ -220,13 +248,14 @@ function renderTdCalc() {
 /* ============ 外幣兌換 ============ */
 let fxCur = 'USD', fxType = 'all';
 const fxCalcSel = document.getElementById('fxCalcCur');
-function buildFxChips() {
+function buildFxCalcOptions() {
   fxCalcSel.innerHTML = '';
   FX_CURRENCIES.forEach(x => {
     const o = document.createElement('option'); o.value = x.c; o.textContent = `${fxCurName(x.n)} ${x.c}`; fxCalcSel.appendChild(o);
   });
   fxCalcSel.value = fxCur;
 }
+document.querySelectorAll('#fxType .chip').forEach(ch => ch.onclick = () => { fxType = ch.dataset.type; document.querySelectorAll('#fxType .chip').forEach(x => x.classList.toggle('active', x === ch)); renderFX(); });
 fxCalcSel.addEventListener('change', () => { fxCur = fxCalcSel.value; renderFX(); });
 document.getElementById('fxAmt').addEventListener('input', renderFxCalc);
 const fxInfo = () => FX_CURRENCIES.find(x => x.c === fxCur);
@@ -236,7 +265,7 @@ let fxMid = {};
 
 function renderFX() {
   const info = fxInfo(), mid = fxMid[fxCur], unit = info.unit || 1;
-  renderFilterBar('fx');
+  renderFilterBars();
   document.getElementById('fxHead').innerHTML = `<th>${t('colBankTier')}</th><th>${t('colBuy')}<div class="sub">${t('colBuySub')}</div></th><th>${t('colSell')}<div class="sub">${t('colSellSub')}</div></th><th>${t('colSpread')}</th><th>${t('colCashSpread')}</th><th>${t('colCurCount')}</th><th>${t('colNotes')}</th>`;
   document.getElementById('fxMidLabel').innerHTML = t('fxMidLabelPrefix') + '<span id="fxCurLabel">' + (unit > 1 ? unit + ' ' : '') + fxCur + '</span>' + t('fxMidLabelSuffix');
   document.getElementById('fxMid').textContent = mid ? fmtRate(mid, unit) : '—';
@@ -280,7 +309,7 @@ document.getElementById('search').addEventListener('input', e => { keyword = e.t
 const cellHTML = f => !f ? `<span class="cell na">—</span>` : `<span class="cell ${f.lvl}">${tr(f.v)}${f.approx ? '<span class="approx">≈</span>' : ''}${f.note ? `<span class="tip">${tr(f.note)}</span>` : ''}</span>`;
 function renderFees() {
   const cat = CATEGORIES.find(c => c.id === currentCat);
-  renderFilterBar('fees');
+  renderFilterBars();
   document.getElementById('thead').innerHTML = `<th>${t('colBankTier')}</th>` + cat.cols.map(([k, l]) => `<th>${tr(l)}</th>`).join('');
   const rows = BANKS.filter(byType(feeType)).filter(b => !keyword || (b.code + b.swift + b.name + b.nameEn + b.en + b.tiers.map(tierFullName).join()).toLowerCase().includes(keyword)).sort(feeType === 'all' ? byTypeThenCode : byCode);
   document.getElementById('tbody').innerHTML = rows.length ? rows.map(b => { const r = resolve(b); return `<tr${rowClass(b)}>${bankCell(b)}${cat.cols.map(([k]) => `<td>${cellHTML(r.fees[k])}</td>`).join('')}</tr>`; }).join('') : `<tr><td colspan="${cat.cols.length + 1}" style="text-align:center;color:var(--muted)">${t('noMatch')}</td></tr>`;
@@ -319,33 +348,17 @@ modalBg.addEventListener('click', e => { if (e.target === modalBg) closeModal();
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeTierMenu(); } });
 
 /* ============ 初始化 ============ */
-function syncHeaderOffset() {
-  const header = document.querySelector('header');
-  if (header) document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
-}
-function updateStuckBars() {
-  const top = document.querySelector('header')?.offsetHeight || 0;
-  document.querySelectorAll('.page.active .filterbar').forEach(bar => {
-    bar.classList.toggle('is-stuck', window.scrollY > 8 && bar.getBoundingClientRect().top <= top + 1);
-  });
-}
 function renderAll() {
   renderLastUpdated();
-  buildFxChips();
+  buildFxCalcOptions();
   renderTD();
   renderFX();
   buildTabs();
   renderFees();
-  syncHeaderOffset();
 }
-window.addEventListener('resize', () => { syncHeaderOffset(); updateStuckBars(); });
-window.addEventListener('scroll', updateStuckBars, { passive: true });
 applyStaticI18n();
-buildFxChips();
+buildFxCalcOptions();
 buildTabs();
 renderTD();
-renderFilterBar('fx');
 loadFX();
 renderFees();
-syncHeaderOffset();
-updateStuckBars();

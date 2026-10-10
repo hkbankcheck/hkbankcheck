@@ -9,31 +9,30 @@
 <body>
 
 <header>
-  <div class="wrap headbar">
-    <div class="brand">
-      <img src="/assets/logo-icon.png" alt="" class="brand-icon" width="28" height="28">
-      <span class="brand-name"><span class="brand-hk">HKBank</span><span class="brand-check">Check</span></span>
-    </div>
-    <div class="topbar">
-      <div class="updated"><span id="updatedLabel">🕒 最後更新：</span><strong id="lastUpdated">—</strong></div>
+  <div class="wrap bar">
+    <div class="logo" id="h1Title"><span class="logo-mark" aria-hidden="true">🏦</span><span class="logo-full">香港銀行一站式比較</span><span class="logo-short">銀行比較</span></div>
+    <div class="bar-side">
+      <div class="updated" id="updatedWrap"><span id="updatedLabel">最後更新：</span><strong id="lastUpdated">—</strong></div>
       <div class="langsw" id="langsw"></div>
     </div>
   </div>
-  <div class="wrap">
-    <p id="pSubtitle">16 間傳統及虛擬銀行 · 每間銀行可自選戶口類別 · 定期存款利率 · 外幣兌換匯率 · 服務收費</p>
-    <div class="nav">
-      <button class="active" data-page="td" id="navTdBtn">📈 定期存款利率</button>
-      <button data-page="fx" id="navFxBtn">💱 外幣兌換</button>
-      <button data-page="fees" id="navFeesBtn">💳 服務收費</button>
-    </div>
-  </div>
 </header>
+<div class="wrap subhead">
+  <nav class="nav">
+    <button class="active" data-page="td" id="navTdBtn">📈 定期存款利率</button>
+    <button data-page="fx" id="navFxBtn">💱 外幣兌換</button>
+    <button data-page="fees" id="navFeesBtn">💳 服務收費</button>
+  </nav>
+  <p id="pSubtitle" class="lede">16 間傳統及虛擬銀行 · 每間銀行可自選戶口類別 · 定期存款利率 · 外幣兌換匯率 · 服務收費</p>
+</div>
 
 <main class="wrap">
 
 <!-- ============ 定期存款 ============ -->
 <section class="page active" id="page-td">
+  <div class="filter-sentinel" aria-hidden="true"></div>
   <div class="filterbar" data-page="td"></div>
+  <p class="sub filter-note" id="tdHint"></p>
   <div class="table-wrap"><table><thead><tr id="tdHead"></tr></thead><tbody id="tdBody"></tbody></table></div>
   <div class="notices">
     <div class="notice green tier-notice"></div>
@@ -49,11 +48,12 @@
 
 <!-- ============ 外幣兌換 ============ -->
 <section class="page" id="page-fx">
-  <div class="filterbar" data-page="fx"></div>
   <div class="fxhead">
     <div class="mid"><span id="fxMidLabel"></span><br><b id="fxMid">—</b><div class="status" id="fxStatus">載入中…</div></div>
     <span class="sub" id="fxHint"></span>
   </div>
+  <div class="filter-sentinel" aria-hidden="true"></div>
+  <div class="filterbar" data-page="fx"></div>
   <div class="table-wrap"><table><thead><tr id="fxHead"></tr></thead><tbody id="fxBody"></tbody></table></div>
   <div class="notices">
     <div class="notice green tier-notice"></div>
@@ -66,7 +66,6 @@
 
 <!-- ============ 服務收費 ============ -->
 <section class="page" id="page-fees">
-  <div class="filterbar" data-page="fees"></div>
   <div class="controls">
     <input type="search" id="search">
   </div>
@@ -78,6 +77,8 @@
     <span><i class="dot" style="background:var(--na)"></i><span id="legendNA"></span></span>
     <span id="legendHover"></span>
   </div>
+  <div class="filter-sentinel" aria-hidden="true"></div>
+  <div class="filterbar" data-page="fees"></div>
   <div class="table-wrap"><table><thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody></table></div>
   <div class="notices">
     <div class="notice green tier-notice"></div>
