@@ -498,7 +498,7 @@ export function t(key, vars) {
   const lang = currentLang;
   let str;
   if (lang === 'en') str = entry.en ?? entry['zh-Hant'];
-  else if (lang === 'zh-Hans') str = toSimplified(entry['zh-Hant']);
+  else if (lang === 'zh-Hans') str = entry['zh-Hans'] ?? entry['zh-Hant'];
   else str = entry['zh-Hant'];
   if (vars) Object.keys(vars).forEach(k => { str = str.replace(new RegExp('\\{' + k + '\\}', 'g'), vars[k]); });
   return str;
