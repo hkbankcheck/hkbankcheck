@@ -3,6 +3,7 @@
    避免預設（繁體／英文）使用者下載不必要的資料。 */
 let converter = null;
 let converterLoading = null;
+/*
 function ensureConverter() {
   if (converter) return Promise.resolve(converter);
   if (!converterLoading) {
@@ -13,7 +14,7 @@ function ensureConverter() {
   }
   return converterLoading;
 }
-
+*/
 export const LANGS = ['zh-Hant', 'en', 'zh-Hans'];
 export const LANG_LABEL = { 'zh-Hant': '繁體中文', en: 'English', 'zh-Hans': '简体中文' };
 export const LANG_HTML = { 'zh-Hant': 'zh-Hant', en: 'en', 'zh-Hans': 'zh-Hans' };
@@ -43,7 +44,7 @@ export function toSimplified(s) {
 
 /* 在切換至簡體中文前，先確保轉換字典已載入完成，避免畫面短暫顯示未轉換文字。 */
 export function preloadSimplified() {
-  return ensureConverter();
+  return Promise.resolve();
 }
 
 /* 級別顯示名稱 */
