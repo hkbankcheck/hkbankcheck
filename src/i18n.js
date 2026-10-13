@@ -370,9 +370,9 @@ export function tr(zh) {
 
 /* ============ 固定介面文字 ============ */
 const UI = {
-appTitle: { 'zh-Hant': '🏦 香港銀行一站式比較', 'zh-Hans': '🏦 香港银行一站式比较', en: '🏦 Hong Kong Bank Comparison' },
-appTitleName: { 'zh-Hant': '香港銀行一站式比較', 'zh-Hans': '香港银行一站式比较', en: 'Hong Kong Bank Comparison' },
-appTitleShort: { 'zh-Hant': '銀行比較', 'zh-Hans': '银行比较', en: 'HK Banks' },
+appTitle: { 'zh-Hant': 'HKBankCheck', 'zh-Hans': 'HKBankCheck', en: 'HKBankCheck' },
+appTitleName: { 'zh-Hant': 'HKBankCheck', 'zh-Hans': 'HKBankCheck', en: 'HKBankCheck' },
+appTitleShort: { 'zh-Hant': 'HKBankCheck', 'zh-Hans': 'HKBankCheck', en: 'HKBankCheck' },
 appSubtitle: { 'zh-Hant': '16 間傳統及虛擬銀行 · 每間銀行可自選戶口類別 · 定期存款利率 · 外幣兌換匯率 · 服務收費', 'zh-Hans': '16 间传统及虚拟银行 · 每间银行可自选户口类别 · 定期存款利率 · 外币兑换汇率 · 服务收费', en: '16 traditional & virtual banks · Choose an account tier per bank · Time deposit rates · FX rates · Service fees' },
 lastUpdatedLabel: { 'zh-Hant': '最後更新：', 'zh-Hans': '最后更新：', en: 'Updated: ' },
 lastUpdatedSuffix: { 'zh-Hant': '（香港時間）', 'zh-Hans': '（香港时间）', en: ' (Hong Kong Time)' },
