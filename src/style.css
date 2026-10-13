@@ -143,3 +143,13 @@ th.sortable{cursor:pointer;user-select:none}th.sortable:hover{color:var(--primar
 .info{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:12px 0}.info table td{padding:7px 8px;border-bottom:0}
 footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:center}
 @media(max-width:640px){.bar{padding:0 12px;gap:8px} .logo{font-size:19px;gap:6px} .logo-full{display:none} .logo-short{display:inline} #updatedLabel{display:none} .updated{font-size:11px} .langbtn{padding:4px 8px} .seg{flex:1 1 100%} .segbtn{padding:5px 9px} .table-wrap th,.table-wrap td{padding:10px 8px} .table-wrap th:first-child,.table-wrap td:first-child{width:196px;min-width:196px;max-width:196px}}
+.logo-full span:first-child,
+.logo-short span:first-child {
+  color: #0F2537 !important;
+  font-weight: 700;
+}
+.logo-full span:last-child,
+.logo-short span:last-child {
+  color: #00B4D8 !important;
+  font-weight: 700;
+}
