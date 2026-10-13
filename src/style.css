@@ -11,12 +11,12 @@ header{height:56px;background:#F8FAFC;color:#fff}
 .logo{display:flex;align-items:center;gap:8px;font-size:23px;font-weight:700;line-height:1;white-space:nowrap;letter-spacing:-.01em;min-width:0}
 .logo-short{display:none}
 .bar-side{display:flex;align-items:center;gap:12px;min-width:0}
-.updated{display:inline-flex;align-items:center;gap:4px;font-size:12px;line-height:1;color:rgba(255,255,255,.78);white-space:nowrap}
+.updated{display:inline-flex;align-items:center;gap:4px;font-size:12px;line-height:1;color:#334155
 .updated strong{color:#fff;font-weight:600}
 
 /* ===== 語言切換 ===== */
 .langsw{display:inline-flex;gap:2px;background:rgba(255,255,255,.1);border-radius:999px;padding:2px;flex:none}
-.langbtn{border:0;background:transparent;color:#fff;opacity:.75;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;line-height:1.4;transition:.15s}
+.langbtn{border:0;background:transparent;color:#334155;opacity:.75;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;line-height:1.4;transition:.15s}
 .langbtn:hover{opacity:1}
 .langbtn.on{background:#fff;color:#0f766e;opacity:1}
 
