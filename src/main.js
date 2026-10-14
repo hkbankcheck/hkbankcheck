@@ -34,8 +34,8 @@ function renderLangSwitcher() {
 function applyStaticI18n() {
   document.documentElement.lang = getLang() === 'en' ? 'en' : (getLang() === 'zh-Hans' ? 'zh-Hans' : 'zh-Hant');
   renderLangSwitcher();
-  document.querySelector('.logo-full').textContent = t('appTitleName');
-  document.querySelector('.logo-short').textContent = t('appTitleShort');
+  document.querySelector('.logo-full').innerHTML = t('appTitleName');
+  document.querySelector('.logo-short').innerHTML = t('appTitleShort');
   document.getElementById('pSubtitle').textContent = t('appSubtitle');
   document.getElementById('updatedLabel').textContent = t('lastUpdatedLabel');
   renderLastUpdated();
