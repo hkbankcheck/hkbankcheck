@@ -16,7 +16,7 @@ function ensureConverter() {
 }
 */
 export const LANGS = ['zh-Hant', 'en', 'zh-Hans'];
-export const LANG_LABEL = { 'zh-Hant': '繁體中文', en: 'English', 'zh-Hans': '简体中文' };
+export const LANG_LABEL = { 'zh-Hant': '繁體', en: 'ENG', 'zh-Hans': '简体' };
 export const LANG_HTML = { 'zh-Hant': 'zh-Hant', en: 'en', 'zh-Hans': 'zh-Hans' };
 
 const STORAGE_KEY = 'hkbank_lang';
