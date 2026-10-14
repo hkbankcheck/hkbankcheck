@@ -6,7 +6,7 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,"PingFang HK","Microsoft JhengHei","Noto Sans TC","Noto Sans SC",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
 .wrap{max-width:1320px;margin:0 auto}
-header{height:56px;background:#F8FAFC;color:#fff}
+header{height:56px;background:#E2E8F0;color:#fff}
 .bar{height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 20px}
 .logo{display:flex;align-items:center;gap:8px;font-size:23px;font-weight:700;line-height:1;white-space:nowrap;letter-spacing:-.01em;min-width:0}
 .logo-short{display:none}
