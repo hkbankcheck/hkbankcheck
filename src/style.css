@@ -12,7 +12,7 @@ header{height:56px;background:#E2E8F0;color:#fff}
 .logo-short{display:none}
 .bar-side{display:flex;align-items:center;gap:12px;min-width:0}
 .updated{display:inline-flex;align-items:center;gap:4px;font-size:12px;line-height:1;color:#334155;white-space:nowrap}
-.updated strong{color:#fff;font-weight:600}
+.updated strong{color:#334155;font-weight:600}
 
 /* ===== 語言切換 ===== */
 .langsw{display:inline-flex;gap:2px;background:rgba(255,255,255,.1);border-radius:999px;padding:2px;flex:none}
