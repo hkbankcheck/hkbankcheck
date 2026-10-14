@@ -142,7 +142,16 @@ th.sortable{cursor:pointer;user-select:none}th.sortable:hover{color:var(--primar
 .mtier .n2{color:var(--muted);opacity:1}
 .info{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:12px 0}.info table td{padding:7px 8px;border-bottom:0}
 footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:center}
-@media(max-width:640px){.bar{padding:0 12px;gap:8px;flex-wrap:wrap;height:auto} .logo{font-size:19px;gap:6px} .logo-full{display:none} .logo-short{display:inline} #updatedLabel{display:none} .updated{font-size:11px} .langbtn{padding:4px 8px}}
+@media(max-width:640px){
+  .bar{padding:0 12px;gap:6px;height:56px;flex-wrap:nowrap}
+  .logo{font-size:17px;gap:4px;flex:1;min-width:0}
+  .logo-full{display:none}
+  .logo-short{display:inline}
+  #updatedLabel{display:none}
+  .updated{font-size:10px;white-space:nowrap}
+  .langsw{gap:1px}
+  .langbtn{padding:3px 6px;font-size:11px}
+}
 .logo-full span:first-child,
 .logo-short span:first-child {
   color: #0F2537 !important;
