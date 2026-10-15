@@ -145,6 +145,7 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
 @media(max-width:640px){
   .bar{padding:0 12px;gap:6px;height:56px;flex-wrap:nowrap}
   .logo{font-size:22px;gap:0px;flex:1;min-width:0}
+  .logo img{height:20px !important}
   .logo-full{display:none}
   .logo-short{display:inline}
   .updated{
