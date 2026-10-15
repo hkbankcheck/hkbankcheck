@@ -162,6 +162,10 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
   }
   .langsw{gap:1px}
   .langbtn{padding:3px 6px;font-size:11px}
+.langbtn{font-size:0}
+.langbtn[data-lang="zh-Hant"]::after{content:"繁";font-size:11px}
+.langbtn[data-lang="en"]::after{content:"EN";font-size:11px}
+.langbtn[data-lang="zh-Hans"]::after{content:"簡";font-size:11px}
 }
 .logo-full span:first-child,
 .logo-short span:first-child {
