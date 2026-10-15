@@ -163,7 +163,7 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
   .langsw{gap:1px}
 .langbtn{
   font-size:0;
-  width:26px;
+  width:28px;
   height:24px;
   padding:0;
   display:inline-flex;
@@ -171,7 +171,12 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
   justify-content:center;
   position:relative
 }
-.langbtn::after{font-size:11px}
+.langbtn::after{
+  font-size:11px;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%)
+}    
 .langbtn[data-lang="zh-Hant"]::after{content:"繁"}
 .langbtn[data-lang="en"]::after{content:"EN"}
 .langbtn[data-lang="zh-Hans"]::after{content:"簡"}
