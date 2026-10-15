@@ -169,6 +169,7 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
   display:inline-flex;
   align-items:center;
   justify-content:center;
+  position:relative
 }
 .langbtn::after{font-size:11px}
 .langbtn[data-lang="zh-Hant"]::after{content:"繁"}
