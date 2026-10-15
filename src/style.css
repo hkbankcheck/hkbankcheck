@@ -163,8 +163,8 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
   .langsw{gap:1px}
 .langbtn{
   font-size:0;
-  min-width:32px;
-  padding:4px 8px;
+  width:36px;
+  padding:4px 0;
   text-align:center
 }
 .langbtn::after{font-size:11px}
