@@ -171,9 +171,9 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
   justify-content:center
 }
 .langbtn::after{font-size:11px}
-.langbtn[data-lang="zh-Hant"]::after{content:"繁"}
-.langbtn[data-lang="en"]::after{content:"EN"}
-.langbtn[data-lang="zh-Hans"]::after{content:"簡"}
+.langbtn[data-lang="zh-Hant"]::after{content:"繁體"}
+.langbtn[data-lang="en"]::after{content:"ENG"}
+.langbtn[data-lang="zh-Hans"]::after{content:"簡體"}
 }
 .logo-full span:first-child,
 .logo-short span:first-child {
