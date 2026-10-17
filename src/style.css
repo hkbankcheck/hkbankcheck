@@ -226,3 +226,11 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
   color: #00B4D8 !important;
   font-weight: 700;
 }
+.sort-icon {
+  font-size: 11px;
+  margin-left: 4px;
+  opacity: 0.5;
+}
+th.sortable:hover .sort-icon {
+  opacity: 1;
+}
