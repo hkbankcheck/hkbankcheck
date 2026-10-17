@@ -271,3 +271,7 @@ th.sortable:hover .sort-icon {
   background: #f8fafc !important;
 }
 */
+.table-wrap {
+  overflow-x: auto !important;
+  max-width: 100%;
+}
