@@ -244,3 +244,6 @@ th.sortable:hover .sort-icon {
   opacity: 1;
   color: var(--primary-2);
 }
+#tdHint {
+  display: none;
+}
