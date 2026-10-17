@@ -255,10 +255,9 @@ th.sortable:hover .sort-icon {
 }
 
 /* 表頭固定喺 filter bar 下面 */
-/*
 .table-wrap thead th {
   position: sticky;
-  top: 90px;
+  top: 72px;
   z-index: 5;
   background: #f8fafc !important;
 }
@@ -266,11 +265,10 @@ th.sortable:hover .sort-icon {
 .table-wrap thead th:first-child {
   position: sticky;
   left: 0;
-  top: 90px;
+  top: 72px;
   z-index: 6;
   background: #f8fafc !important;
 }
-*/
 .table-wrap {
   overflow-x: auto;
   max-height: none;
