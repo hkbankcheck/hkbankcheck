@@ -247,10 +247,4 @@ th.sortable:hover .sort-icon {
 #tdHint {
   display: none;
 }
-.table-wrap thead th {
-  position: sticky;
-  top: 68px;
-  z-index: 3;
-  background: #f8fafc !important;
-  box-shadow: 0 1px 0 #e5e7eb;
-}
+
