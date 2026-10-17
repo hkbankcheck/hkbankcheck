@@ -178,7 +178,7 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
 .filterbar{
   display:flex;
   flex-wrap:wrap;
-  gap:8px
+  gap:6px
 }
 .seg.cur{
   width:100%;
@@ -188,7 +188,23 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
 .seg.type{
   flex:1;
   min-width:0;
-  max-width:45%
+  max-width:48%;
+  display:flex;
+  align-items:center;
+  gap:4px
+}
+.seg-label{
+  flex-shrink:0;
+  font-size:12px
+}
+.segctl{
+  display:flex;
+  gap:3px;
+  flex-wrap:nowrap
+}
+.segbtn{
+  font-size:11px;
+  padding:3px 6px
 }
 .logo-full span:first-child,
 .logo-short span:first-child {
