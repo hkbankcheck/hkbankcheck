@@ -49,11 +49,11 @@ input[type=search]{flex:1;min-width:220px}
 .seg{display:flex;align-items:center;gap:8px;min-width:0}
 .seg.cur{flex:0 0 auto}
 .seg.tier,.seg.type{flex:none}
-.seg tier{
+.seg.tier{
   margin-right:8px !important
 }
 .seg.type{
-  margin-left:8px !important
+  margin-left:0 !important
 }
 .seg-label{flex:none;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
 .segctl{display:inline-flex;align-items:center;gap:2px;min-width:0;max-width:100%;padding:3px;background:#e7edf3;border-radius:10px}
