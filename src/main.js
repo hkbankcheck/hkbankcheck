@@ -195,7 +195,7 @@ function bankCell(b) {
   const selector = b.tiers.length > 1
     ? `<button type="button" class="tsel l${tt.level}" onclick="openTierMenu(event,'${b.id}')" title="${t('tierSelectTitle')}">${inner}<span class="arrow">▾</span></button>`
     : `<span class="tsel static l${tt.level}">${inner}</span>`;
-  return `<td><div class="bank" onclick="openModal('${b.id}')" title="${t('bankNameTitle')}">${bankDisplayName(b)}</div><div class="tiersel">${selector}</div></td>`;
+  return `<td><div class="bank" onclick="openModal('${b.id}')" title="${t('bankNameTitle')}">${bankDisplayName(b)} <span class="info-icon">ⓘ</span></div><div class="tiersel">${selector}</div></td>`;
 }
 
 /* ============ 戶口類別下拉選單（全局 popover） ============ */
