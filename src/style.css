@@ -247,3 +247,9 @@ th.sortable:hover .sort-icon {
 #tdHint {
   display: none;
 }
+.table-wrap thead th {
+  position: sticky;
+  top: 60px;   /* 根據 filter bar 高度調整，可以試 56px、60px、64px */
+  z-index: 2;
+  background: #f8fafc;
+}
