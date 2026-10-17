@@ -48,6 +48,10 @@ input[type=search]{flex:1;min-width:220px}
 .filterbar.is-stuck{border-radius:0 0 12px 12px;box-shadow:0 8px 18px rgba(15,23,42,.1)}
 .seg{display:flex;align-items:center;gap:8px;min-width:0}
 .seg.cur{flex:0 0 auto}
+.seg.cur{
+  width:100%;
+  flex-basis:100%
+}
 .seg.tier,.seg.type{flex:none}
 .seg.tier{
   margin-right:8px !important
