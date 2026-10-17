@@ -249,7 +249,7 @@ th.sortable:hover .sort-icon {
 }
 /* Filter bar 固定喺最頂 */
 .filterbar {
-  position: relative;
+  position: sticky;
   top: 0;
   z-index: 10;
 }
@@ -257,13 +257,8 @@ th.sortable:hover .sort-icon {
 /* 表頭固定喺 filter bar 下面 */
 .table-wrap thead th {
   position: sticky;
-  top: 0;
+  top: 72px;
   z-index: 5;
   background: #f8fafc !important;
 }
-.table-wrap thead th {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: #f8fafc !important;
-}
+
