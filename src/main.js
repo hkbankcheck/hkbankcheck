@@ -407,3 +407,70 @@ function initClonedHeader() {
 }
 
 initClonedHeader();
+/* ============ 克隆表頭固定 ============ */
+function initClonedStickyHeader() {
+  const page = document.querySelector('#page-td');
+  if (!page) return;
+
+  const tableWrap = page.querySelector('.table-wrap');
+  const table = tableWrap?.querySelector('table');
+  const thead = table?.querySelector('thead');
+  if (!tableWrap || !table || !thead) return;
+
+  // 建立固定表頭容器
+  let cloneContainer = document.getElementById('sticky-header-clone');
+  if (!cloneContainer) {
+    cloneContainer = document.createElement('div');
+    cloneContainer.id = 'sticky-header-clone';
+    cloneContainer.style.cssText = `
+      position: fixed;
+      top: 72px;
+      left: 0;
+      right: 0;
+      z-index: 15;
+      display: none;
+      background: #f8fafc;
+      border-bottom: 1px solid #e5e7eb;
+      overflow: hidden;
+    `;
+    document.body.appendChild(cloneContainer);
+  }
+
+  const cloneTable = document.createElement('table');
+  cloneTable.style.cssText = 'width:100%; min-width:980px; border-collapse:separate; border-spacing:0; font-size:14px; margin:0 auto;';
+  cloneContainer.appendChild(cloneTable);
+
+  function update() {
+    const filterbar = page.querySelector('.filterbar');
+    if (!filterbar) return;
+
+    const filterRect = filterbar.getBoundingClientRect();
+    const tableRect = tableWrap.getBoundingClientRect();
+
+    const shouldShow = tableRect.top < filterRect.bottom && tableRect.bottom > filterRect.bottom + 40;
+
+    if (shouldShow) {
+      cloneContainer.style.display = 'block';
+      cloneContainer.style.top = filterRect.bottom + 'px';
+      cloneTable.innerHTML = thead.outerHTML;
+
+      // 同步欄寬
+      const origThs = thead.querySelectorAll('th');
+      const cloneThs = cloneTable.querySelectorAll('th');
+      origThs.forEach((th, i) => {
+        if (cloneThs[i]) {
+          cloneThs[i].style.width = th.getBoundingClientRect().width + 'px';
+          cloneThs[i].style.minWidth = th.getBoundingClientRect().width + 'px';
+        }
+      });
+    } else {
+      cloneContainer.style.display = 'none';
+    }
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  setTimeout(update, 300);
+}
+
+initClonedStickyHeader();
