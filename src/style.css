@@ -187,7 +187,8 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
 .seg.tier,
 .seg.type{
   flex:1;
-  min-width:0
+  min-width:0;
+  max-width:45%
 }
 .logo-full span:first-child,
 .logo-short span:first-child {
