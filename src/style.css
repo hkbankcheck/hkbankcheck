@@ -249,7 +249,7 @@ th.sortable:hover .sort-icon {
 }
 /* Filter bar 固定喺最頂 */
 .filterbar {
-  position: sticky;
+  position: relative;
   top: 0;
   z-index: 10;
 }
