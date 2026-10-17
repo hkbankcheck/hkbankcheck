@@ -275,6 +275,7 @@ th.sortable:hover .sort-icon {
   max-height: none;
   */
 }
+/*
 .table-wrap thead th {
   position: sticky;
   top: 60px;
@@ -287,3 +288,4 @@ th.sortable:hover .sort-icon {
   z-index: 5;
   background: #f8fafc !important;
 }
+*/
