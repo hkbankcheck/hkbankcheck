@@ -49,6 +49,8 @@ input[type=search]{flex:1;min-width:220px}
 .seg{display:flex;align-items:center;gap:8px;min-width:0}
 .seg.cur{flex:1 1 240px}
 .seg.tier,.seg.type{flex:none}
+.seg.tier{margin-right:12px}
+.seg.type{margin-left:0}
 .seg-label{flex:none;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
 .segctl{display:inline-flex;align-items:center;gap:2px;min-width:0;max-width:100%;padding:3px;background:#e7edf3;border-radius:10px}
 .segctl.scroll{flex:1;overflow-x:auto;scrollbar-width:thin;overscroll-behavior-x:contain}
