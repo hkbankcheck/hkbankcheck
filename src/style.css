@@ -257,7 +257,7 @@ th.sortable:hover .sort-icon {
 /* 表頭固定喺 filter bar 下面 */
 .table-wrap thead th {
   position: sticky;
-  top: 72px;
+  top: 90px;
   z-index: 5;
   background: #f8fafc !important;
 }
