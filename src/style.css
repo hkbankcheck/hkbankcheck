@@ -258,8 +258,15 @@ th.sortable:hover .sort-icon {
 .table-wrap thead th {
   position: sticky;
   top: 90px;
-  left: 0;
   z-index: 5;
+  background: #f8fafc !important;
+}
+
+.table-wrap thead th:first-child {
+  position: sticky;
+  left: 0;
+  top: 90px;
+  z-index: 6;
   background: #f8fafc !important;
 }
 
