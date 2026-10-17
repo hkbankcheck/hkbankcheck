@@ -291,7 +291,7 @@ th.sortable:hover .sort-icon {
 */
 #page-td .table-wrap thead th {
   position: sticky !important;
-  top: 72px;
-  z-index: 5;
+  top: 72px; !important;
+  z-index: 5; !important;
   background: #f8fafc !important;
 }
