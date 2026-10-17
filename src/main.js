@@ -474,3 +474,16 @@ function initClonedStickyHeader() {
 }
 
 initClonedStickyHeader();
+/* ============ 表頭固定（JS） ============ */
+function makeHeaderSticky() {
+  const thead = document.querySelector('#page-td thead');
+  if (!thead) return;
+
+  thead.style.position = 'sticky';
+  thead.style.top = '72px';
+  thead.style.zIndex = '5';
+  thead.style.background = '#f8fafc';
+}
+
+setTimeout(makeHeaderSticky, 500);
+window.addEventListener('load', makeHeaderSticky);
