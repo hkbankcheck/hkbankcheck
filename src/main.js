@@ -384,3 +384,14 @@ function initStickyTableHeader() {
 }
 
 initStickyTableHeader();
+function fixTableHeader() {
+  const thead = document.querySelector('.table-wrap thead');
+  if (!thead) return;
+
+  thead.style.position = 'sticky';
+  thead.style.top = '72px';
+  thead.style.zIndex = '5';
+  thead.style.background = '#f8fafc';
+}
+
+fixTableHeader();
