@@ -47,7 +47,7 @@ input[type=search]{flex:1;min-width:220px}
 .filterbar{position:sticky;top:0;z-index:8;display:flex;flex-wrap:wrap;align-items:center;gap:8px 8px;margin:0;padding:8px 10px;background:#f4f6fa;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
 .filterbar.is-stuck{border-radius:0 0 12px 12px;box-shadow:0 8px 18px rgba(15,23,42,.1)}
 .seg{display:flex;align-items:center;gap:8px;min-width:0}
-.seg.cur{flex:1 1 240px}
+.seg.cur{flex:0 0 auto}
 .seg.tier,.seg.type{flex:none}
 .seg.tier{margin-right:4px}
 .seg.type{margin-left:0}
