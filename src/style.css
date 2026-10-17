@@ -258,7 +258,7 @@ th.sortable:hover .sort-icon {
 }
 .table-wrap thead th {
   position: sticky;
-  top: 60px;
+  top: 70px;
   z-index: 5;
   background: #f8fafc !important;
 }
