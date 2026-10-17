@@ -180,8 +180,17 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
   flex-wrap:wrap;
   gap:8px
 }
-.seg.cur{width:100%}
-.seg.tier,.seg.bank{flex:1;min-width:0}
+.seg.cur{
+  width:100%
+}
+.seg.tier{
+  flex:1;
+  min-width:0
+}
+.seg.bank{
+  flex:1;
+  min-width:0
+}
 .logo-full span:first-child,
 .logo-short span:first-child {
   color: #0F2537 !important;
