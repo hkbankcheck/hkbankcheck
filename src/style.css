@@ -176,17 +176,28 @@ footer{color:var(--muted);font-size:13px;padding:26px 20px 40px;text-align:cente
 .langbtn[data-lang="zh-Hans"]::after{content:"簡"}
 }
 .filterbar{
-  display:block
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px
 }
-.seg{
-  margin-bottom:8px
+.seg.cur{
+  width:100%
 }
 .seg.tier,
 .seg.type{
-  display:inline-block;
-  vertical-align:top;
-  width:45%;
-  margin-right:2%
+  flex:1;
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:6px
+}
+.seg-label{
+  flex-shrink:0
+}
+.segctl{
+  display:flex;
+  gap:4px;
+  flex-wrap:nowrap
 }
 .logo-full span:first-child,
 .logo-short span:first-child {
