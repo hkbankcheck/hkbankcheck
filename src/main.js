@@ -362,36 +362,4 @@ buildTabs();
 renderTD();
 loadFX();
 renderFees();
-/* ============ 表頭 sticky 控制 ============ */
-function initStickyTableHeader() {
-  const filterbar = document.querySelector('.filterbar');
-  const thead = document.querySelector('.table-wrap thead');
-  if (!filterbar || !thead) return;
 
-  const filterbarHeight = filterbar.offsetHeight;
-
-  function update() {
-    const rect = thead.getBoundingClientRect();
-    const shouldStick = rect.top <= filterbarHeight;
-    thead.style.position = shouldStick ? 'sticky' : '';
-    thead.style.top = shouldStick ? filterbarHeight + 'px' : '';
-    thead.style.zIndex = shouldStick ? '5' : '';
-    thead.style.background = shouldStick ? '#f8fafc' : '';
-  }
-
-  window.addEventListener('scroll', update, { passive: true });
-  update();
-}
-
-initStickyTableHeader();
-function fixTableHeader() {
-  const thead = document.querySelector('.table-wrap thead');
-  if (!thead) return;
-
-  thead.style.position = 'sticky';
-  thead.style.top = '72px';
-  thead.style.zIndex = '5';
-  thead.style.background = '#f8fafc';
-}
-
-fixTableHeader();
