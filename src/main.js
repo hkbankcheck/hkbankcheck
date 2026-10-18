@@ -362,3 +362,91 @@ buildTabs();
 renderTD();
 loadFX();
 renderFees();
+/* ============ 終極方案：動態固定表頭 ============ */
+document.addEventListener('DOMContentLoaded', () => {
+  const cloneWrapper = document.createElement('div');
+  cloneWrapper.className = 'sticky-thead-clone';
+  document.body.appendChild(cloneWrapper);
+
+  let isStuck = false;
+  let activeTableWrap = null;
+  let activeThead = null;
+
+  function handleStickyHeader() {
+    // 每次滾動時，尋找目前顯示中（active）嘅 page 入面嘅 table-wrap
+    const activePage = document.querySelector('.page.active');
+    if (!activePage) return;
+
+    const currentTableWrap = activePage.querySelector('.table-wrap');
+    const currentThead = currentTableWrap ? currentTableWrap.querySelector('thead') : null;
+    const currentFilterBar = activePage.querySelector('.filterbar');
+
+    if (!currentTableWrap || !currentThead || !currentFilterBar) {
+      cloneWrapper.style.display = 'none';
+      return;
+    }
+
+    // 更新當前追蹤嘅元素
+    activeTableWrap = currentTableWrap;
+    activeThead = currentThead;
+
+    const filterBarHeight = currentFilterBar.offsetHeight;
+    const tableRect = currentTableWrap.getBoundingClientRect();
+    const theadRect = currentThead.getBoundingClientRect();
+
+    // 判斷條件：表格頂部已經滑過 Filter Bar，而且表格底部仲未滑出畫面
+    if (tableRect.top < filterBarHeight && tableRect.bottom > filterBarHeight + theadRect.height) {
+      if (!isStuck) {
+        isStuck = true;
+        
+        // 複製當前 thead 嘅 HTML（因為 main.js 會動態改入面啲字）
+        // 並強制設定寬度同 table 一致
+        cloneWrapper.innerHTML = `<table style="width:${currentTableWrap.offsetWidth}px; min-width:980px; border-collapse:separate; border-spacing:0;"><thead>${currentThead.innerHTML}</thead></table>`;
+        
+        cloneWrapper.style.display = 'block';
+        currentTableWrap.classList.add('is-stuck-thead');
+      }
+      
+      // 實時更新位置、寬度同高度
+      cloneWrapper.style.top = filterBarHeight + 'px';
+      cloneWrapper.style.left = tableRect.left + 'px';
+      cloneWrapper.style.width = currentTableWrap.offsetWidth + 'px';
+      
+      // 同步左右滑動（當你喺手機左右拉表格時，表頭會跟住郁）
+      cloneWrapper.scrollLeft = currentTableWrap.scrollLeft;
+
+      // 同步每一欄嘅高度，確保對齊
+      const cloneThs = cloneWrapper.querySelectorAll('th');
+      const originalThs = currentThead.querySelectorAll('th');
+      cloneThs.forEach((th, i) => {
+        if (originalThs[i]) th.style.height = originalThs[i].offsetHeight + 'px';
+      });
+
+    } else {
+      if (isStuck) {
+        isStuck = false;
+        cloneWrapper.style.display = 'none';
+        currentTableWrap.classList.remove('is-stuck-thead');
+      }
+    }
+  }
+
+  // 綁定各種滾動事件
+  window.addEventListener('scroll', handleStickyHeader, { passive: true });
+  
+  // 當表格內部左右滑動時，同步影子表頭
+  document.addEventListener('scroll', (e) => {
+    if (e.target.classList && e.target.classList.contains('table-wrap')) {
+      if (isStuck) {
+        cloneWrapper.scrollLeft = e.target.scrollLeft;
+      }
+    }
+  }, true);
+
+  // 當切換 Tab / Filter 時，等 50ms 讓 DOM 更新後重新計算
+  document.querySelectorAll('.nav button, .filterbar, .chip, .tab').forEach(el => {
+    el.addEventListener('click', () => setTimeout(handleStickyHeader, 50));
+  });
+  
+  window.addEventListener('resize', handleStickyHeader);
+});
