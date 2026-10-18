@@ -401,16 +401,18 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // 複製當前 thead 嘅 HTML（因為 main.js 會動態改入面啲字）
         // 並強制設定寬度同 table 一致
-        cloneWrapper.innerHTML = `<table style="width:${currentTableWrap.offsetWidth}px; min-width:980px; border-collapse:separate; border-spacing:0;"><thead>${currentThead.innerHTML}</thead></table>`;
+                // 將原本張 Table 嘅 class 抄埋過去，並強制設定 table-layout 以確保對齊
+        const originalTableClass = currentTableWrap.querySelector('table').className;
+        cloneWrapper.innerHTML = `<table class="${originalTableClass}" style="width:${currentTableWrap.offsetWidth}px; min-width:980px; border-collapse:separate; border-spacing:0; table-layout:fixed;"><thead>${currentThead.innerHTML}</thead></table>`;
         
         cloneWrapper.style.display = 'block';
         currentTableWrap.classList.add('is-stuck-thead');
       }
-      
+  
       // 實時更新位置、寬度同高度
       cloneWrapper.style.top = filterBarHeight + 'px';
       cloneWrapper.style.left = tableRect.left + 'px';
-      cloneWrapper.style.width = currentTableWrap.offsetWidth + 'px';
+      cloneWrapper.style.width = tableRect.width + 'px';
       
       // 同步左右滑動（當你喺手機左右拉表格時，表頭會跟住郁）
       cloneWrapper.scrollLeft = currentTableWrap.scrollLeft;
