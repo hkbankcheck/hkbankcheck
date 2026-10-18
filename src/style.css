@@ -261,8 +261,28 @@ th.sortable:hover .sort-icon {
   background: #f8fafc;
   box-shadow: 0 2px 4px rgba(0,0,0,.08);
   display: none;
-  overflow-x: hidden; /* 隱藏影子表頭嘅滾動條 */
+  
+  /* 👇 關鍵：用 hidden 先可以令第一欄 sticky 生效 👇 */
+  overflow: hidden; 
+  box-sizing: border-box;
   border-radius: 12px 12px 0 0;
+}
+
+/* 👇 強制影子表頭入面張 Table 跟返原本嘅設定 👇 */
+.sticky-thead-clone table {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 980px;
+  width: 100%;
+  table-layout: fixed; /* 呢句係對齊嘅靈魂！強制鎖死欄位闊度 */
+}
+
+.sticky-thead-clone th {
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  box-sizing: border-box;
 }
 
 /* 確保影子表頭嘅第一欄（銀行名）可以跟住左右固定 */
@@ -272,6 +292,9 @@ th.sortable:hover .sort-icon {
   z-index: 10 !important;
   background: #f8fafc !important;
   box-shadow: 1px 0 0 var(--line);
+  width: 196px;
+  min-width: 196px;
+  max-width: 196px;
 }
 
 /* 當固定表頭啟動時，隱藏原本嘅表頭，但保留空間防止表格跳動 */
