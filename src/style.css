@@ -69,7 +69,21 @@ input[type=search]{flex:1;min-width:220px}
 .segbtn.l2.on{color:#b45309}
 .segbtn.l3.on{color:#6d28d9}
 .filter-note{margin:8px 0 0}
-.table-wrap{overflow-x:auto;overflow-y:visible;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-top:10px}
+.table-wrap {
+  overflow-x: auto;
+  overflow-y: visible;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  margin-top: 10px;
+  
+  /* 👇 新增固定底部 Scrollbar 嘅設定 👇 */
+  position: sticky;
+  bottom: 0;
+  padding-bottom: 2px;
+  z-index: 1;
+}
 table{border-collapse:separate;border-spacing:0;width:100%;min-width:980px;font-size:14px}
 th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 .table-wrap thead th{background:#f8fafc;font-weight:700;color:#334155}
