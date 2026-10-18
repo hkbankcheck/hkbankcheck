@@ -403,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 並強制設定寬度同 table 一致
                 // 將原本張 Table 嘅 class 抄埋過去，並強制設定 table-layout 以確保對齊
         const originalTableClass = currentTableWrap.querySelector('table').className;
-        cloneWrapper.innerHTML = `<table class="${originalTableClass}" style="width:${currentTableWrap.offsetWidth}px; min-width:980px; border-collapse:separate; border-spacing:0; table-layout:fixed;"><thead>${currentThead.innerHTML}</thead></table>`;
+        cloneWrapper.innerHTML = `<table class="${originalTableClass}" style="width:${currentTableWrap.scrollWidth}px; min-width:980px; border-collapse:separate; border-spacing:0; table-layout:fixed;"><thead>${currentThead.innerHTML}</thead></table>`;
         
         cloneWrapper.style.display = 'block';
         currentTableWrap.classList.add('is-stuck-thead');
@@ -416,14 +416,22 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // 同步左右滑動（當你喺手機左右拉表格時，表頭會跟住郁）
       cloneWrapper.scrollLeft = currentTableWrap.scrollLeft;
-
-      // 同步每一欄嘅高度，確保對齊
-      const cloneThs = cloneWrapper.querySelectorAll('th');
-      const originalThs = currentThead.querySelectorAll('th');
-      cloneThs.forEach((th, i) => {
-        if (originalThs[i]) th.style.height = originalThs[i].offsetHeight + 'px';
-      });
-
+    // 🌟 暴力對齊法：量度每一欄嘅真實闊度，強制套用落影子表頭 🌟
+        setTimeout(() => {
+          const originalThs = currentThead.querySelectorAll('th');
+          const cloneThs = cloneWrapper.querySelectorAll('th');
+          
+          originalThs.forEach((th, index) => {
+            if (cloneThs[index]) {
+              // 抄闊度
+              cloneThs[index].style.width = th.offsetWidth + 'px';
+              cloneThs[index].style.minWidth = th.offsetWidth + 'px';
+              cloneThs[index].style.maxWidth = th.offsetWidth + 'px';
+              // 抄高度
+              cloneThs[index].style.height = th.offsetHeight + 'px';
+            }
+          });
+        }, 10);
     } else {
       if (isStuck) {
         isStuck = false;
