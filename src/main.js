@@ -163,7 +163,7 @@ function renderFilterBars() {
 
     revealSeg(bar.querySelector('.seg.cur .segbtn.on'));
    }); // 👈 閂返 forEach
-  
+}
   // 👇 下面係接駁返原本嘅 Click 事件 👇
   document.querySelectorAll('.filterbar').forEach(bar => bar.addEventListener('click', e => {
     const cur = e.target.closest('[data-cur]');
@@ -452,19 +452,12 @@ document.addEventListener('DOMContentLoaded', () => {
               cloneThs[index].style.minWidth = th.offsetWidth + 'px';
               cloneThs[index].style.maxWidth = th.offsetWidth + 'px';
               // 抄高度
-              cloneThs[index].style.height = th.offsetHeight + 'px';
-            }
-          });
+                      cloneThs[index].style.height = th.offsetHeight + 'px';
+             });
         }, 10);
-    } else {
-      if (isStuck) {
-        isStuck = false;
-        cloneWrapper.style.display = 'none';
-        currentTableWrap.classList.remove('is-stuck-thead');
-      }
-    }
-    }
-  }
+      } // 👈 呢個閂返 if (tableRect.top < ...)
+    } // 👈 呢個閂返 if (!isStuck)
+  } // 👈 呢個閂返 handleStickyHeader 函數 (最緊要呢個)
 
   // 綁定各種滾動事件
   window.addEventListener('scroll', handleStickyHeader, { passive: true });
