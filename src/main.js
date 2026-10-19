@@ -251,6 +251,12 @@ function renderTD() {
   renderTdCalc();
 }
 ['tdAmt', 'tdCalcCur', 'tdCalcTenor'].forEach(id => document.getElementById(id).addEventListener('input', renderTdCalc));
+// 👇 新增：監聽快速切換月份下拉選單嘅改變 👇
+document.addEventListener('change', (e) => {
+  if (e.target && e.target.id === 'tdQuickMonth') {
+    setTdSort(e.target.value); 
+  }
+});
 function renderTdCalc() {
   const amt = parseFloat(document.getElementById('tdAmt').value) || 0, cur = document.getElementById('tdCalcCur').value, tk = document.getElementById('tdCalcTenor').value, months = { m1: 1, m3: 3, m6: 6, m12: 12 }[tk];
   const list = BANKS.map(b => { const r = resolve(b); return { b, r, v: tdRate(r.td, cur, tk) }; }).filter(x => x.v != null).sort((a, c) => (c.v - a.v) || byCode(a.b, c.b));
