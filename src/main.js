@@ -131,6 +131,7 @@ function revealSeg(btn) {
   const right = left + btn.offsetWidth + pad * 2;
   if (left < scroller.scrollLeft) scroller.scrollLeft = Math.max(0, left);
   else if (right > scroller.scrollLeft + scroller.clientWidth) scroller.scrollLeft = right - scroller.clientWidth;
+}
 function renderFilterBars() {
   console.log("🚀 測試：renderFilterBars 正在執行！");
 
