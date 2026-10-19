@@ -144,19 +144,20 @@ function renderFilterBars() {
     }
     groups.push(seg('tier', t('lvHint'), [1, 2, 3].map(lv => segBtn(` l${lv}${curLv === lv ? ' on' : ''}`, `data-lv="${lv}" aria-pressed="${curLv === lv}" title="${t('lvBtnTooltip', { level: LV(lv) })}"`, LV(lv))).join(''), false));
     groups.push(seg('type', t('bankTypeHint'), [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => segBtn(type === id ? ' on' : '', `data-type="${id}" aria-pressed="${type === id}"`, t(key))).join(''), false));
-    bar.innerHTML = groups.join('');
-        // 👇 新增：將「快速切換月份」搬入去 Filter Bar 嘅最右邊 👇
+          // 👇 將「快速切換月份」直接砌入 HTML 度，保證一定出到 👇
     if (page === 'td') {
-      const quickWrap = document.getElementById('tdQuickMonthWrap');
-      const quickSelect = document.getElementById('tdQuickMonth');
-      if (quickWrap && quickSelect) {
-        quickWrap.style.display = 'block'; // 顯示
-        quickSelect.value = tdSort; // 設定目前選擇嘅值
-        // 將原本喺 Filter Bar 入面嘅舊選單清除，再塞入新嘅
-        bar.querySelector('.quick-select')?.remove();
-        bar.appendChild(quickSelect); // 將選單塞入 bar
-      }
+      bar.insertAdjacentHTML('beforeend', `
+        <div style="margin-left: auto;">
+          <select id="tdQuickMonth" class="quick-select">
+            <option value="m1" ${tdSort === 'm1' ? 'selected' : ''}>優先看：1 個月</option>
+            <option value="m3" ${tdSort === 'm3' ? 'selected' : ''}>優先看：3 個月</option>
+            <option value="m6" ${tdSort === 'm6' ? 'selected' : ''}>優先看：6 個月</option>
+            <option value="m12" ${tdSort === 'm12' ? 'selected' : ''}>優先看：12 個月</option>
+          </select>
+        </div>
+      `);
     }
+
     revealSeg(bar.querySelector('.seg.cur .segbtn.on'));
   });
 }
