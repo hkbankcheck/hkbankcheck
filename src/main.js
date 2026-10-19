@@ -162,17 +162,21 @@ function renderFilterBars() {
     bar.innerHTML = groups.join('');
 
     revealSeg(bar.querySelector('.seg.cur .segbtn.on'));
-  } // 👈 閂返 forEach
-  const cur = e.target.closest('[data-cur]');
-  const lv = e.target.closest('[data-lv]');
-  const ty = e.target.closest('[data-type]');
-  const page = bar.dataset.page;
-  if (cur) {
-    if (page === 'fx') { fxCur = cur.dataset.cur; document.getElementById('fxCalcCur').value = fxCur; renderFX(); }
-    else { tdCur = cur.dataset.cur; renderTD(); }
-  } else if (lv) applyAll(+lv.dataset.lv);
-  else if (ty) setBankType(page, ty.dataset.type);
-}));
+   }); // 👈 閂返 forEach
+  
+  // 👇 下面係接駁返原本嘅 Click 事件 👇
+  document.querySelectorAll('.filterbar').forEach(bar => bar.addEventListener('click', e => {
+    const cur = e.target.closest('[data-cur]');
+    const lv = e.target.closest('[data-lv]');
+    const ty = e.target.closest('[data-type]');
+    const page = bar.dataset.page;
+    
+    if (cur) {
+      if (page === 'fx') { fxCur = cur.dataset.cur; document.getElementById('fxCalcCur').value = fxCur; renderFX(); }
+      else { tdCur = cur.dataset.cur; renderTD(); }
+    } else if (lv) applyAll(+lv.dataset.lv);
+    else if (ty) setBankType(page, ty.dataset.type);
+  }));
 function updateStuckBars() {
   document.querySelectorAll('.filterbar').forEach(bar => {
     const page = bar.closest('.page');
