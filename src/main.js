@@ -143,7 +143,7 @@ function renderFilterBars() {
        // 1. 貨幣掣 + 快速切換月份 (整合喺同一行)
     if (page === 'td') {
       groups.push(`
-        <div class="seg cur" style="width: auto; flex-basis: auto; display: flex; align-items: center; gap: 8px;">
+        <div class="seg cur" style="width: 100%; flex-basis: 100%; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
           <span class="seg-label">${t('labelCurrency')}</span>
           <div class="segctl" role="group" aria-label="${t('labelCurrency')}">
             ${TD_CURS.map(([id, key]) => {
