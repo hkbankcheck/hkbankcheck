@@ -145,6 +145,18 @@ function renderFilterBars() {
     groups.push(seg('tier', t('lvHint'), [1, 2, 3].map(lv => segBtn(` l${lv}${curLv === lv ? ' on' : ''}`, `data-lv="${lv}" aria-pressed="${curLv === lv}" title="${t('lvBtnTooltip', { level: LV(lv) })}"`, LV(lv))).join(''), false));
     groups.push(seg('type', t('bankTypeHint'), [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => segBtn(type === id ? ' on' : '', `data-type="${id}" aria-pressed="${type === id}"`, t(key))).join(''), false));
     bar.innerHTML = groups.join('');
+        // 👇 新增：將「快速切換月份」搬入去 Filter Bar 嘅最右邊 👇
+    if (page === 'td') {
+      const quickWrap = document.getElementById('tdQuickMonthWrap');
+      const quickSelect = document.getElementById('tdQuickMonth');
+      if (quickWrap && quickSelect) {
+        quickWrap.style.display = 'block'; // 顯示
+        quickSelect.value = tdSort; // 設定目前選擇嘅值
+        // 將原本喺 Filter Bar 入面嘅舊選單清除，再塞入新嘅
+        bar.querySelector('.quick-select')?.remove();
+        bar.appendChild(quickSelect); // 將選單塞入 bar
+      }
+    }
     revealSeg(bar.querySelector('.seg.cur .segbtn.on'));
   });
 }
