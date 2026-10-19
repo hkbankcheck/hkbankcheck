@@ -152,10 +152,10 @@ function renderFilterBars() {
             }).join('')}
           </div>
           <select id="tdQuickMonth" class="quick-select" style="color: #000 !important; background-color: #fff !important; padding: 6px 30px 6px 12px !important; border: 1px solid var(--line) !important; border-radius: 8px !important; font-size: 13px !important; font-weight: 600 !important; display: inline-block !important; margin-left: 10px;">
-            <option value="m1" ${tdSort === 'm1' ? 'selected' : ''}>1 個月</option>
-            <option value="m3" ${tdSort === 'm3' ? 'selected' : ''}>3 個月</option>
-            <option value="m6" ${tdSort === 'm6' ? 'selected' : ''}>6 個月</option>
-            <option value="m12" ${tdSort === 'm12' ? 'selected' : ''}>12 個月</option>
+                        <option value="m1" ${tdColFirst === 'm1' ? 'selected' : ''}>1 個月</option>
+            <option value="m3" ${tdColFirst === 'm3' ? 'selected' : ''}>3 個月</option>
+            <option value="m6" ${tdColFirst === 'm6' ? 'selected' : ''}>6 個月</option>
+            <option value="m12" ${tdColFirst === 'm12' ? 'selected' : ''}>12 個月</option>
           </select>
         </div>
       `);
