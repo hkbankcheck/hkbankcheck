@@ -144,36 +144,25 @@ function renderFilterBars() {
     }
     groups.push(seg('tier', t('lvHint'), [1, 2, 3].map(lv => segBtn(` l${lv}${curLv === lv ? ' on' : ''}`, `data-lv="${lv}" aria-pressed="${curLv === lv}" title="${t('lvBtnTooltip', { level: LV(lv) })}"`, LV(lv))).join(''), false));
     groups.push(seg('type', t('bankTypeHint'), [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => segBtn(type === id ? ' on' : '', `data-type="${id}" aria-pressed="${type === id}"`, t(key))).join(''), false));
-             // 👇 將「快速切換月份」直接砌入 HTML 度，保證一定出到 👇
+                // 👇 將「快速切換月份」當作其中一個 group 直接塞入去 👇
     if (page === 'td') {
-      // 1. 先檢查個 bar 入面有冇現成嘅 tdQuickMonth
-      let quickSelect = bar.querySelector('#tdQuickMonth');
-      
-      // 2. 如果冇，先至加落去
-      if (!quickSelect) {
-        bar.insertAdjacentHTML('beforeend', `
-          <div style="margin-left: auto;">
-            <select id="tdQuickMonth" class="quick-select">
-              <option value="m1">優先看：1 個月</option>
-              <option value="m3">優先看：3 個月</option>
-              <option value="m6">優先看：6 個月</option>
-              <option value="m12">優先看：12 個月</option>
-            </select>
-          </div>
-        `);
-        // 加完之後再攞返個 DOM 出嚟
-        quickSelect = bar.querySelector('#tdQuickMonth');
-      }
-      
-      // 3. 更新個下拉選單嘅狀態（令佢同 tdSort 保持同步）
-      if (quickSelect) {
-        quickSelect.value = tdSort;
-      }
-    }
+      groups.push(`
+        <div class="seg type" style="margin-left: auto;">
+          <select id="tdQuickMonth" class="quick-select">
+            <option value="m1" ${tdSort === 'm1' ? 'selected' : ''}>優先看：1 個月</option>
+            <option value="m3" ${tdSort === 'm3' ? 'selected' : ''}>優先看：3 個月</option>
+            <option value="m6" ${tdSort === 'm6' ? 'selected' : ''}>優先看：6 個月</option>
+            <option value="m12" ${tdSort === 'm12' ? 'selected' : ''}>優先看：12 個月</option>
+          </select>
+        </div>
+      `);
+      } // 👈 呢個係閂返 if (page === 'td') 嘅大括號
+
+    // 👇 呢句最重要，將所有掣同 Dropdown 一次過畫出嚟 👇
+    bar.innerHTML = groups.join('');
+
     revealSeg(bar.querySelector('.seg.cur .segbtn.on'));
-  });
-}
-document.querySelectorAll('.filterbar').forEach(bar => bar.addEventListener('click', e => {
+  } // 👈 閂返 forEach
   const cur = e.target.closest('[data-cur]');
   const lv = e.target.closest('[data-lv]');
   const ty = e.target.closest('[data-type]');
@@ -469,6 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cloneWrapper.style.display = 'none';
         currentTableWrap.classList.remove('is-stuck-thead');
       }
+    }
     }
   }
 
