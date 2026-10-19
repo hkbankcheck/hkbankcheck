@@ -452,12 +452,13 @@ document.addEventListener('DOMContentLoaded', () => {
               cloneThs[index].style.minWidth = th.offsetWidth + 'px';
               cloneThs[index].style.maxWidth = th.offsetWidth + 'px';
               // 抄高度
-                      cloneThs[index].style.height = th.offsetHeight + 'px';
-             });
-        }, 10);
-      } // 👈 呢個閂返 if (tableRect.top < ...)
-    } // 👈 呢個閂返 if (!isStuck)
-  } // 👈 呢個閂返 handleStickyHeader 函數 (最緊要呢個)
+              cloneThs[index].style.height = th.offsetHeight + 'px';
+            } // 👈 新增：完美閂返 if (cloneThs[index])
+          }); // 👈 完美閂返 forEach
+        }, 10); // 👈 完美閂返 setTimeout
+      } // 👈 完美閂返 if (tableRect.top < ...)
+    } // 👈 完美閂返 if (!isStuck)
+  } // 👈 完美閂返 handleStickyHeader 函數
 
   // 綁定各種滾動事件
   window.addEventListener('scroll', handleStickyHeader, { passive: true });
