@@ -3,7 +3,7 @@ import {
   LANGS, LANG_LABEL, getLang, setLang, LV, tr, t, fxCurName,
   bankDisplayName, tierPrimary, tierSecondary, tierFullName, preloadSimplified
 } from './i18n.js';
-let tdCur = 'HKD', tdType = 'all', tdSort = 'code'; // 👈 加喺呢度
+let tdCur = 'HKD', tdType = 'all', tdSort = 'code', tdColFirst = 'm1';
 
 /* ============ 最後更新 ============ */
 const LAST_UPDATED = '2025-12-09T12:00:00+08:00';
@@ -268,11 +268,11 @@ function renderTD() {
 
   // 👇 新增：根據選擇嘅月份，重新排列欄位順序 👇
   let orderedTenorKeys = [...TENOR_KEYS];
-  if (['m1', 'm3', 'm6', 'm12'].includes(tdSort)) {
-    const targetKey = TENOR_KEYS.find(x => x[0] === tdSort);
+    if (['m1', 'm3', 'm6', 'm12'].includes(tdColFirst)) {
+        const targetKey = TENOR_KEYS.find(x => x[0] === tdColFirst);
     if (targetKey) {
       // 將選中嘅月份放去最前面，其餘保持原序
-      orderedTenorKeys = [targetKey, ...TENOR_KEYS.filter(x => x[0] !== tdSort)];
+              orderedTenorKeys = [targetKey, ...TENOR_KEYS.filter(x => x[0] !== tdColFirst)];
     }
   }
 
@@ -302,7 +302,8 @@ function renderTD() {
 // 👇 新增：監聽快速切換月份下拉選單嘅改變 👇
 document.addEventListener('change', (e) => {
   if (e.target && e.target.id === 'tdQuickMonth') {
-    setTdSort(e.target.value); 
+    tdColFirst = e.target.value; // 只改變第一欄，唔改變排序
+      renderTD();
   }
 });
 function renderTdCalc() {
