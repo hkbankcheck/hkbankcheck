@@ -358,10 +358,13 @@ th.sortable:hover .sort-icon {
   }
 
   /* 將下拉選單強制放到下一行，並佔滿 100% 寬度 */
+  /* 讓下拉選單嘗試留喺同一行，擠唔落先換行 */
   .seg.cur select {
-    width: 100% !important;
-    margin-left: 0 !important;
-    margin-top: 6px !important;
+    width: auto !important;
+    min-width: 90px !important;
+    margin-left: 4px !important;
+    margin-top: 0 !important; /* 移除強制換行嘅下邊距 */
+    flex-shrink: 0 !important; /* 唔好縮細個選單 */
   }
 
   /* 3. 確保戶口和銀行按鈕能整齊排列 */
