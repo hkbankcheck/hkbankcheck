@@ -3,6 +3,7 @@ import {
   LANGS, LANG_LABEL, getLang, setLang, LV, tr, t, fxCurName,
   bankDisplayName, tierPrimary, tierSecondary, tierFullName, preloadSimplified
 } from './i18n.js';
+let tdCur = 'HKD', tdType = 'all', tdSort = 'code'; // 👈 加喺呢度
 
 /* ============ 最後更新 ============ */
 const LAST_UPDATED = '2025-12-09T12:00:00+08:00';
@@ -238,7 +239,6 @@ document.addEventListener('scroll', closeTierMenu, true);
 window.addEventListener('resize', closeTierMenu);
 
 /* ============ 定期存款 ============ */
-let tdCur = 'HKD', tdType = 'all', tdSort = 'code';
 const TENOR_KEYS = [['m1', 'tenorM1'], ['m3', 'tenorM3'], ['m6', 'tenorM6'], ['m12', 'tenorM12']];
 document.querySelectorAll('#tdType .chip').forEach(ch => ch.onclick = () => { tdType = ch.dataset.type; document.querySelectorAll('#tdType .chip').forEach(x => x.classList.toggle('active', x === ch)); renderTD(); });
 const tdRate = (td, cur, tk) => { const d = td && td[cur]; return d && d[tk] != null ? d[tk] : null; };
