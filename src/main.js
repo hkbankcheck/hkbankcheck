@@ -138,13 +138,31 @@ function renderFilterBars() {
     const page = bar.dataset.page;
     const type = bankTypeFor(page);
     const groups = [];
+    // 1. 貨幣掣 (強制顯示顏色)
     if (page === 'td') {
-      groups.push(seg('cur', t('labelCurrency'), TD_CURS.map(([id, key]) => segBtn(tdCur === id ? ' on' : '', `data-cur="${id}" aria-pressed="${tdCur === id}"`, t(key))).join(''), false));
+      groups.push(seg('cur', t('labelCurrency'), TD_CURS.map(([id, key]) => {
+        const isOn = tdCur === id;
+        return `<button type="button" class="segbtn${isOn ? ' on' : ''}" data-cur="${id}" aria-pressed="${isOn}" style="color: ${isOn ? '#082f49' : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${t(key)}</button>`;
+      }).join(''), false));
     } else if (page === 'fx') {
-      groups.push(seg('cur', t('labelCurrency'), FX_CURRENCIES.map(x => segBtn(fxCur === x.c ? ' on' : '', `data-cur="${x.c}" aria-pressed="${fxCur === x.c}"`, `${fxCurName(x.n)} ${x.c}`)).join(''), true));
+      groups.push(seg('cur', t('labelCurrency'), FX_CURRENCIES.map(x => {
+        const isOn = fxCur === x.c;
+        return `<button type="button" class="segbtn${isOn ? ' on' : ''}" data-cur="${x.c}" aria-pressed="${isOn}" style="color: ${isOn ? '#082f49' : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${fxCurName(x.n)} ${x.c}</button>`;
+      }).join(''), true));
     }
-    groups.push(seg('tier', t('lvHint'), [1, 2, 3].map(lv => segBtn(` l${lv}${curLv === lv ? ' on' : ''}`, `data-lv="${lv}" aria-pressed="${curLv === lv}" title="${t('lvBtnTooltip', { level: LV(lv) })}"`, LV(lv))).join(''), false));
-       groups.push(seg('type', t('bankTypeHint'), [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => segBtn(type === id ? ' on' : '', `data-type="${id}" aria-pressed="${type === id}"`, t(key))).join(''), false));
+
+    // 2. 戶口級別掣 (強制顯示顏色)
+    groups.push(seg('tier', t('lvHint'), [1, 2, 3].map(lv => {
+      const isOn = curLv === lv;
+      const activeColor = lv === 1 ? '#0369a1' : lv === 2 ? '#b45309' : '#6d28d9';
+      return `<button type="button" class="segbtn l${lv}${isOn ? ' on' : ''}" data-lv="${lv}" aria-pressed="${isOn}" title="${t('lvBtnTooltip', { level: LV(lv) })}" style="color: ${isOn ? activeColor : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${LV(lv)}</button>`;
+    }).join(''), false));
+
+    // 3. 銀行類型掣 (強制顯示顏色)
+    groups.push(seg('type', t('bankTypeHint'), [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => {
+      const isOn = type === id;
+      return `<button type="button" class="segbtn${isOn ? ' on' : ''}" data-type="${id}" aria-pressed="${isOn}" style="color: ${isOn ? '#082f49' : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${t(key)}</button>`;
+    }).join(''), false));
 
     // 👇 將「快速切換月份」當作其中一個 group 直接塞入去 👇
     if (page === 'td') {
