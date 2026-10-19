@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeTableWrap = null;
   let activeThead = null;
 
-  function handleStickyHeader() {
+   function handleStickyHeader() {
     // 每次滾動時，尋找目前顯示中（active）嘅 page 入面嘅 table-wrap
     const activePage = document.querySelector('.page.active');
     if (!activePage) return;
@@ -405,9 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isStuck) {
         isStuck = true;
         
-        // 複製當前 thead 嘅 HTML（因為 main.js 會動態改入面啲字）
-        // 並強制設定寬度同 table 一致
-                // 將原本張 Table 嘅 class 抄埋過去，並強制設定 table-layout 以確保對齊
+        // 複製當前 thead 嘅 HTML
         const originalTableClass = currentTableWrap.querySelector('table').className;
         cloneWrapper.innerHTML = `<table class="${originalTableClass}" style="width:${currentTableWrap.scrollWidth}px; min-width:980px; border-collapse:separate; border-spacing:0; table-layout:fixed;"><thead>${currentThead.innerHTML}</thead></table>`;
         
@@ -420,27 +418,33 @@ document.addEventListener('DOMContentLoaded', () => {
       cloneWrapper.style.left = tableRect.left + 'px';
       cloneWrapper.style.width = tableRect.width + 'px';
       
-      // 同步左右滑動（當你喺手機左右拉表格時，表頭會跟住郁）
+      // 同步左右滑動
       cloneWrapper.scrollLeft = currentTableWrap.scrollLeft;
-    // 🌟 暴力對齊法：量度每一欄嘅真實闊度，強制套用落影子表頭 🌟
-        setTimeout(() => {
-          const originalThs = currentThead.querySelectorAll('th');
-          const cloneThs = cloneWrapper.querySelectorAll('th');
-          
-          originalThs.forEach((th, index) => {
-            if (cloneThs[index]) {
-              // 抄闊度
-              cloneThs[index].style.width = th.offsetWidth + 'px';
-              cloneThs[index].style.minWidth = th.offsetWidth + 'px';
-              cloneThs[index].style.maxWidth = th.offsetWidth + 'px';
-              // 抄高度
-              cloneThs[index].style.height = th.offsetHeight + 'px';
-            } // 👈 新增：完美閂返 if (cloneThs[index])
-          }); // 👈 完美閂返 forEach
-        }, 10); // 👈 完美閂返 setTimeout
-      } // 👈 完美閂返 if (tableRect.top < ...)
-    } // 👈 完美閂返 if (!isStuck)
-  } // 👈 完美閂返 handleStickyHeader 函數
+
+      // 🌟 暴力對齊法
+      setTimeout(() => {
+        const originalThs = currentThead.querySelectorAll('th');
+        const cloneThs = cloneWrapper.querySelectorAll('th');
+        
+        originalThs.forEach((th, index) => {
+          if (cloneThs[index]) {
+            cloneThs[index].style.width = th.offsetWidth + 'px';
+            cloneThs[index].style.minWidth = th.offsetWidth + 'px';
+            cloneThs[index].style.maxWidth = th.offsetWidth + 'px';
+            cloneThs[index].style.height = th.offsetHeight + 'px';
+          }
+        });
+      }, 10);
+      
+    } else {
+      // 當拉返上頂時，收埋個影子表頭
+      if (isStuck) {
+        isStuck = false;
+        cloneWrapper.style.display = 'none';
+        currentTableWrap.classList.remove('is-stuck-thead');
+      }
+    }
+  } // 👈 呢度完美閂返 handleStickyHeader，下面唔應該再有 }
 
   // 綁定各種滾動事件
   window.addEventListener('scroll', handleStickyHeader, { passive: true });
@@ -460,4 +464,4 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   window.addEventListener('resize', handleStickyHeader);
-});
+}); // 👈 呢度完美閂返 DOMContentLoaded
