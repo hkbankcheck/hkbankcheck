@@ -140,12 +140,25 @@ function renderFilterBars() {
     const type = bankTypeFor(page);
     const groups = [];
 
-    // 1. 貨幣掣
+       // 1. 貨幣掣 + 快速切換月份 (整合喺同一行)
     if (page === 'td') {
-      groups.push(seg('cur', t('labelCurrency'), TD_CURS.map(([id, key]) => {
-        const isOn = tdCur === id;
-        return `<button type="button" class="segbtn${isOn ? ' on' : ''}" data-cur="${id}" aria-pressed="${isOn}" style="color: ${isOn ? '#082f49' : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${t(key)}</button>`;
-      }).join(''), false));
+      groups.push(`
+        <div class="seg cur" style="width: auto; flex-basis: auto; display: flex; align-items: center; gap: 8px;">
+          <span class="seg-label">${t('labelCurrency')}</span>
+          <div class="segctl" role="group" aria-label="${t('labelCurrency')}">
+            ${TD_CURS.map(([id, key]) => {
+              const isOn = tdCur === id;
+              return `<button type="button" class="segbtn${isOn ? ' on' : ''}" data-cur="${id}" aria-pressed="${isOn}" style="color: ${isOn ? '#082f49' : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${t(key)}</button>`;
+            }).join('')}
+          </div>
+          <select id="tdQuickMonth" class="quick-select" style="color: #000 !important; background-color: #fff !important; padding: 6px 30px 6px 12px !important; border: 1px solid var(--line) !important; border-radius: 8px !important; font-size: 13px !important; font-weight: 600 !important; display: inline-block !important; margin-left: 10px;">
+            <option value="m1" ${tdSort === 'm1' ? 'selected' : ''}>1 個月</option>
+            <option value="m3" ${tdSort === 'm3' ? 'selected' : ''}>3 個月</option>
+            <option value="m6" ${tdSort === 'm6' ? 'selected' : ''}>6 個月</option>
+            <option value="m12" ${tdSort === 'm12' ? 'selected' : ''}>12 個月</option>
+          </select>
+        </div>
+      `);
     } else if (page === 'fx') {
       groups.push(seg('cur', t('labelCurrency'), FX_CURRENCIES.map(x => {
         const isOn = fxCur === x.c;
@@ -165,21 +178,6 @@ function renderFilterBars() {
       const isOn = type === id;
       return `<button type="button" class="segbtn${isOn ? ' on' : ''}" data-type="${id}" aria-pressed="${isOn}" style="color: ${isOn ? '#082f49' : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${t(key)}</button>`;
     }).join(''), false));
-
-    // 4. 快速切換月份 Dropdown
-    if (page === 'td') {
-      groups.push(`
-        <div class="seg type" style="margin-left: auto;">
-          <select id="tdQuickMonth" class="quick-select" style="color: #000 !important; background-color: #fff !important; padding: 6px 10px !important; border: 1px solid #ccc !important; border-radius: 6px !important; font-size: 14px !important; min-width: 120px !important; display: inline-block !important;">
-            <option value="m1" ${tdSort === 'm1' ? 'selected' : ''}>優先看：1 個月</option>
-            <option value="m3" ${tdSort === 'm3' ? 'selected' : ''}>優先看：3 個月</option>
-            <option value="m6" ${tdSort === 'm6' ? 'selected' : ''}>優先看：6 個月</option>
-            <option value="m12" ${tdSort === 'm12' ? 'selected' : ''}>優先看：12 個月</option>
-          </select>
-        </div>
-      `);
-    }
-
     // 一次過畫出所有嘢
     bar.innerHTML = groups.join('');
     revealSeg(bar.querySelector('.seg.cur .segbtn.on'));
