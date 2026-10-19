@@ -211,8 +211,9 @@ window.addEventListener('resize', updateStuckBars);
 updateStuckBars();
 
 const tierLabelHTML = tt => {
-  const primary = tierPrimary(tt), secondary = tierSecondary(tt);
-  return `<span class="nm"><span class="n1">${primary}</span>${secondary ? `<span class="n2">${secondary}</span>` : ''}</span>`;
+  const primary = tierPrimary(tt);
+  // 只顯示 primary（上面嗰個），移除 secondary（下面嗰個）
+  return `<span class="nm"><span class="n1">${primary}</span></span>`;
 };
 
 /* 回傳該銀行所選戶口套用覆寫後的有效資料 */
