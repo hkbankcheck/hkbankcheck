@@ -131,7 +131,8 @@ function revealSeg(btn) {
   const right = left + btn.offsetWidth + pad * 2;
   if (left < scroller.scrollLeft) scroller.scrollLeft = Math.max(0, left);
   else if (right > scroller.scrollLeft + scroller.clientWidth) scroller.scrollLeft = right - scroller.clientWidth;
-}
+} // 👈 補返呢個大括號！完美閂返 revealSeg 函數
+
 function renderFilterBars() {
   console.log("🚀 測試：renderFilterBars 正在執行！");
 
@@ -144,10 +145,8 @@ function renderFilterBars() {
       </div>
     `;
     console.log("✅ 寫入完成！");
-  }); // 閂返 forEach
-} // 閂返 function
-   }); // 👈 閂返 forEach
-}
+  }); // 👈 呢個係閂返 forEach
+} // 👈 呢個係閂返 renderFilterBars，下面唔應該再有括號！
   // 👇 下面係接駁返原本嘅 Click 事件 👇
   document.querySelectorAll('.filterbar').forEach(bar => bar.addEventListener('click', e => {
     const cur = e.target.closest('[data-cur]');
