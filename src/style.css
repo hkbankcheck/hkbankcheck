@@ -322,3 +322,51 @@ th.sortable:hover .sort-icon {
 .quick-select:hover {
   border-color: var(--primary-2);
 }
+/* ===== 針對手機版（窄螢幕）的終極排版修復 ===== */
+@media (max-width: 640px) {
+  
+  /* 1. 修復 Header 頂部 Logo 與更新時間重疊 */
+  .bar {
+    padding: 0 10px; /* 減少邊距 */
+    gap: 4px;
+  }
+  .logo {
+    font-size: 18px !important; /* 縮細 Logo 字體 */
+    flex: 1;
+  }
+  .updated {
+    font-size: 9px !important;
+    max-width: 90px; /* 限制更新時間的寬度，防止撐爆 */
+    text-align: right;
+  }
+
+  /* 2. 修復 Filter Bar 貨幣列擠爆問題 */
+  .filterbar {
+    padding: 8px 6px !important; /* 減少 Filter Bar 內邊距 */
+  }
+  
+  /* 強制「貨幣」那一整行可以換行 */
+  .seg.cur {
+    flex-wrap: wrap !important; 
+    gap: 6px !important;
+  }
+  
+  /* 讓「港元/美元/人民幣」的按鈕可以佔滿空間，如果太窄就換行 */
+  .seg.cur .segctl {
+    flex: 1 1 auto !important;
+    overflow-x: auto; /* 如果真的太窄，允許左右滑動 */
+  }
+
+  /* 將下拉選單強制放到下一行，並佔滿 100% 寬度 */
+  .seg.cur select {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-top: 6px !important;
+  }
+
+  /* 3. 確保戶口和銀行按鈕能整齊排列 */
+  .seg.tier, .seg.type {
+    flex-wrap: wrap !important;
+    margin-bottom: 4px;
+  }
+}
