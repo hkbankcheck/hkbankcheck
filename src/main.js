@@ -143,12 +143,13 @@ function renderFilterBars() {
       groups.push(seg('cur', t('labelCurrency'), FX_CURRENCIES.map(x => segBtn(fxCur === x.c ? ' on' : '', `data-cur="${x.c}" aria-pressed="${fxCur === x.c}"`, `${fxCurName(x.n)} ${x.c}`)).join(''), true));
     }
     groups.push(seg('tier', t('lvHint'), [1, 2, 3].map(lv => segBtn(` l${lv}${curLv === lv ? ' on' : ''}`, `data-lv="${lv}" aria-pressed="${curLv === lv}" title="${t('lvBtnTooltip', { level: LV(lv) })}"`, LV(lv))).join(''), false));
-    groups.push(seg('type', t('bankTypeHint'), [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => segBtn(type === id ? ' on' : '', `data-type="${id}" aria-pressed="${type === id}"`, t(key))).join(''), false));
-                // 👇 將「快速切換月份」當作其中一個 group 直接塞入去 👇
+       groups.push(seg('type', t('bankTypeHint'), [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => segBtn(type === id ? ' on' : '', `data-type="${id}" aria-pressed="${type === id}"`, t(key))).join(''), false));
+
+    // 👇 將「快速切換月份」當作其中一個 group 直接塞入去 👇
     if (page === 'td') {
       groups.push(`
         <div class="seg type" style="margin-left: auto;">
-          <select id="tdQuickMonth" class="quick-select">
+          <select id="tdQuickMonth" class="quick-select" style="color: #000 !important; background-color: #fff !important; padding: 6px 10px !important; border: 1px solid #ccc !important; border-radius: 6px !important; font-size: 14px !important; min-width: 120px !important; display: inline-block !important;">
             <option value="m1" ${tdSort === 'm1' ? 'selected' : ''}>優先看：1 個月</option>
             <option value="m3" ${tdSort === 'm3' ? 'selected' : ''}>優先看：3 個月</option>
             <option value="m6" ${tdSort === 'm6' ? 'selected' : ''}>優先看：6 個月</option>
@@ -156,8 +157,7 @@ function renderFilterBars() {
           </select>
         </div>
       `);
-      } // 👈 呢個係閂返 if (page === 'td') 嘅大括號
-
+    }
     // 👇 呢句最重要，將所有掣同 Dropdown 一次過畫出嚟 👇
     bar.innerHTML = groups.join('');
 
