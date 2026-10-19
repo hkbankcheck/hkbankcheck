@@ -134,19 +134,57 @@ function revealSeg(btn) {
 } // 👈 補返呢個大括號！完美閂返 revealSeg 函數
 
 function renderFilterBars() {
-  console.log("🚀 測試：renderFilterBars 正在執行！");
-
+  const curLv = currentGlobalLevel();
   document.querySelectorAll('.filterbar').forEach(bar => {
-    console.log("🎯 搵到 Filter Bar，準備畫嘢...");
-    // 💥 強制寫入最簡單嘅 HTML，睇下出唔出到！
-    bar.innerHTML = `
-      <div style="padding: 10px; background: yellow; color: red; font-weight: bold; font-size: 18px; border: 2px solid red;">
-        測試成功！如果見到呢句，代表 JS 冇問題！
-      </div>
-    `;
-    console.log("✅ 寫入完成！");
-  }); // 👈 呢個係閂返 forEach
-} // 👈 呢個係閂返 renderFilterBars，下面唔應該再有括號！
+    const page = bar.dataset.page;
+    const type = bankTypeFor(page);
+    const groups = [];
+
+    // 1. 貨幣掣
+    if (page === 'td') {
+      groups.push(seg('cur', t('labelCurrency'), TD_CURS.map(([id, key]) => {
+        const isOn = tdCur === id;
+        return `<button type="button" class="segbtn${isOn ? ' on' : ''}" data-cur="${id}" aria-pressed="${isOn}" style="color: ${isOn ? '#082f49' : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${t(key)}</button>`;
+      }).join(''), false));
+    } else if (page === 'fx') {
+      groups.push(seg('cur', t('labelCurrency'), FX_CURRENCIES.map(x => {
+        const isOn = fxCur === x.c;
+        return `<button type="button" class="segbtn${isOn ? ' on' : ''}" data-cur="${x.c}" aria-pressed="${isOn}" style="color: ${isOn ? '#082f49' : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${fxCurName(x.n)} ${x.c}</button>`;
+      }).join(''), true));
+    }
+
+    // 2. 戶口級別掣
+    groups.push(seg('tier', t('lvHint'), [1, 2, 3].map(lv => {
+      const isOn = curLv === lv;
+      const activeColor = lv === 1 ? '#0369a1' : lv === 2 ? '#b45309' : '#6d28d9';
+      return `<button type="button" class="segbtn l${lv}${isOn ? ' on' : ''}" data-lv="${lv}" aria-pressed="${isOn}" title="${t('lvBtnTooltip', { level: LV(lv) })}" style="color: ${isOn ? activeColor : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${LV(lv)}</button>`;
+    }).join(''), false));
+
+    // 3. 銀行類型掣
+    groups.push(seg('type', t('bankTypeHint'), [['all', 'chipAll'], ['traditional', 'chipTraditional'], ['virtual', 'chipVirtual']].map(([id, key]) => {
+      const isOn = type === id;
+      return `<button type="button" class="segbtn${isOn ? ' on' : ''}" data-type="${id}" aria-pressed="${isOn}" style="color: ${isOn ? '#082f49' : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${t(key)}</button>`;
+    }).join(''), false));
+
+    // 4. 快速切換月份 Dropdown
+    if (page === 'td') {
+      groups.push(`
+        <div class="seg type" style="margin-left: auto;">
+          <select id="tdQuickMonth" class="quick-select" style="color: #000 !important; background-color: #fff !important; padding: 6px 10px !important; border: 1px solid #ccc !important; border-radius: 6px !important; font-size: 14px !important; min-width: 120px !important; display: inline-block !important;">
+            <option value="m1" ${tdSort === 'm1' ? 'selected' : ''}>優先看：1 個月</option>
+            <option value="m3" ${tdSort === 'm3' ? 'selected' : ''}>優先看：3 個月</option>
+            <option value="m6" ${tdSort === 'm6' ? 'selected' : ''}>優先看：6 個月</option>
+            <option value="m12" ${tdSort === 'm12' ? 'selected' : ''}>優先看：12 個月</option>
+          </select>
+        </div>
+      `);
+    }
+
+    // 一次過畫出所有嘢
+    bar.innerHTML = groups.join('');
+    revealSeg(bar.querySelector('.seg.cur .segbtn.on'));
+  }); // 閂返 forEach
+} // 閂返 function
   // 👇 下面係接駁返原本嘅 Click 事件 👇
   document.querySelectorAll('.filterbar').forEach(bar => bar.addEventListener('click', e => {
     const cur = e.target.closest('[data-cur]');
