@@ -265,13 +265,37 @@ window.setTdSort = setTdSort;
 
 function renderTD() {
   renderFilterBars();
+
+  // 👇 新增：根據選擇嘅月份，重新排列欄位順序 👇
+  let orderedTenorKeys = [...TENOR_KEYS];
+  if (['m1', 'm3', 'm6', 'm12'].includes(tdSort)) {
+    const targetKey = TENOR_KEYS.find(x => x[0] === tdSort);
+    if (targetKey) {
+      // 將選中嘅月份放去最前面，其餘保持原序
+      orderedTenorKeys = [targetKey, ...TENOR_KEYS.filter(x => x[0] !== tdSort)];
+    }
+  }
+
+  // 畫表頭 (使用 orderedTenorKeys)
   document.getElementById('tdHead').innerHTML = `<th class="sortable" onclick="setTdSort('code')">${t('colBankTier')}${tdSort === 'code' ? '' : t('resetHint')}</th>` +
-    TENOR_KEYS.map(([k, lk]) => `<th class="sortable" onclick="setTdSort('${k}')">${t(lk)} <span class="sort-icon">${tdSort === k ? '▼' : '↕'}</span></th>`).join('') +
+    orderedTenorKeys.map(([k, lk]) => `<th class="sortable" onclick="setTdSort('${k}')">${t(lk)} <span class="sort-icon">${tdSort === k ? '▼' : '↕'}</span></th>`).join('') +
     `<th>${t('colMinDeposit')}</th><th>${t('colCondition')}</th>`;
+
   let rows = BANKS.filter(byType(tdType)).map(b => ({ b, r: resolve(b) }));
-  if (tdSort === 'code') rows.sort((a, c) => (tdType === 'all' ? byTypeThenCode(a.b, c.b) : byCode(a.b, c.b))); else rows.sort((a, c) => ((tdRate(c.r.td, tdCur, tdSort) ?? -1) - (tdRate(a.r.td, tdCur, tdSort) ?? -1)) || byCode(a.b, c.b));
-  const best = {}; TENOR_KEYS.forEach(([k]) => best[k] = Math.max(...rows.map(x => tdRate(x.r.td, tdCur, k) ?? -1)));
-  document.getElementById('tdBody').innerHTML = rows.map(({ b, r }) => `<tr${rowClass(b)}>${bankCell(b)}${TENOR_KEYS.map(([k]) => { const v = tdRate(r.td, tdCur, k); return `<td>${v == null ? `<span class="rate na">${t('rateNotAvailable')}</span>` : `<span class="rate ${v === best[k] ? 'best' : ''}">${v.toFixed(2)}%<span class="approx">≈</span></span>`}</td>`; }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
+  
+  // 排序邏輯：如果係 code 就按銀行排，否則按選中嘅月份息率排
+  if (tdSort === 'code') {
+    rows.sort((a, c) => (tdType === 'all' ? byTypeThenCode(a.b, c.b) : byCode(a.b, c.b))); 
+  } else {
+    rows.sort((a, c) => ((tdRate(c.r.td, tdCur, tdSort) ?? -1) - (tdRate(a.r.td, tdCur, tdSort) ?? -1)) || byCode(a.b, c.b));
+  }
+
+  const best = {}; 
+  TENOR_KEYS.forEach(([k]) => best[k] = Math.max(...rows.map(x => tdRate(x.r.td, tdCur, k) ?? -1)));
+
+  // 畫表格內容 (使用 orderedTenorKeys)
+  document.getElementById('tdBody').innerHTML = rows.map(({ b, r }) => `<tr${rowClass(b)}>${bankCell(b)}${orderedTenorKeys.map(([k]) => { const v = tdRate(r.td, tdCur, k); return `<td>${v == null ? `<span class="rate na">${t('rateNotAvailable')}</span>` : `<span class="rate ${v === best[k] ? 'best' : ''}">${v.toFixed(2)}%<span class="approx">≈</span></span>`}</td>`; }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
+  
   renderTdCalc();
 }
 ['tdAmt', 'tdCalcCur', 'tdCalcTenor'].forEach(id => document.getElementById(id).addEventListener('input', renderTdCalc));
