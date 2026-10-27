@@ -159,7 +159,7 @@ export const BANKS = [
   atmLocal:{v:'請查閱',lvl:'na'},atmOverseas:{v:'請查閱',lvl:'na'},fxFee:{v:'請查閱',lvl:'na'},cardReplace:{v:'請查閱',lvl:'na'},cheque:{v:'不提供',lvl:'na'},cashierOrder:{v:'不提供',lvl:'na'},refLetter:{v:'請查閱',lvl:'na'},coinDeposit:{v:'不提供',lvl:'na'}},
  td:{HKD:{m1:2.30,m3:2.90,m6:2.60,m12:2.40},USD:{m1:3.50,m3:3.70,m6:3.50,m12:3.30},CNY:{m1:1.30,m3:1.50,m6:1.50,m12:1.50},min:'HK$1',note:'人民幣定存及跨境匯款為賣點。'},
  fx:{spread:0.35,notes:null,cur:'3',note:'支援微信支付跨境。'}},
-{id:'ant',code:'393',swift:'ASEHHKHH',name:'螞蟻銀行（香港）',nameEn:'Ant Bank',en:'Ant Bank (Hong Kong) Limited',type:'virtual',url:'https://www.antbank.hk/',
+{id:'ant',code:'393',swift:'ASEHHKHH',name:'螞蟻銀行 (香港)',nameEn:'Ant Bank',en:'Ant Bank (Hong Kong) Limited',type:'virtual',url:'https://www.antbank.hk/',
  tiers:[{level:1,n1:'Ant Bank 戶口',min:'無'}],
  fees:{minFee:{v:'無月費',lvl:'free'},minBal:{v:'無',lvl:'free'},dormant:{v:'無',lvl:'free'},statement:{v:'電子免費',lvl:'free'},closeAcc:{v:'免費',lvl:'free'},fps:{v:'免費',lvl:'free'},ttOnline:{v:'請查閱',lvl:'na'},ttBranch:{v:'不適用',lvl:'na'},ttIn:{v:'請查閱',lvl:'na'},ttAmend:{v:'不適用',lvl:'na'},
   atmLocal:{v:'不提供提款卡',lvl:'na',approx:true},atmOverseas:{v:'不適用',lvl:'na'},fxFee:{v:'不適用',lvl:'na'},cardReplace:{v:'不適用',lvl:'na'},cheque:{v:'不提供',lvl:'na'},cashierOrder:{v:'不提供',lvl:'na'},refLetter:{v:'請查閱',lvl:'na'},coinDeposit:{v:'不提供',lvl:'na'}},
