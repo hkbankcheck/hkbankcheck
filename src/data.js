@@ -166,12 +166,12 @@ export const BANKS = [
  td:{HKD:{m1:2.20,m3:2.80,m6:2.50,m12:2.30},USD:{m1:3.40,m3:3.60,m6:3.40,m12:3.20},CNY:{m1:1.20,m3:1.40,m6:1.40,m12:1.40},min:'HK$1',note:'App 內開立。'},
  fx:{spread:0.30,notes:null,cur:'3',note:'配合 AlipayHK 內地消費。'}},
     // 👇 加返呢個逗號，然後貼上 Airstar Bank
-  {id:'airstar',code:'395',swift:'AIRRHKHH',name:'天星銀行',nameEn:'Airstar Bank',en:'Airstar Bank Limited（現正易名 EleBank）',type:'virtual',url:'https://www.airstarbank.com/zh-hk/',
+    {id:'airstar',code:'395',swift:'AIRRHKHH',name:'天星銀行',nameEn:'Airstar Bank',en:'Airstar Bank Limited（現正易名 EleBank）',type:'virtual',url:'https://www.airstarbank.com/zh-hk/',
    tiers:[{level:1,n1:'Airstar 戶口',min:'無'}],
    fees:{minFee:{v:'無月費',lvl:'free'},minBal:{v:'無',lvl:'free'},dormant:{v:'無',lvl:'free'},statement:{v:'電子免費',lvl:'free'},closeAcc:{v:'免費',lvl:'free'},fps:{v:'免費',lvl:'free'},ttOnline:{v:'請查閱',lvl:'na'},ttBranch:{v:'不適用',lvl:'na'},ttIn:{v:'請查閱',lvl:'na'},ttAmend:{v:'不適用',lvl:'na'},
     atmLocal:{v:'請查閱',lvl:'na'},atmOverseas:{v:'請查閱',lvl:'na'},fxFee:{v:'請查閱',lvl:'na'},cardReplace:{v:'請查閱',lvl:'na'},cheque:{v:'不提供',lvl:'na'},cashierOrder:{v:'不提供',lvl:'na'},refLetter:{v:'請查閱',lvl:'na'},coinDeposit:{v:'不提供',lvl:'na'}},
    td:{HKD:{m1:2.30,m3:2.90,m6:2.70,m12:2.50},USD:{m1:3.60,m3:3.80,m6:3.60,m12:3.40},CNY:{m1:1.30,m3:1.50,m6:1.50,m12:1.50},min:'HK$1',note:'以存款業務為主。'},
-   fx:{spread:0.35,notes:null,cur:'3',note:'以港元／美元／人民幣為主。'}}
+   fx:{spread:0.35,notes:null,cur:'3',note:'以港元／美元／人民幣為主。'}} // 👈 留意呢度有兩個 }
 ];
 ];
 
