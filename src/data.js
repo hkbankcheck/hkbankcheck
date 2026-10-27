@@ -54,7 +54,7 @@ export const BANKS = [
  td:{HKD:{m1:2.10,m3:2.60,m6:2.40,m12:2.20},USD:{m1:3.50,m3:3.70,m6:3.50,m12:3.30},CNY:{m1:0.90,m3:1.10,m6:1.10,m12:1.10},min:'HK$10,000 / US$1,000',note:'Citi Plus 新資金優惠。'},
  fx:{spread:0.45,notes:1.50,cur:'12',note:'Citi Plus 網上兌換差價較窄。'}},
 
-{id:'bochk',code:'012',swift:'BKCHHKHH',name:'中國銀行（香港）',nameEn:'Bank of China (HK)',en:'Bank of China (Hong Kong) Limited',type:'traditional',url:'https://www.bochk.com/tc/home.html',
+{id:'bochk',code:'012',swift:'BKCHHKHH',name:'中國銀行 (香港)',nameEn:'Bank of China (HK)',en:'Bank of China (Hong Kong) Limited',type:'traditional',url:'https://www.bochk.com/tc/home.html',
  tiers:[
   {level:1,n1:'自在理財',min:'無最低結餘'},
   {level:2,n1:'智盈理財',n2:'Enrich Banking',min:'HK$200,000',ov:{tdAdd:0.05,fxSpread:0.45,fees:{ttOnline:{v:'HK$50',lvl:'paid',approx:true}}}},
