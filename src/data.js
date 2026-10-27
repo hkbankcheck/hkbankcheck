@@ -147,7 +147,7 @@ export const BANKS = [
   atmLocal:{v:'滙豐／恒生／銀通 ATM 免費',lvl:'free'},atmOverseas:{v:'Mox 方面免手續費',lvl:'cond'},fxFee:{v:'無外幣交易費',lvl:'free',approx:true},cardReplace:{v:'首張免費',lvl:'cond',approx:true},cheque:{v:'不提供',lvl:'na'},cashierOrder:{v:'不提供',lvl:'na'},refLetter:{v:'請查閱',lvl:'na'},coinDeposit:{v:'不提供',lvl:'na'}},
  td:{HKD:{m1:2.00,m3:2.60,m6:2.40,m12:2.30},USD:{m1:3.40,m3:3.60,m6:null,m12:null},CNY:null,min:'HK$1 / US$1',note:'美元只限 3 個月內。'},
  fx:{spread:0.25,notes:null,cur:'10',note:'多貨幣錢包直接扣賬。'}},
-{id:'welab',code:'390',swift:'WEDIHKHH',name:'WeLab Bank 匯立銀行',nameEn:'WeLab Bank',en:'WeLab Bank Limited',type:'virtual',url:'https://www.welab.bank/zh/',
+{id:'welab',code:'390',swift:'WEDIHKHH',name:'WeLab Bank',nameEn:'WeLab Bank',en:'WeLab Bank Limited',type:'virtual',url:'https://www.welab.bank/zh/',
  tiers:[{level:1,n1:'WeLab 戶口',min:'無'}],
  fees:{minFee:{v:'無月費',lvl:'free'},minBal:{v:'無',lvl:'free'},dormant:{v:'無',lvl:'free'},statement:{v:'電子免費',lvl:'free'},closeAcc:{v:'免費',lvl:'free'},fps:{v:'免費',lvl:'free'},ttOnline:{v:'請查閱',lvl:'na'},ttBranch:{v:'不適用',lvl:'na'},ttIn:{v:'請查閱',lvl:'na'},ttAmend:{v:'不適用',lvl:'na'},
   atmLocal:{v:'銀通 ATM 免費',lvl:'free',approx:true},atmOverseas:{v:'WeLab 方面免手續費',lvl:'cond',approx:true},fxFee:{v:'無外幣交易費',lvl:'free',approx:true},cardReplace:{v:'請查閱',lvl:'na'},cheque:{v:'不提供',lvl:'na'},cashierOrder:{v:'不提供',lvl:'na'},refLetter:{v:'請查閱',lvl:'na'},coinDeposit:{v:'不提供',lvl:'na'}},
