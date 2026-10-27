@@ -102,7 +102,7 @@ export const BANKS = [
  td:{HKD:{m1:1.80,m3:2.30,m6:2.20,m12:2.10},USD:{m1:3.20,m3:3.40,m6:3.30,m12:3.10},CNY:{m1:1.00,m3:1.20,m6:1.20,m12:1.20},min:'HK$10,000 / US$2,000',note:'網上新資金優惠。'},
  fx:{spread:0.55,notes:1.50,cur:'24',note:'外幣提款機免費提取 8 種外幣現鈔。'}},
 
-{id:'icbc',code:'072',swift:'UBHKHKHH',name:'中國工商銀行（亞洲）',nameEn:'ICBC (Asia)',en:'Industrial and Commercial Bank of China (Asia) Limited',type:'traditional',url:'https://www.icbcasia.com/',
+{id:'icbc',code:'072',swift:'UBHKHKHH',name:'中國工商銀行 (亞洲)',nameEn:'ICBC (Asia)',en:'Industrial and Commercial Bank of China (Asia) Limited',type:'traditional',url:'https://www.icbcasia.com/',
  tiers:[
   {level:1,n1:'理財通',n2:'e-Fortune Banking',min:'無最低結餘'},
   {level:2,n1:'卓越理財',n2:'Excellence Banking',min:'HK$500,000',ov:{tdAdd:0.10,fxSpread:0.40,fees:{ttOnline:W.ttFree,atmOverseas:W.free()}}},
@@ -114,7 +114,7 @@ export const BANKS = [
  td:{HKD:{m1:2.00,m3:2.50,m6:2.30,m12:2.20},USD:{m1:3.30,m3:3.50,m6:3.40,m12:3.20},CNY:{m1:1.30,m3:1.50,m6:1.50,m12:1.60},min:'HK$10,000',note:'手機銀行新資金優惠。'},
  fx:{spread:0.50,notes:1.40,cur:'15+',note:'與內地工商銀行網絡連繫緊密，人民幣業務具優勢。'}},
 
-{id:'ccba',code:'809',swift:'CCBQHKAX',name:'中國建設銀行（亞洲）',nameEn:'CCB (Asia)',en:'China Construction Bank (Asia) Corporation Limited',type:'traditional',url:'https://asia.ccb.com/hongkong/',
+{id:'ccba',code:'809',swift:'CCBQHKAX',name:'中國建設銀行 (亞洲)',nameEn:'CCB (Asia)',en:'China Construction Bank (Asia) Corporation Limited',type:'traditional',url:'https://asia.ccb.com/hongkong/',
  tiers:[
   {level:1,n1:'CCB 理財',n2:'CCB Banking',min:'無最低結餘'},
   {level:2,n1:'卓越理財',n2:'Elite Banking',min:'HK$500,000',ov:{tdAdd:0.10,fxSpread:0.40,fees:{ttOnline:W.ttFree,atmOverseas:W.free()}}},
