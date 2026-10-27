@@ -127,7 +127,7 @@ export const BANKS = [
  fx:{spread:0.50,notes:1.40,cur:'15+',note:'建行網絡覆蓋內地，跨境理財產品選擇多。'}},
 
 /* ---- 虛擬銀行：單一戶口（基本） ---- */
-{id:'za',code:'387',swift:'AABLHKHH',name:'ZA Bank 眾安銀行',nameEn:'ZA Bank',en:'ZA Bank Limited',type:'virtual',url:'https://bank.za.group/hk',
+{id:'za',code:'387',swift:'AABLHKHH',name:'ZA Bank',nameEn:'ZA Bank',en:'ZA Bank Limited',type:'virtual',url:'https://bank.za.group/hk',
  tiers:[{level:1,n1:'ZA 銀行戶口',min:'無'}],
  fees:{minFee:{v:'無月費',lvl:'free'},minBal:{v:'無',lvl:'free'},dormant:{v:'無',lvl:'free'},statement:{v:'電子免費；紙本 HK$100',lvl:'cond'},closeAcc:{v:'免費',lvl:'free'},
   fps:{v:'免費',lvl:'free'},ttOnline:{v:'ZA Remit 透明低費用',lvl:'cond',note:'與 Wise 合作；匯內地 HK$30／筆。'},ttBranch:{v:'不適用',lvl:'na'},ttIn:{v:'支援 SWIFT 匯入',lvl:'cond',approx:true},ttAmend:{v:'請查閱',lvl:'na'},
@@ -135,7 +135,7 @@ export const BANKS = [
   cheque:{v:'不提供',lvl:'na'},cashierOrder:{v:'不提供',lvl:'na'},refLetter:{v:'請查閱',lvl:'na'},coinDeposit:{v:'不提供',lvl:'na'}},
  td:{HKD:{m1:2.20,m3:2.80,m6:2.60,m12:2.40},USD:{m1:3.60,m3:3.80,m6:3.60,m12:3.40},CNY:{m1:1.30,m3:1.50,m6:1.50,m12:1.50},min:'HK$1 / US$1',note:'不時有限時加息。'},
  fx:{spread:0.30,notes:null,cur:'11',note:'差價窄；無現鈔服務。'}},
-{id:'livi',code:'388',swift:'LIVIHKHH',name:'livi bank 理慧銀行',nameEn:'livi bank',en:'livi bank Limited',type:'virtual',url:'https://www.livibank.com/zh_HK/',
+{id:'livi',code:'388',swift:'LIVIHKHH',name:'理慧銀行',nameEn:'livi bank',en:'livi bank Limited',type:'virtual',url:'https://www.livibank.com/zh_HK/',
  tiers:[{level:1,n1:'livi 戶口',min:'無'}],
  fees:{minFee:{v:'無月費',lvl:'free'},minBal:{v:'無',lvl:'free'},dormant:{v:'無',lvl:'free'},statement:{v:'電子免費',lvl:'free'},closeAcc:{v:'免費',lvl:'free'},fps:{v:'免費',lvl:'free'},ttOnline:{v:'請查閱',lvl:'na'},ttBranch:{v:'不適用',lvl:'na'},ttIn:{v:'請查閱',lvl:'na'},ttAmend:{v:'不適用',lvl:'na'},
   atmLocal:{v:'銀通 ATM 免費',lvl:'free',approx:true},atmOverseas:{v:'請查閱',lvl:'na'},fxFee:{v:'約 1.95%（部分交易有優惠）',lvl:'cond',approx:true},cardReplace:{v:'請查閱',lvl:'na'},cheque:{v:'不提供',lvl:'na'},cashierOrder:{v:'不提供',lvl:'na'},refLetter:{v:'請查閱',lvl:'na'},coinDeposit:{v:'不提供',lvl:'na'}},
