@@ -45,7 +45,11 @@
   <div class="calc"><h3 id="calcTdTitle"></h3>
     <div class="row"><label id="labelAmount"></label><input type="number" id="tdAmt" value="100000" min="1" step="1000" style="width:160px">
       <label id="labelCurrency1"></label><select id="tdCalcCur"><option>HKD</option><option>USD</option><option>CNY</option></select>
-      <label id="labelTenor"></label><select id="tdCalcTenor"><option value="m1">1 個月</option><option value="m3" selected>3 個月</option><option value="m6">6 個月</option><option value="m12">12 個月</option></select></div>
+            <label id="labelTenor"></label><select id="tdCalcTenor"><option value="m1">1 個月</option><option value="m3" selected>3 個月</option><option value="m6">6 個月</option><option value="m12">12 個月</option></select>
+      <!-- 👇 加呢兩句 👇 -->
+      <label id="labelCalcPinBank">指定銀行</label>
+      <select id="tdCalcPinBank"></select>
+    </div>
     <ul class="rank" id="tdRank"></ul>
     <p class="sub" style="margin-top:12px" id="calcTdNote"></p></div>
 </section>
