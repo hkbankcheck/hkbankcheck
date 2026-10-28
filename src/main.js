@@ -288,7 +288,7 @@ function renderTD() {
           style="cursor:pointer; margin-left:8px; display:inline-flex; align-items:center; vertical-align:middle; color:var(--muted); transition:0.2s;" 
           onmouseover="this.style.color='var(--primary)'" 
           onmouseout="this.style.color='var(--muted)'">
-      <svg style="width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24">
+      <svg style="width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24">
         <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
         <line x1="8" y1="6" x2="16" y2="6"></line>
         <line x1="16" y1="14" x2="16.01" y2="14"></line>
