@@ -53,6 +53,7 @@ function applyStaticI18n() {
   document.getElementById('labelAmount').textContent = t('labelAmount');
   document.getElementById('labelCurrency1').textContent = t('labelCurrency');
   document.getElementById('labelTenor').textContent = t('labelTenor');
+  document.getElementById('labelCalcPinBank').textContent = t('labelCalcPinBank');
   document.getElementById('calcTdNote').textContent = t('calcTdNote');
   const tenorOpts = document.querySelectorAll('#tdCalcTenor option');
   const tenorKeys = ['tenorM1', 'tenorM3', 'tenorM6', 'tenorM12'];
