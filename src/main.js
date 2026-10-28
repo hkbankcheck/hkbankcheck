@@ -313,10 +313,15 @@ function renderTD() {
     </span>
   `;
 
-  document.getElementById('tdHead').innerHTML = `<th class="sortable" onclick="setTdSort('code')">${t('colBankTier')}${tdSort === 'code' ? '' : t('resetHint')} ${calcSvg}</th>` +
+   document.getElementById('tdHead').innerHTML = `
+    <th class="sortable" onclick="setTdSort('code')" style="padding: 8px 6px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 4px;">
+        <span style="word-break: break-word; line-height: 1.3;">${t('colBankTier')}${tdSort === 'code' ? '' : t('resetHint')}</span>
+        <span style="flex-shrink: 0; display: flex; align-items: center;">${calcSvg}</span>
+      </div>
+    </th>` +
     orderedTenorKeys.map(([k, lk]) => `<th class="sortable" onclick="setTdSort('${k}')">${t(lk)} <span class="sort-icon">${tdSort === k ? '▼' : '↕'}</span></th>`).join('') +
     `<th>${t('colMinDeposit')}</th><th>${t('colCondition')}</th>`;
-
   let rows = BANKS.filter(byType(tdType)).map(b => ({ b, r: resolve(b) }));
   
   // 排序邏輯：如果係 code 就按銀行排，否則按選中嘅月份息率排
