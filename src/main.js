@@ -263,10 +263,21 @@ document.querySelectorAll('#tdType .chip').forEach(ch => ch.onclick = () => { td
 const tdRate = (td, cur, tk) => { const d = td && td[cur]; return d && d[tk] != null ? d[tk] : null; };
 function setTdSort(k) { tdSort = k; renderTD(); }
 window.setTdSort = setTdSort;
+// 👇 新增：平滑滾動到計算機標題嘅函數（會避開頂部 Filter Bar）
 window.scrollToCalculator = () => {
-  const calcDiv = document.querySelector('.calc');
-  if (calcDiv) {
-    calcDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const calcTitle = document.getElementById('calcTdTitle');
+  if (calcTitle) {
+    // 獲取目標標題喺頁面嘅絕對高度
+    const titleTop = calcTitle.getBoundingClientRect().top + window.scrollY;
+    
+    // 獲取頂部 Filter Bar 嘅高度
+    const filterBar = document.querySelector('.filterbar');
+    const filterBarHeight = filterBar ? filterBar.offsetHeight : 0;
+    
+    // 計算最終滾動位置：標題高度 - Filter Bar 高度 - 額外 20px 空間
+    const scrollTarget = titleTop - filterBarHeight - 20;
+    
+    window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
   }
 };
 function renderTD() {
