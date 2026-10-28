@@ -405,7 +405,12 @@ tenorM12: { 'zh-Hant': '12 個月', 'zh-Hans': '12 个月', en: '12 months' },
 colMinDeposit: { 'zh-Hant': '起存額', 'zh-Hans': '起存额', en: 'Min. Deposit' },
 colCondition: { 'zh-Hant': '條件／備註', 'zh-Hans': '条件／备注', en: 'Terms / Notes' },
 rateNotAvailable: { 'zh-Hant': '不提供', 'zh-Hans': '不提供', en: 'N/A' },
-calcTdTitle: { 'zh-Hant': '🧮 定存利息計算機', 'zh-Hans': '🧮 定存利息计算机', en: '🧮 Time Deposit Interest Calculator' },
+/*calcTdTitle: { 'zh-Hant': '🧮 定存利息計算機', 'zh-Hans': '🧮 定存利息计算机', en: '🧮 Time Deposit Interest Calculator' },*/
+  calcTdTitle: { 
+    'zh-Hant': '<svg style="width:20px;height:20px;vertical-align:middle;margin-right:6px;margin-top:-2px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16.01" y2="14"></line><line x1="12" y1="14" x2="12.01" y2="14"></line><line x1="8" y1="14" x2="8.01" y2="14"></line><line x1="16" y1="18" x2="16.01" y2="18"></line><line x1="12" y1="18" x2="12.01" y2="18"></line><line x1="8" y1="18" x2="8.01" y2="18"></line><line x1="8" y1="10" x2="16" y2="10"></line></svg> 定存利息計算機', 
+    'zh-Hans': '<svg style="width:20px;height:20px;vertical-align:middle;margin-right:6px;margin-top:-2px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16.01" y2="14"></line><line x1="12" y1="14" x2="12.01" y2="14"></line><line x1="8" y1="14" x2="8.01" y2="14"></line><line x1="16" y1="18" x2="16.01" y2="18"></line><line x1="12" y1="18" x2="12.01" y2="18"></line><line x1="8" y1="18" x2="8.01" y2="18"></line><line x1="8" y1="10" x2="16" y2="10"></line></svg> 定存利息计算器', 
+    en: '<svg style="width:20px;height:20px;vertical-align:middle;margin-right:6px;margin-top:-2px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16.01" y2="14"></line><line x1="12" y1="14" x2="12.01" y2="14"></line><line x1="8" y1="14" x2="8.01" y2="14"></line><line x1="16" y1="18" x2="16.01" y2="18"></line><line x1="12" y1="18" x2="12.01" y2="18"></line><line x1="8" y1="18" x2="8.01" y2="18"></line><line x1="8" y1="10" x2="16" y2="10"></line></svg> Time Deposit Interest Calculator' 
+  },
 labelAmount: { 'zh-Hant': '存款金額', 'zh-Hans': '存款金额', en: 'Deposit Amount' },
 labelCurrency: { 'zh-Hant': '貨幣', 'zh-Hans': '货币', en: 'Currency' },
 labelTenor: { 'zh-Hant': '存期', 'zh-Hans': '存期', en: 'Tenor' },
