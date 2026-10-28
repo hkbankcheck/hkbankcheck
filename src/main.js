@@ -263,22 +263,46 @@ document.querySelectorAll('#tdType .chip').forEach(ch => ch.onclick = () => { td
 const tdRate = (td, cur, tk) => { const d = td && td[cur]; return d && d[tk] != null ? d[tk] : null; };
 function setTdSort(k) { tdSort = k; renderTD(); }
 window.setTdSort = setTdSort;
-
+window.scrollToCalculator = () => {
+  const calcDiv = document.querySelector('.calc');
+  if (calcDiv) {
+    calcDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+};
 function renderTD() {
   renderFilterBars();
 
-  // 👇 新增：根據選擇嘅月份，重新排列欄位順序 👇
+  // 👇 根據選擇嘅月份，重新排列欄位順序 👇
   let orderedTenorKeys = [...TENOR_KEYS];
-    if (['m1', 'm3', 'm6', 'm12'].includes(tdColFirst)) {
-        const targetKey = TENOR_KEYS.find(x => x[0] === tdColFirst);
+  if (['m1', 'm3', 'm6', 'm12'].includes(tdColFirst)) {
+    const targetKey = TENOR_KEYS.find(x => x[0] === tdColFirst);
     if (targetKey) {
       // 將選中嘅月份放去最前面，其餘保持原序
-              orderedTenorKeys = [targetKey, ...TENOR_KEYS.filter(x => x[0] !== tdColFirst)];
+      orderedTenorKeys = [targetKey, ...TENOR_KEYS.filter(x => x[0] !== tdColFirst)];
     }
   }
 
-  // 畫表頭 (使用 orderedTenorKeys)
-  document.getElementById('tdHead').innerHTML = `<th class="sortable" onclick="setTdSort('code')">${t('colBankTier')}${tdSort === 'code' ? '' : t('resetHint')}</th>` +
+  // 畫表頭 (使用 orderedTenorKeys，並加入計算機 Icon)
+  const calcSvg = `
+    <span onclick="event.stopPropagation(); window.scrollToCalculator()" title="跳至計算機" 
+          style="cursor:pointer; margin-left:8px; display:inline-flex; align-items:center; vertical-align:middle; color:var(--muted); transition:0.2s;" 
+          onmouseover="this.style.color='var(--primary)'" 
+          onmouseout="this.style.color='var(--muted)'">
+      <svg style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24">
+        <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+        <line x1="8" y1="6" x2="16" y2="6"></line>
+        <line x1="16" y1="14" x2="16.01" y2="14"></line>
+        <line x1="12" y1="14" x2="12.01" y2="14"></line>
+        <line x1="8" y1="14" x2="8.01" y2="14"></line>
+        <line x1="16" y1="18" x2="16.01" y2="18"></line>
+        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+        <line x1="8" y1="18" x2="8.01" y2="18"></line>
+        <line x1="8" y1="10" x2="16" y2="10"></line>
+      </svg>
+    </span>
+  `;
+
+  document.getElementById('tdHead').innerHTML = `<th class="sortable" onclick="setTdSort('code')">${t('colBankTier')}${tdSort === 'code' ? '' : t('resetHint')} ${calcSvg}</th>` +
     orderedTenorKeys.map(([k, lk]) => `<th class="sortable" onclick="setTdSort('${k}')">${t(lk)} <span class="sort-icon">${tdSort === k ? '▼' : '↕'}</span></th>`).join('') +
     `<th>${t('colMinDeposit')}</th><th>${t('colCondition')}</th>`;
 
