@@ -3,8 +3,7 @@ import {
   LANGS, LANG_LABEL, getLang, setLang, LV, tr, t, fxCurName,
   bankDisplayName, tierPrimary, tierSecondary, tierFullName, preloadSimplified
 } from './i18n.js';
-let tdCur = 'HKD', tdType = 'all', tdSort = 'code', tdColFirst = 'm1';
-
+let tdCur = 'HKD', tdType = 'all', tdSort = 'code', tdColFirst = 'm1', pinnedCalcBank = 'all';
 /* ============ 最後更新 ============ */
 const LAST_UPDATED = '2025-12-09T12:00:00+08:00';
 function renderLastUpdated() {
@@ -350,7 +349,17 @@ document.addEventListener('change', (e) => {
 });
 function renderTdCalc() {
   const amt = parseFloat(document.getElementById('tdAmt').value) || 0, cur = document.getElementById('tdCalcCur').value, tk = document.getElementById('tdCalcTenor').value, months = { m1: 1, m3: 3, m6: 6, m12: 12 }[tk];
-  const list = BANKS.map(b => { const r = resolve(b); return { b, r, v: tdRate(r.td, cur, tk) }; }).filter(x => x.v != null).sort((a, c) => (c.v - a.v) || byCode(a.b, c.b));
+    let list = BANKS.map(b => { const r = resolve(b); return { b, r, v: tdRate(r.td, cur, tk) }; }).filter(x => x.v != null).sort((a, c) => (c.v - a.v) || byCode(a.b, c.b));
+
+  // 👇 新增：將指定銀行推上第一 👇
+  if (pinnedCalcBank !== 'all') {
+    const idx = list.findIndex(x => x.b.id === pinnedCalcBank);
+    if (idx > -1) {
+      const [pinned] = list.splice(idx, 1); // 抽出嚟
+      list.unshift(pinned); // 塞去最前
+    }
+  }
+
   document.getElementById('tdRank').innerHTML = list.map((x, i) => `<li><b>${i + 1}. ${bankDisplayName(x.b)}</b><span class="sub">${tierFullName(x.r.tier)}</span><br><span class="amt">${cur} ${(amt * x.v / 100 * months / 12).toLocaleString(undefined, { maximumFractionDigits: 2 })}</span><span class="sub">${t('rankYearRate')}${x.v.toFixed(2)}%</span></li>`).join('');
 }
 
@@ -363,6 +372,12 @@ function buildFxCalcOptions() {
     const o = document.createElement('option'); o.value = x.c; o.textContent = `${fxCurName(x.n)} ${x.c}`; fxCalcSel.appendChild(o);
   });
   fxCalcSel.value = fxCur;
+}
+function buildCalcBankOptions() {
+  const sel = document.getElementById('tdCalcPinBank');
+  if (!sel) return;
+  sel.innerHTML = `<option value="all">預設排序</option>` + BANKS.map(b => `<option value="${b.id}">${bankDisplayName(b)}</option>`).join('');
+  sel.value = pinnedCalcBank;
 }
 document.querySelectorAll('#fxType .chip').forEach(ch => ch.onclick = () => { fxType = ch.dataset.type; document.querySelectorAll('#fxType .chip').forEach(x => x.classList.toggle('active', x === ch)); renderFX(); });
 fxCalcSel.addEventListener('change', () => { fxCur = fxCalcSel.value; renderFX(); });
@@ -568,3 +583,12 @@ document.addEventListener('DOMContentLoaded', () => {
   
   window.addEventListener('resize', handleStickyHeader);
 }); // 👈 呢度完美閂返 DOMContentLoaded
+// 👇 新增：初始化下拉選單及綁定事件 👇
+buildCalcBankOptions();
+
+document.addEventListener('change', (e) => {
+  if (e.target && e.target.id === 'tdCalcPinBank') {
+    pinnedCalcBank = e.target.value;
+    renderTdCalc(); // 重新畫計算機排名
+  }
+});
