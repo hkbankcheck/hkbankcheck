@@ -73,7 +73,7 @@ input[type=search]{flex:1;min-width:220px}
 table{border-collapse:separate;border-spacing:0;width:100%;min-width:980px;font-size:14px}
 th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 .table-wrap thead th{background:#f8fafc;font-weight:700;color:#334155}
-.table-wrap th:first-child,.table-wrap td:first-child{position:sticky;left:0;background:var(--row);z-index:3;width:140px;min-width:140px;max-width:140px;box-shadow:1px 0 0 var(--line)}
+.table-wrap th:first-child,.table-wrap td:first-child{position:sticky;left:0;background:var(--row);z-index:3;width:150px;min-width:150px;max-width:150px;box-shadow:1px 0 0 var(--line)}
 .table-wrap thead th:first-child{background:#f8fafc;z-index:4;white-space:normal}
 .table-wrap tbody tr:nth-child(even) td{background:var(--row-alt)}
 .table-wrap tbody tr:nth-child(even) td:first-child{background:var(--row-alt)}
@@ -292,9 +292,9 @@ th.sortable:hover .sort-icon {
   z-index: 10 !important;
   background: #f8fafc !important;
   box-shadow: 1px 0 0 var(--line);
-  width: 140px;
-  min-width: 140px;
-  max-width: 140px;
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
 }
 
 /* 當固定表頭啟動時，隱藏原本嘅表頭，但保留空間防止表格跳動 */
