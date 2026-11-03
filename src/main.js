@@ -378,7 +378,7 @@ function renderTD() {
       arrow = `<span style="color: #dc2626; font-weight: bold; margin-left: 4px;">↓</span>`; 
     }
 
-        return `<td spellcheck="false"><span class="rate ${isBest ? 'best' : ''}">${v.toFixed(2)}%<span class="approx">≈</span>${arrow}</span></td>`;
+            return `<td spellcheck="false"><span class="rate ${isBest ? 'best' : ''}" spellcheck="false">${v.toFixed(2)}%<span class="approx">≈</span>${arrow}</span></td>`;
   }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
   
   renderTdCalc();
