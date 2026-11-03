@@ -352,11 +352,34 @@ function renderTD() {
     rows.sort((a, c) => ((tdRate(c.r.td, tdCur, tdSort) ?? -1) - (tdRate(a.r.td, tdCur, tdSort) ?? -1)) || byCode(a.b, c.b));
   }
 
-  const best = {}; 
-  TENOR_KEYS.forEach(([k]) => best[k] = Math.max(...rows.map(x => tdRate(x.r.td, tdCur, k) ?? -1)));
+   const best = {};
+  const worst = {};
+  TENOR_KEYS.forEach(([k]) => {
+    const validRates = rows.map(x => tdRate(x.r.td, tdCur, k)).filter(v => v != null);
+    best[k] = validRates.length ? Math.max(...validRates) : -1;
+    worst[k] = validRates.length ? Math.min(...validRates) : -1;
+  });
 
   // 畫表格內容 (使用 orderedTenorKeys)
-  document.getElementById('tdBody').innerHTML = rows.map(({ b, r }) => `<tr${rowClass(b)}>${bankCell(b)}${orderedTenorKeys.map(([k]) => { const v = tdRate(r.td, tdCur, k); return `<td>${v == null ? `<span class="rate na">${t('rateNotAvailable')}</span>` : `<span class="rate ${v === best[k] ? 'best' : ''}">${v.toFixed(2)}%<span class="approx">≈</span></span>`}</td>`; }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
+  document.getElementById('tdBody').innerHTML = rows.map(({ b, r }) => `<tr${rowClass(b)}>${bankCell(b)}${orderedTenorKeys.map(([k]) => { 
+    const v = tdRate(r.td, tdCur, k); 
+    if (v == null) return `<td><span class="rate na">${t('rateNotAvailable')}</span></td>`;
+    
+    const isBest = v === best[k];
+    // 只有當最高同最低唔一樣嗰陣，先顯示最低箭嘴
+    const isWorst = v === worst[k] && best[k] !== worst[k]; 
+    
+    let arrow = '';
+    if (isBest) {
+      // 綠色向上箭嘴
+      arrow = `<span style="color: #16a34a; font-weight: bold; margin-left: 4px;">↑</span>`; 
+    } else if (isWorst) {
+      // 紅色向下箭嘴
+      arrow = `<span style="color: #dc2626; font-weight: bold; margin-left: 4px;">↓</span>`; 
+    }
+
+    return `<td><span class="rate ${isBest ? 'best' : ''}">${v.toFixed(2)}%<span class="approx">≈</span>${arrow}</span></td>`; 
+  }).join('')}<td>${tr(r.td?.min) || '—'}</td><td class="sub">${tr(r.td?.note) || ''}${r.tier.ov?.tdAdd ? '<br>' + t('tdAddNote', { tier: tierFullName(r.tier), pct: r.tier.ov.tdAdd }) : ''}</td></tr>`).join('');
   
   renderTdCalc();
 }
