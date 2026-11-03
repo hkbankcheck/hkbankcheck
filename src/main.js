@@ -329,20 +329,18 @@ function renderTD() {
       </div>
     </th>` +
         orderedTenorKeys.map(([k, lk]) => {
-            // 👇 只要有任何排序（tdSort 唔係 'code'），所有列都顯示一致的圖標
-      const isAnySorted = (tdSort !== 'code'); 
+                const isSorted = (tdSort === k);
       const lang = getLang();
       
       // 根據語言同排序狀態決定提示文字
       let tooltip = '';
-      if (isAnySorted) {
+      if (isSorted) {
         tooltip = lang === 'en' ? 'Reset sort' : (lang === 'zh-Hans' ? '回复排序' : '回復排序');
       } else {
         tooltip = lang === 'en' ? 'Sort high to low' : (lang === 'zh-Hans' ? '由高至低' : '由高至低');
       }
 
-      // 所有列都使用 isAnySorted 去決定顯示 ▼ 定 ↕
-      return `<th class="sortable" onclick="setTdSort('${k}')" title="${tooltip}">${t(lk)} <span class="sort-icon">${isAnySorted ? '▼' : '↕'}</span></th>`;
+      return `<th class="sortable" onclick="setTdSort('${k}')" title="${tooltip}">${t(lk)} <span class="sort-icon">${isSorted ? '▼' : '↕'}</span></th>`;
     }).join('') +
     `<th>${t('colMinDeposit')}</th><th>${t('colCondition')}</th>`;
   let rows = BANKS.filter(byType(tdType)).map(b => ({ b, r: resolve(b) }));
