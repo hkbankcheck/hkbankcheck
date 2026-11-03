@@ -261,7 +261,15 @@ window.addEventListener('resize', closeTierMenu);
 const TENOR_KEYS = [['m1', 'tenorM1'], ['m3', 'tenorM3'], ['m6', 'tenorM6'], ['m12', 'tenorM12']];
 document.querySelectorAll('#tdType .chip').forEach(ch => ch.onclick = () => { tdType = ch.dataset.type; document.querySelectorAll('#tdType .chip').forEach(x => x.classList.toggle('active', x === ch)); renderTD(); });
 const tdRate = (td, cur, tk) => { const d = td && td[cur]; return d && d[tk] != null ? d[tk] : null; };
-function setTdSort(k) { tdSort = k; renderTD(); }
+function setTdSort(k) {
+  // 👇 如果撳嘅係目前已經排序緊嘅欄，就切換返做 'code' (預設排序)
+  if (tdSort === k) {
+    tdSort = 'code';
+  } else {
+    tdSort = k;
+  }
+  renderTD();
+}
 window.setTdSort = setTdSort;
 // 👇 新增：平滑滾動到計算機標題嘅函數（會避開頂部 Filter Bar）
 window.scrollToCalculator = () => {
