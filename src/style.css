@@ -373,15 +373,3 @@ th.sortable:hover .sort-icon {
     margin-bottom: 4px;
   }
 }
-/* ===== 終極大招：強制抹走任何紅色波浪線 ===== */
-.rate, 
-.approx, 
-.rate span,
-.table-wrap td,
-.table-wrap td span {
-  text-decoration: none !important;
-  -webkit-text-decorations-in-effect: none !important; /* 針對 Safari */
-  border-bottom: none !important; /* 針對某些用 border 扮紅線嘅插件 */
-  background-image: none !important; /* 防止插件用 background 畫線 */
-  box-shadow: none !important; /* 防止插件用 shadow 畫線 */
-}
