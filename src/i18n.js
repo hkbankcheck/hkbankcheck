@@ -415,8 +415,11 @@ labelAmount: { 'zh-Hant': '存款金額', 'zh-Hans': '存款金额', en: 'Deposi
 labelCurrency: { 'zh-Hant': '貨幣', 'zh-Hans': '货币', en: 'Currency' },
     labelTenor: { 'zh-Hant': '存期', 'zh-Hans': '存期', en: 'Tenor' },
   labelCalcPinBank: { 'zh-Hant': '銀行', 'zh-Hans': '银行', en: 'Bank' },
-  'zh-Hans': '利息 = 本金 × 年利率 × 月数 ÷ 12（单利）；按每间银行目前所选户口计算。',
-  en: 'Interest = Principal × Annual Rate × Months ÷ 12 (simple interest); calculated using each bank\'s currently selected account tier.' },
+   calcTdNote: { 
+    'zh-Hant': '利息 = 本金 × 年利率 × 月數 ÷ 12（單利）；按每間銀行目前所選戶口計算。',
+    'zh-Hans': '利息 = 本金 × 年利率 × 月数 ÷ 12（单利）；按每间银行目前所选户口计算。',
+    en: 'Interest = Principal × Annual Rate × Months ÷ 12 (simple interest); calculated using each bank\'s currently selected account tier.' 
+  },
 rankYearRate: { 'zh-Hant': ' 年利率 ', 'zh-Hans': ' 年利率 ', en: ' annual rate ' },
 tdAddNote: { 'zh-Hant': '含 {tier} 加成 +{pct}%（參考）', 'zh-Hans': '含 {tier} 加成 +{pct}%（参考）', en: 'Includes a +{pct}% rate boost for {tier} (reference)' },
 fxNotice: { 'zh-Hant': '💱 <strong>運作方式：</strong>自動抓取<strong>即時市場中間價</strong>（open.er-api.com），再按各銀行／戶口級別的<strong>典型電匯買賣差價</strong>推算買入／賣出價。差價屬參考估算（<span class="approx">≈</span>），實際以銀行 App 即時報價為準。',
