@@ -636,3 +636,54 @@ document.addEventListener('change', (e) => {
     renderTdCalc(); // 重新畫計算機排名
   }
 });
+/* ===== 頂部導航欄滑動隱藏（精準版） ===== */
+const navEl = document.querySelector('.nav');
+if (navEl) {
+  // 獲取導航欄距離整個頁面頂部嘅絕對距離，同埋佢嘅高度
+  const navOffsetTop = navEl.getBoundingClientRect().top + window.scrollY;
+  const navHeight = navEl.offsetHeight;
+  // 計算導航欄原本底部嘅位置
+  const navOriginalBottom = navOffsetTop + navHeight; 
+
+  // 建立隱形佔位符
+  const navPlaceholder = document.createElement('div');
+  navPlaceholder.className = 'nav-placeholder';
+  navPlaceholder.style.height = navHeight + 'px';
+  navEl.parentNode.insertBefore(navPlaceholder, navEl);
+
+  let lastScrollTop = window.scrollY;
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const currentScrollTop = window.scrollY;
+
+        // 👇 判斷：當前滾動位置是否已經超過導航欄原本嘅底部？
+        if (currentScrollTop > navOriginalBottom) {
+          
+          // 啟動懸浮狀態
+          navEl.classList.add('is-fixed');
+          navPlaceholder.classList.add('show');
+
+          // 判斷滾動方向
+          if (currentScrollTop > lastScrollTop) {
+            // 向下滑：隱藏
+            navEl.classList.add('is-hidden');
+          } else if (currentScrollTop < lastScrollTop) {
+            // 向上滑：即刻彈出
+            navEl.classList.remove('is-hidden');
+          }
+        } else {
+          // 如果滾動返到頂部，取消懸浮
+          navEl.classList.remove('is-fixed', 'is-hidden');
+          navPlaceholder.classList.remove('show');
+        }
+
+        lastScrollTop = currentScrollTop;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+}
