@@ -374,7 +374,11 @@ appTitle: { 'zh-Hant': '<span style="color:#0F2537;font-weight:700;">HKBank</spa
 appTitleName: { 'zh-Hant': '<span style="color:#0F2537;font-weight:700;">HKBank</span><span style="color:#00B4D8;font-weight:700;">Check</span>', 'zh-Hans': '<span style="color:#0F2537;font-weight:700;">HKBank</span><span style="color:#00B4D8;font-weight:700;">Check</span>', en: '<span style="color:#0F2537;font-weight:700;">HKBank</span><span style="color:#00B4D8;font-weight:700;">Check</span>' },
 appTitleShort: { 'zh-Hant': '<span style="color:#0F2537;font-weight:700;">HKBank</span><span style="color:#00B4D8;font-weight:700;">Check</span>', 'zh-Hans': '<span style="color:#0F2537;font-weight:700;">HKBank</span><span style="color:#00B4D8;font-weight:700;">Check</span>', en: '<span style="color:#0F2537;font-weight:700;">HKBank</span><span style="color:#00B4D8;font-weight:700;">Check</span>' },
 
-appSubtitle: { 'zh-Hant': '16 間傳統及虛擬銀行 · 每間銀行可自選戶口類別 · 定期存款利率 · 外幣兌換匯率 · 服務收費', 'zh-Hans': '16 间传统及虚拟银行 · 每间银行可自选户口类别 · 定期存款利率 · 外币兑换汇率 · 服务收费', en: '16 traditional & virtual banks · Choose an account tier per bank · Time deposit rates · FX rates · Service fees' },
+appSubtitle: { 
+  'zh-Hant': '全港 <strong>15</strong> 間銀行，定存、匯價、收費一站比較。', 
+  'zh-Hans': '全港 <strong>15</strong> 间银行，定存、汇价、收费一站比较。', 
+  en: 'Compare time deposits, FX rates, and fees across <strong>15</strong> banks in Hong Kong.' 
+},
 lastUpdatedLabel: { 'zh-Hant': '最後更新：', 'zh-Hans': '最后更新：', en: 'Updated: ' },
 lastUpdatedSuffix: { 'zh-Hant': '（香港時間）', 'zh-Hans': '（香港时间）', en: ' (Hong Kong Time)' },
 navTD: { 'zh-Hant': '📈 定期存款利率', 'zh-Hans': '📈 定期存款利率', en: '📈 Time Deposit Rates' },
