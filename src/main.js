@@ -36,7 +36,7 @@ function applyStaticI18n() {
   renderLangSwitcher();
   document.querySelector('.logo-full').innerHTML = t('appTitleName');
   document.querySelector('.logo-short').innerHTML = t('appTitleShort');
-  document.getElementById('pSubtitle').textContent = t('appSubtitle');
+  document.getElementById('pSubtitle').innerHTML = t('appSubtitle');
   document.getElementById('updatedLabel').textContent = t('lastUpdatedLabel');
   renderLastUpdated();
   document.getElementById('navTdBtn').textContent = t('navTD');
