@@ -21,7 +21,7 @@ header{height:56px;background:#E2E8F0;color:#fff}
 .langbtn.on{background:#fff;color:#0f766e;opacity:1}
 
 .subhead{padding:14px 20px 0}
-.lede{margin:0 0 12px 0;font-size:13px;color:var(--muted)}
+.lede{margin:0 0 12px 0;font-size:16px;color:var(--muted)}
 .nav{display:flex;gap:6px;overflow-x:auto}
 .nav button{background:#fff;color:#334155;border:1px solid var(--line);padding:8px 14px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;white-space:nowrap}
 .nav button.active{background:#0b1f3a;color:#fff;border-color:#0b1f3a}
