@@ -389,3 +389,31 @@ th.sortable:hover .sort-icon {
     margin-bottom: 4px;
   }
 }
+/* ===== 頂部導航欄滑動隱藏（類似 Safari 地址欄效果） ===== */
+.nav.is-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99; /* 必須高於 filterbar (z-index: 10) 才能覆蓋 */
+  background: rgba(255, 255, 255, 0.95); /* 半透明白色背景 */
+  backdrop-filter: blur(8px); /* 毛玻璃效果 */
+  padding: 10px 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+  transform: translateY(0); /* 預設出現狀態 */
+  margin: 0; /* 清除預設 margin */
+}
+
+/* 當加上 .is-hidden 呢個 Class 時，導航欄會向上滑出隱藏 */
+.nav.is-fixed.is-hidden {
+  transform: translateY(-100%);
+}
+
+/* 佔位符，防止導航欄變 fixed 後下方內容跳動 */
+.nav-placeholder {
+  display: none;
+}
+.nav-placeholder.show {
+  display: block;
+}
