@@ -21,7 +21,25 @@ header{height:56px;background:#E2E8F0;color:#fff}
 .langbtn.on{background:#fff;color:#0f766e;opacity:1}
 
 .subhead{padding:14px 20px 0}
-.lede{margin:0 0 12px 0;font-size:16px;color:var(--muted)}
+.lede {
+  margin: 4px 0 16px 0;
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* 👇 特顯「15」呢個數字 👇 */
+.lede strong {
+  color: var(--primary);
+  font-size: 18px;
+  font-weight: 800;
+  font-family: "INTER", -apple-system, sans-serif;
+  margin: 0 2px;
+}
 .nav{display:flex;gap:6px;overflow-x:auto}
 .nav button{background:#fff;color:#334155;border:1px solid var(--line);padding:8px 14px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;white-space:nowrap}
 .nav button.active{background:#0b1f3a;color:#fff;border-color:#0b1f3a}
