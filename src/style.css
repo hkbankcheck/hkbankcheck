@@ -23,13 +23,10 @@ header{height:56px;background:#E2E8F0;color:#fff}
 .subhead{padding:14px 20px 0}
 .lede {
   margin: 4px 0 16px 0;
-  font-size: 15px;
-  color: var(--muted);
+  font-size: 16px; /* 稍微放大 */
+  color: var(--text); /* 👈 用主深色，唔用灰色 */
+  font-weight: 700; /* 👈 全部變成粗體 */
   line-height: 1.5;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
 }
 
 /* 👇 特顯「15」呢個數字 👇 */
