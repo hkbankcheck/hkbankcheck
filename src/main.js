@@ -159,11 +159,35 @@ function renderFilterBars() {
           </select>
         </div>
       `);
-    } else if (page === 'fx') {
-      groups.push(seg('cur', t('labelCurrency'), FX_CURRENCIES.map(x => {
-        const isOn = fxCur === x.c;
-        return `<button type="button" class="segbtn${isOn ? ' on' : ''}" data-cur="${x.c}" aria-pressed="${isOn}" style="color: ${isOn ? '#082f49' : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${fxCurName(x.n)} ${x.c}</button>`;
-      }).join(''), true));
+       } else if (page === 'fx') {
+      // 👇 設定邊幾個貨幣直接顯示喺 Filter Bar
+      const commonFx = ['USD', 'CNY', 'JPY', 'EUR']; 
+      const commonFxData = FX_CURRENCIES.filter(x => commonFx.includes(x.c));
+
+      groups.push(`
+        <div class="seg cur" style="width: 100%; flex-basis: 100%; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; position: relative;">
+          <span class="seg-label">${t('labelCurrency')}</span>
+          
+          <div class="segctl" role="group" aria-label="${t('labelCurrency')}">
+            <!-- 顯示常用貨幣 -->
+            ${commonFxData.map(x => {
+              const isOn = fxCur === x.c;
+              return `<button type="button" class="segbtn${isOn ? ' on' : ''}" data-cur="${x.c}" aria-pressed="${isOn}" style="color: ${isOn ? '#082f49' : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: none; cursor: pointer;">${fxCurName(x.n)} ${x.c}</button>`;
+            }).join('')}
+            
+            <!-- 👇 新增：顯示更多按鈕（箭嘴）👇 -->
+            <button type="button" class="segbtn" onclick="toggleFxDropdown(event)" style="border: none; cursor: pointer; color: var(--primary); font-weight: bold; padding: 5px 8px; margin-left: 4px;">▼</button>
+          </div>
+
+          <!-- 👇 新增：隱藏嘅 4 欄 Grid Menu 👇 -->
+          <div id="fxDropdownMenu" class="fx-dropdown-menu" style="display:none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 12px; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.15); grid-template-columns: repeat(4, 1fr); gap: 8px; width: max-content; min-width: 350px; margin-top: 4px;">
+            ${FX_CURRENCIES.map(x => {
+              const isOn = fxCur === x.c;
+              return `<button type="button" class="segbtn${isOn ? ' on' : ''}" data-cur="${x.c}" aria-pressed="${isOn}" style="color: ${isOn ? '#082f49' : '#475569'} !important; background: ${isOn ? '#fff' : 'transparent'} !important; border: 1px solid var(--line); border-radius: 6px; padding: 8px; font-size: 13px; cursor: pointer; text-align: center; width: 100%;">${fxCurName(x.n)} ${x.c}</button>`;
+            }).join('')}
+          </div>
+        </div>
+      `);
     }
 
     // 2. 戶口級別掣
