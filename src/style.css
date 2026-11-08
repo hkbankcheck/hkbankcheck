@@ -417,3 +417,7 @@ th.sortable:hover .sort-icon {
 .nav-placeholder.show {
   display: block;
 }
+/* ===== 隱藏外幣兌換頁面的市場中間價區塊 ===== */
+#page-fx .fxhead .mid {
+  display: none !important;
+}
